@@ -1,0 +1,80 @@
+/* =========================================================================
+   AMAHIRWE RESPONSIVE RULES
+   Mobile-first base lives in style.css / components.css.
+   Breakpoints here adapt layout — not just shrink it — for larger screens.
+   ========================================================================= */
+
+/* --- Small phones: roomier touch targets --- */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-3);
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+  }
+}
+
+/* --- Up to tablet: collapse nav into hamburger menu --- */
+@media (max-width: 860px) {
+  .navbar__links {
+    display: none;
+  }
+
+  .navbar__toggle {
+    display: inline-flex;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero__art {
+    order: -1;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .steps-grid,
+  .stats-grid,
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Tablet and up --- */
+@media (min-width: 861px) {
+  .navbar__mobile-panel {
+    display: none !important;
+  }
+
+  .steps-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Desktop --- */
+@media (min-width: 1120px) {
+  .cards-grid--opportunities {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

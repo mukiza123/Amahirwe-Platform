@@ -1,0 +1,20 @@
+# Python
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Environment secrets — never commit real credentials
+.env
+backend/.env
+
+# Vercel
+.vercel
+
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/

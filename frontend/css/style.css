@@ -1,0 +1,180 @@
+/* =========================================================================
+   AMAHIRWE DESIGN SYSTEM
+   Controlled neumorphism + modern African education.
+   Design tokens (colours, type, spacing, radius, shadow) + base elements.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* --- Colour palette (do not add new brand colours here) --- */
+  --color-primary-dark: #0F6B52;   /* branding, headings, strong buttons */
+  --color-primary-teal: #1A9B8A;   /* primary actions, active states */
+  --color-mint: #A7E3D4;           /* soft backgrounds, accents */
+  --color-yellow: #F7B731;         /* achievements, talent highlights */
+  --color-orange: #FF8A3D;         /* opportunities, secondary attention */
+  --color-peach: #FFD9B3;          /* very light accent */
+
+  --color-bg: #FFFFFF;
+  --color-bg-secondary: #F8FAFC;
+  --color-text: #1F2937;
+  --color-text-secondary: #6B7280;
+  --color-border: #E5E7EB;
+
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+
+  /* --- Typography --- */
+  --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* --- Spacing scale --- */
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+
+  /* --- Radius scale --- */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  /* --- Neumorphic shadows (soft & subtle, not heavy) --- */
+  --shadow-raised:
+    6px 6px 14px rgba(15, 107, 82, 0.08),
+    -6px -6px 14px rgba(255, 255, 255, 0.9);
+  --shadow-raised-sm:
+    3px 3px 8px rgba(15, 107, 82, 0.07),
+    -3px -3px 8px rgba(255, 255, 255, 0.9);
+  --shadow-pressed:
+    inset 3px 3px 8px rgba(15, 107, 82, 0.12),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.7);
+  --shadow-focus: 0 0 0 3px rgba(26, 155, 138, 0.28);
+
+  /* --- Motion --- */
+  --transition-fast: 150ms ease;
+  --transition-base: 220ms ease;
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-primary-teal);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* --- Headings --- */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  line-height: 1.25;
+  margin: 0 0 var(--space-2) 0;
+}
+
+h1 { font-size: clamp(1.9rem, 1.6rem + 1.4vw, 2.75rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 1.3rem + 0.9vw, 2rem); }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.05rem; }
+
+p {
+  margin: 0 0 var(--space-3) 0;
+  color: var(--color-text);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+/* --- Focus visibility (accessibility) --- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-sm);
+}
+
+/* --- Layout helpers --- */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.section {
+  padding: var(--space-6) 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-3);
+  top: -48px;
+  background: var(--color-primary-dark);
+  color: #fff;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  z-index: 100;
+  transition: top var(--transition-base);
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}

@@ -1,0 +1,63 @@
+{
+  "brand_name": "Amahirwe",
+  "brand_tagline": "Discover • Connect • Grow",
+
+  "nav_how_it_works": "How it works",
+  "nav_opportunities": "Opportunities",
+  "nav_about": "About",
+  "nav_login": "Log in",
+  "nav_get_started": "Get Started",
+
+  "hero_title_line1": "Discover your talent.",
+  "hero_title_line2": "Connect to opportunity.",
+  "hero_subtitle": "Amahirwe helps students in rural public schools in Rwanda find what they're good at, and connects them with mentors, teachers and real opportunities.",
+  "cta_get_started": "Get Started",
+  "cta_learn_more": "Learn More",
+
+  "how_it_works_title": "How Amahirwe works",
+  "how_it_works_subtitle": "Three simple steps, built to work even without the internet.",
+  "step_discover_title": "Discover",
+  "step_discover_body": "Take a short, friendly assessment — offline or online — to find your talent area.",
+  "step_connect_title": "Connect",
+  "step_connect_body": "Get matched with a verified mentor, approved by your teacher before any contact.",
+  "step_grow_title": "Grow",
+  "step_grow_body": "Track your progress, earn milestones, and find scholarships and opportunities.",
+
+  "why_title": "Why Amahirwe matters",
+  "why_body": "Many talented students in rural schools never get the chance to be noticed. Amahirwe gives every student a simple way to be seen, supported, and connected to people who can help them grow — in Kinyarwanda first.",
+
+  "opportunities_title": "Opportunities and mentorship",
+  "opportunities_body": "Verified mentors and opportunity providers post scholarships, competitions and internships. Every mentor match is reviewed by a teacher first, to keep students safe.",
+
+  "final_cta_title": "Ready to discover what you're good at?",
+  "final_cta_body": "It only takes a few minutes to get started — no internet required.",
+  "final_cta_button": "Get Started",
+
+  "footer_about": "About",
+  "footer_how_it_works": "How it works",
+  "footer_opportunities": "Opportunities",
+  "footer_contact": "Contact",
+  "footer_rights": "© 2026 Amahirwe. Built for students in Rwanda.",
+
+  "offline_message": "You're offline. Your work is saved on this device and will sync when you're back online.",
+
+  "auth_login_title": "Welcome back",
+  "auth_login_subtitle": "Log in to continue to your dashboard.",
+  "auth_register_title": "Create your account",
+  "auth_register_subtitle": "Join Amahirwe to discover your talent and find opportunities.",
+  "form_full_name": "Full name",
+  "form_email": "Email",
+  "form_password": "Password",
+  "form_role": "I am a",
+  "form_submit_login": "Log in",
+  "form_submit_register": "Create account",
+  "auth_no_account": "Don't have an account?",
+  "auth_have_account": "Already have an account?",
+
+  "role_student": "Student",
+  "role_teacher": "Teacher",
+  "role_mentor": "Mentor",
+  "role_provider": "Opportunity Provider",
+  "role_parent": "Parent / Guardian",
+  "form_help_password_min": "At least 8 characters."
+}

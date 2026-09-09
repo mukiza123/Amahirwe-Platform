@@ -1,0 +1,63 @@
+{
+  "brand_name": "Amahirwe",
+  "brand_tagline": "Menya • Huza • Kura",
+
+  "nav_how_it_works": "Uko bikora",
+  "nav_opportunities": "Amahirwe y'ejo hazaza",
+  "nav_about": "Abo turi bo",
+  "nav_login": "Injira",
+  "nav_get_started": "Tangira",
+
+  "hero_title_line1": "Menya impano yawe.",
+  "hero_title_line2": "Huza n'amahirwe.",
+  "hero_subtitle": "Amahirwe ifasha abanyeshuri bo mu mashuri ya Leta yo mu cyaro kumenya ibyo bakundwamo, ikabahuza n'abagenzuzi (mentors), abarimu n'amahirwe nyayo.",
+  "cta_get_started": "Tangira",
+  "cta_learn_more": "Menya byinshi",
+
+  "how_it_works_title": "Uko Amahirwe ikora",
+  "how_it_works_subtitle": "Intambwe eshatu zoroshye, zikora n'igihe nta murandasi uhari.",
+  "step_discover_title": "Menya",
+  "step_discover_body": "Ukora ibibazo bigufi kandi byoroshye — hariho cyangwa hatariho murandasi — kugira umenye impano yawe.",
+  "step_connect_title": "Huza",
+  "step_connect_body": "Uhurizwa n'umujyanama (mentor) wemejwe, byemezwa n'umwarimu wawe mbere y'uko muhurira.",
+  "step_grow_title": "Kura",
+  "step_grow_body": "Kurikirana iterambere ryawe, ubone ibimenyetso by'intsinzi, n'amahirwe y'amashuri cyangwa ibindi.",
+
+  "why_title": "Kuki Amahirwe ari ingenzi",
+  "why_body": "Abanyeshuri benshi b'impano bo mu cyaro ntibigera babona amahirwe yo kuboneka. Amahirwe iha buri munyeshuri uburyo bworoshye bwo kuboneka, gufashwa, no guhurizwa n'abantu bashobora kubafasha gukura — mu Kinyarwanda mbere ya byose.",
+
+  "opportunities_title": "Amahirwe n'ubujyanama",
+  "opportunities_body": "Abajyanama n'abatanga amahirwe bemejwe basangiza amashuri, amarushanwa, n'amahirwe y'akazi. Buri guhuza n'umujyanama bisuzumwa n'umwarimu mbere, kugira ngo abanyeshuri barinzwe.",
+
+  "final_cta_title": "Witeguye kumenya icyo uzi neza?",
+  "final_cta_body": "Bifata iminota mike gutangira — nta murandasi ukenewe.",
+  "final_cta_button": "Tangira",
+
+  "footer_about": "Abo turi bo",
+  "footer_how_it_works": "Uko bikora",
+  "footer_opportunities": "Amahirwe",
+  "footer_contact": "Twandikire",
+  "footer_rights": "© 2026 Amahirwe. Yakorewe abanyeshuri bo mu Rwanda.",
+
+  "offline_message": "Nta murandasi ufite. Ibyo wakoze bibitswe kuri iyi telefone kandi bizohererezwa iyo ugarutse kuri murandasi.",
+
+  "auth_login_title": "Murakaza neza",
+  "auth_login_subtitle": "Injira kugira ngo ukomeze kuri dashboard yawe.",
+  "auth_register_title": "Fungura konti yawe",
+  "auth_register_subtitle": "Injira muri Amahirwe umenye impano yawe kandi ubone amahirwe.",
+  "form_full_name": "Amazina yombi",
+  "form_email": "Imeli",
+  "form_password": "Ijambo banga",
+  "form_role": "Ndi",
+  "form_submit_login": "Injira",
+  "form_submit_register": "Fungura konti",
+  "auth_no_account": "Nta konti ufite?",
+  "auth_have_account": "Usanzwe ufite konti?",
+
+  "role_student": "Umunyeshuri",
+  "role_teacher": "Umwarimu",
+  "role_mentor": "Umujyanama (Mentor)",
+  "role_provider": "Utanga amahirwe",
+  "role_parent": "Umubyeyi / Umurezi",
+  "form_help_password_min": "Nibura inyuguti umunani (8)."
+}

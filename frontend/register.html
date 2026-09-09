@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Get Started — Amahirwe</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .auth-wrap {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-6) var(--space-3) var(--space-7);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .auth-card__header {
+      text-align: center;
+      margin-bottom: var(--space-4);
+    }
+
+    .auth-card__footer {
+      text-align: center;
+      margin-top: var(--space-3);
+      font-size: 0.9rem;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-2);
+    }
+
+    @media (max-width: 480px) {
+      .role-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .role-option {
+      position: relative;
+    }
+
+    .role-option input {
+      position: absolute;
+      opacity: 0;
+      inset: 0;
+      cursor: pointer;
+    }
+
+    .role-option label {
+      display: block;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--color-border);
+      background: var(--color-bg);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color var(--transition-fast), background var(--transition-fast);
+    }
+
+    .role-option input:checked + label {
+      border-color: var(--color-primary-teal);
+      background: #EFFBF8;
+      color: var(--color-primary-dark);
+    }
+
+    .role-option input:focus-visible + label {
+      box-shadow: var(--shadow-focus);
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-wrap">
+    <div class="card auth-card">
+      <div class="auth-card__header">
+        <h1 data-i18n="auth_register_title">Create your account</h1>
+        <p class="text-secondary" data-i18n="auth_register_subtitle">Join Amahirwe to discover your talent and find opportunities.</p>
+      </div>
+
+      <form id="register-form" novalidate>
+        <div class="form-field">
+          <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
+          <input class="form-input" type="text" id="full_name" name="full_name" autocomplete="name" required />
+          <p class="form-error" id="full_name-error" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="email" data-i18n="form_email">Email</label>
+          <input class="form-input" type="email" id="email" name="email" autocomplete="email" required />
+          <p class="form-error" id="email-error" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="password" data-i18n="form_password">Password</label>
+          <input class="form-input" type="password" id="password" name="password" autocomplete="new-password" minlength="8" required />
+          <p class="form-help" data-i18n="form_help_password_min">At least 8 characters.</p>
+          <p class="form-error" id="password-error" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <span class="form-label" data-i18n="form_role">I am a</span>
+          <div class="role-grid" role="radiogroup" aria-label="Role">
+            <div class="role-option">
+              <input type="radio" name="role" id="role_student" value="student" checked />
+              <label for="role_student" data-i18n="role_student">Student</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_teacher" value="teacher" />
+              <label for="role_teacher" data-i18n="role_teacher">Teacher</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_mentor" value="mentor" />
+              <label for="role_mentor" data-i18n="role_mentor">Mentor</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_provider" value="provider" />
+              <label for="role_provider" data-i18n="role_provider">Opportunity Provider</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_parent" value="parent" />
+              <label for="role_parent" data-i18n="role_parent">Parent / Guardian</label>
+            </div>
+          </div>
+        </div>
+
+        <p class="form-error" id="form-error" hidden></p>
+
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="form_submit_register">Create account</button>
+      </form>
+
+      <p class="auth-card__footer text-secondary">
+        <span data-i18n="auth_have_account">Already have an account?</span>
+        <a href="login.html" data-i18n="nav_login">Log in</a>
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

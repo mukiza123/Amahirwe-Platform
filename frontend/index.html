@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amahirwe — Discover • Connect • Grow</title>
+  <meta name="description" content="Amahirwe helps students in rural public schools in Rwanda discover their talents and connect with mentors, teachers and opportunities." />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: var(--space-6);
+      padding: var(--space-7) 0 var(--space-6);
+      overflow: hidden;
+    }
+
+    .hero__blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    .hero__blob--1 {
+      width: 340px;
+      height: 340px;
+      background: var(--color-mint);
+      top: -80px;
+      right: -60px;
+      opacity: 0.5;
+    }
+
+    .hero__blob--2 {
+      width: 220px;
+      height: 220px;
+      background: var(--color-peach);
+      bottom: -60px;
+      left: -40px;
+      opacity: 0.45;
+    }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--color-bg);
+      box-shadow: var(--shadow-raised-sm);
+      color: var(--color-primary-teal);
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      margin-bottom: var(--space-3);
+    }
+
+    .hero__subtitle {
+      max-width: 46ch;
+      font-size: 1.05rem;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .hero__art {
+      background: linear-gradient(160deg, #EFFBF8, var(--color-mint));
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-raised);
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-4);
+    }
+
+    .hero__art-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--color-primary-dark);
+      text-align: center;
+    }
+
+    .steps-grid,
+    .stats-grid,
+    .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+
+    .step-card {
+      text-align: center;
+    }
+
+    .step-card__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: var(--color-mint);
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-3);
+    }
+
+    .step-card__number {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-weight: 800;
+      color: var(--color-primary-teal);
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+    }
+
+    .section--tinted {
+      background: var(--color-bg-secondary);
+    }
+
+    .why-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+      align-items: center;
+    }
+
+    @media (min-width: 861px) {
+      .why-block {
+        grid-template-columns: 0.9fr 1.1fr;
+      }
+    }
+
+    .why-art {
+      background: var(--color-bg);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-raised);
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .opportunity-highlight {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .final-cta {
+      background: linear-gradient(135deg, var(--color-primary-teal), var(--color-primary-dark));
+      border-radius: var(--radius-xl);
+      padding: var(--space-6) var(--space-5);
+      text-align: center;
+      color: #fff;
+    }
+
+    .final-cta h2 {
+      color: #fff;
+    }
+
+    .final-cta p {
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 50ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .final-cta .btn-secondary {
+      background: #fff;
+      color: var(--color-primary-dark);
+      box-shadow: none;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+
+      <nav class="navbar__links" aria-label="Main navigation">
+        <a href="#how-it-works" data-i18n="nav_how_it_works">How it works</a>
+        <a href="#opportunities" data-i18n="nav_opportunities">Opportunities</a>
+        <a href="#why" data-i18n="nav_about">About</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="login.html" class="btn btn-secondary" data-i18n="nav_login">Log in</a>
+        <a href="register.html" class="btn btn-primary" data-i18n="nav_get_started">Get Started</a>
+        <button class="navbar__toggle" type="button" aria-expanded="false" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar__mobile-panel">
+      <a href="#how-it-works" data-i18n="nav_how_it_works">How it works</a>
+      <a href="#opportunities" data-i18n="nav_opportunities">Opportunities</a>
+      <a href="#why" data-i18n="nav_about">About</a>
+      <a href="login.html" data-i18n="nav_login">Log in</a>
+      <a href="register.html" data-i18n="nav_get_started">Get Started</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="section hero container">
+      <span class="hero__blob hero__blob--1" aria-hidden="true"></span>
+      <span class="hero__blob hero__blob--2" aria-hidden="true"></span>
+
+      <div class="hero__copy">
+        <span class="hero__eyebrow" data-i18n="brand_tagline">Discover • Connect • Grow</span>
+        <h1>
+          <span data-i18n="hero_title_line1">Discover your talent.</span><br />
+          <span data-i18n="hero_title_line2">Connect to opportunity.</span>
+        </h1>
+        <p class="hero__subtitle text-secondary" data-i18n="hero_subtitle">
+          Amahirwe helps students in rural public schools in Rwanda find what they're good at, and connects them with mentors, teachers and real opportunities.
+        </p>
+        <div class="hero__actions">
+          <a href="register.html" class="btn btn-primary" data-i18n="cta_get_started">Get Started</a>
+          <a href="#how-it-works" class="btn btn-secondary" data-i18n="cta_learn_more">Learn More</a>
+        </div>
+      </div>
+
+      <div class="hero__art">
+        <img src="assets/illustrations/characters/student.png" alt="Illustration of an Amahirwe student carrying books" width="280" height="360" />
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how-it-works">
+      <div class="container">
+        <h2 data-i18n="how_it_works_title">How Amahirwe works</h2>
+        <p class="text-secondary" data-i18n="how_it_works_subtitle">Three simple steps, built to work even without the internet.</p>
+
+        <div class="steps-grid">
+          <div class="card step-card">
+            <span class="step-card__number">01</span>
+            <div class="step-card__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3 data-i18n="step_discover_title">Discover</h3>
+            <p class="text-secondary" data-i18n="step_discover_body">Take a short, friendly assessment — offline or online — to find your talent area.</p>
+          </div>
+
+          <div class="card step-card">
+            <span class="step-card__number">02</span>
+            <div class="step-card__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="18" cy="12" r="3"/><circle cx="6" cy="12" r="3"/></svg>
+            </div>
+            <h3 data-i18n="step_connect_title">Connect</h3>
+            <p class="text-secondary" data-i18n="step_connect_body">Get matched with a verified mentor, approved by your teacher before any contact.</p>
+          </div>
+
+          <div class="card step-card">
+            <span class="step-card__number">03</span>
+            <div class="step-card__icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+            </div>
+            <h3 data-i18n="step_grow_title">Grow</h3>
+            <p class="text-secondary" data-i18n="step_grow_body">Track your progress, earn milestones, and find scholarships and opportunities.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Amahirwe matters -->
+    <section class="section section--tinted" id="why">
+      <div class="container why-block">
+        <div class="why-art">
+          <img src="assets/illustrations/supporting/talent-discovery.png" alt="Illustration of a student discovering their talent with a magnifying glass" width="220" height="280" />
+        </div>
+        <div>
+          <h2 data-i18n="why_title">Why Amahirwe matters</h2>
+          <p class="text-secondary" data-i18n="why_body">
+            Many talented students in rural schools never get the chance to be noticed. Amahirwe gives every student a simple way to be seen, supported, and connected to people who can help them grow — in Kinyarwanda first.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opportunities and mentorship -->
+    <section class="section" id="opportunities">
+      <div class="container">
+        <h2 data-i18n="opportunities_title">Opportunities and mentorship</h2>
+        <p class="text-secondary" data-i18n="opportunities_body">
+          Verified mentors and opportunity providers post scholarships, competitions and internships. Every mentor match is reviewed by a teacher first, to keep students safe.
+        </p>
+
+        <div class="cards-grid">
+          <div class="card opportunity-highlight">
+            <span class="badge badge-mint">Mentorship</span>
+            <h3>Verified mentors</h3>
+            <p class="text-secondary">Every mentor is verified by an administrator before they can be matched to a student.</p>
+          </div>
+          <div class="card opportunity-highlight">
+            <span class="badge badge-orange">Opportunities</span>
+            <h3>Scholarships & competitions</h3>
+            <p class="text-secondary">Browse opportunities filtered by your talent area, posted by verified providers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section">
+      <div class="container">
+        <div class="final-cta">
+          <h2 data-i18n="final_cta_title">Ready to discover what you're good at?</h2>
+          <p data-i18n="final_cta_body">It only takes a few minutes to get started — no internet required.</p>
+          <a href="register.html" class="btn btn-secondary" data-i18n="final_cta_button">Get Started</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>
+        <div class="footer__brand" data-i18n="brand_name">Amahirwe</div>
+        <p class="text-secondary" data-i18n="brand_tagline">Discover • Connect • Grow</p>
+      </div>
+      <nav class="footer__links" aria-label="Footer navigation">
+        <a href="#why" data-i18n="footer_about">About</a>
+        <a href="#how-it-works" data-i18n="footer_how_it_works">How it works</a>
+        <a href="#opportunities" data-i18n="footer_opportunities">Opportunities</a>
+      </nav>
+    </div>
+    <div class="container footer__meta" data-i18n="footer_rights">© 2026 Amahirwe. Built for students in Rwanda.</div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

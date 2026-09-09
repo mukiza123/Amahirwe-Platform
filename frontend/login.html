@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in — Amahirwe</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .auth-wrap {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-6) var(--space-3) var(--space-7);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .auth-card__header {
+      text-align: center;
+      margin-bottom: var(--space-4);
+    }
+
+    .auth-card__footer {
+      text-align: center;
+      margin-top: var(--space-3);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-wrap">
+    <div class="card auth-card">
+      <div class="auth-card__header">
+        <h1 data-i18n="auth_login_title">Welcome back</h1>
+        <p class="text-secondary" data-i18n="auth_login_subtitle">Log in to continue to your dashboard.</p>
+      </div>
+
+      <form id="login-form" novalidate>
+        <div class="form-field">
+          <label class="form-label" for="email" data-i18n="form_email">Email</label>
+          <input class="form-input" type="email" id="email" name="email" autocomplete="email" required />
+          <p class="form-error" id="email-error" hidden></p>
+        </div>
+
+        <div class="form-field">
+          <label class="form-label" for="password" data-i18n="form_password">Password</label>
+          <input class="form-input" type="password" id="password" name="password" autocomplete="current-password" required />
+          <p class="form-error" id="password-error" hidden></p>
+        </div>
+
+        <p class="form-error" id="form-error" hidden></p>
+
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="form_submit_login">Log in</button>
+      </form>
+
+      <p class="auth-card__footer text-secondary">
+        <span data-i18n="auth_no_account">Don't have an account?</span>
+        <a href="register.html" data-i18n="nav_get_started">Get Started</a>
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
