@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Amahirwe</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .dash-wrap { padding: var(--space-6) 0 var(--space-7); }
+    .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="../index.html" class="navbar__brand">
+        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <span>Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dash-wrap">
+    <div id="state-loading" class="state-message">
+      <span class="spinner" aria-hidden="true"></span>
+      <p>Loading your dashboard…</p>
+    </div>
+
+    <div id="dashboard-content" hidden>
+      <div class="dash-welcome">
+        <div>
+          <h1 id="welcome-heading">Muraho!</h1>
+          <p class="text-secondary">Student dashboard</p>
+        </div>
+        <span class="badge badge-mint">Student</span>
+      </div>
+
+      <div class="card dash-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+        <h3>Your talent assessment is coming soon</h3>
+        <p>The profile, talent assessment, mentor matches and opportunities sections for students are built in the next phases.</p>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { requireRole } from "../js/auth.js";
+
+    requireRole("student").then((user) => {
+      if (!user) return;
+      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
+      document.querySelector("#state-loading").hidden = true;
+      document.querySelector("#dashboard-content").hidden = false;
+    });
+  </script>
+</body>
+</html>

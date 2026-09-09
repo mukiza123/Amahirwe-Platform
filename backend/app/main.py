@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.auth import router as auth_router
 from app.core.config import settings
 
 app = FastAPI(
@@ -27,3 +28,6 @@ app.add_middleware(
 def health_check():
     """Simple endpoint used to confirm the API and DB config are wired up."""
     return {"status": "ok", "service": "Amahirwe API"}
+
+
+app.include_router(auth_router)

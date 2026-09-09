@@ -88,6 +88,13 @@ img {
   display: block;
 }
 
+/* Components below set their own `display` (flex/grid/etc.), which would
+   otherwise override the browser's default [hidden] behaviour since
+   author rules beat the UA stylesheet at equal specificity. */
+[hidden] {
+  display: none !important;
+}
+
 a {
   color: var(--color-primary-teal);
   text-decoration: none;
