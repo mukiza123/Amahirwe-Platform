@@ -6,7 +6,7 @@ from app.core.config import settings
 
 app = FastAPI(
     title="Amahirwe API",
-    description="Backend API for Amahirwe — Discover, Connect, Grow.",
+    description="Backend API for Amahirwe: Discover, Connect, Grow.",
     version="0.1.0",
 )
 

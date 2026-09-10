@@ -13,4 +13,4 @@ Phase 7). Run with:
 """
 
 if __name__ == "__main__":
-    print("Seed script placeholder — will populate demo data once models exist.")
+    print("Seed script placeholder: will populate demo data once models exist.")

@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **Phase 1 — Foundation** (folder structure, FastAPI app, database wiring, design system, base pages). Authentication, dashboards, the talent assessment, mentor matching, opportunities and admin tools are built out in the phases that follow — see [Development Plan](#development-plan) below.
+> Project status: **Phase 1: Foundation** (folder structure, FastAPI app, database wiring, design system, base pages). Authentication, dashboards, the talent assessment, mentor matching, opportunities and admin tools are built out in the phases that follow; see [Development Plan](#development-plan) below.
 
 ## Live demo
 
@@ -19,7 +19,7 @@ This is a university final software prototype built from scratch with:
 
 ## Demo accounts
 
-_Not yet available — seed data is added in a later phase. This section will list a demo student, teacher, mentor, opportunity provider and administrator account once `database/seed.py` is implemented._
+_Not yet available: seed data is added in a later phase. This section will list a demo student, teacher, mentor, opportunity provider and administrator account once `database/seed.py` is implemented._
 
 ## Project structure
 
@@ -52,11 +52,11 @@ Amahirwe-Platform/
 ## Prerequisites
 
 - Python 3.9 or newer
-- A PostgreSQL database. This project uses a free hosted instance from [Neon](https://neon.tech) — no local PostgreSQL install required.
+- A PostgreSQL database. This project uses a free hosted instance from [Neon](https://neon.tech), so no local PostgreSQL install is required.
 - A modern web browser
 - A simple static file server for the frontend (instructions below use Python's built-in one, so nothing extra to install)
 
-## Setup — running the project locally
+## Setup: Running the Project Locally
 
 Follow these steps in order.
 
@@ -72,7 +72,7 @@ cd Amahirwe-Platform
 1. Go to [neon.tech](https://neon.tech) and sign up for a free account.
 2. Create a new project (any name, e.g. `amahirwe`).
 3. On the project dashboard, copy the **connection string** shown (it looks like `postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require`).
-4. Keep this connection string — you'll paste it into `.env` in the next step.
+4. Keep this connection string; you'll paste it into `.env` in the next step.
 
 ### 3. Configure backend environment variables
 
@@ -83,13 +83,13 @@ cp .env.example .env
 
 Open `backend/.env` and set:
 
-- `DATABASE_URL` — paste the Neon connection string from step 2.
-- `JWT_SECRET_KEY` — generate one with:
+- `DATABASE_URL`: paste the Neon connection string from step 2.
+- `JWT_SECRET_KEY`: generate one with:
   ```bash
   python3 -c "import secrets; print(secrets.token_hex(32))"
   ```
 
-Never commit `backend/.env` — it's already in `.gitignore`.
+Never commit `backend/.env`; it's already in `.gitignore`.
 
 ### 4. Create a virtual environment and install backend dependencies
 
@@ -149,25 +149,25 @@ pytest tests/ -v
 
 Built in phases, per the project's development rule of not building everything at once:
 
-1. **Foundation** — folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config *(current)*
-2. **Authentication** — registration, login, JWT, role-based access, protected pages
-3. **Student** — dashboard, profile, talent assessment, results
-4. **Offline assessment** — service worker, IndexedDB sync queue
-5. **Teacher** — dashboard, students, mentor match approvals
-6. **Mentor matching** — rule-based matching algorithm, approval workflow, audit log, notifications
-7. **Opportunities** — provider dashboard, opportunity creation, listing, filtering
-8. **Admin** — user management, verification, audit logs
-9. **Multilingual** — Kinyarwanda, English, French across all screens
-10. **Polish** — mobile QA, accessibility, loading/empty/error states, illustrations
+1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config
+2. **Authentication**: registration, login, JWT, role-based access, protected pages *(current)*
+3. **Student**: dashboard, profile, talent assessment, results
+4. **Offline assessment**: service worker, IndexedDB sync queue
+5. **Teacher**: dashboard, students, mentor match approvals
+6. **Mentor matching**: rule-based matching algorithm, approval workflow, audit log, notifications
+7. **Opportunities**: provider dashboard, opportunity creation, listing, filtering
+8. **Admin**: user management, verification, audit logs
+9. **Multilingual**: Kinyarwanda, English, French across all screens
+10. **Polish**: mobile QA, accessibility, loading/empty/error states, illustrations
 
 ## Design system
 
-Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability — not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Plus Jakarta Sans for headings, Inter for body) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Plus Jakarta Sans for headings, Inter for body) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
 
 ## Security notes
 
 - Passwords are hashed (never stored in plaintext).
-- Authentication uses JWT; the backend enforces role-based authorization — the frontend never decides access on its own.
+- Authentication uses JWT; the backend enforces role-based authorization, and the frontend never decides access on its own.
 - Because Amahirwe's primary users are minors, there is no direct/unsupervised messaging between students and mentors. A teacher or administrator must approve a mentor match before any contact information is shared.
 - Mentors and opportunity providers must be verified by an administrator before they can appear in matches or publish opportunities.
 

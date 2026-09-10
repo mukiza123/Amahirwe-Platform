@@ -34,7 +34,7 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 def require_roles(*allowed_roles: UserRole):
     """Dependency factory: only lets a request through if the current
-    user's role is one of allowed_roles. Backend-enforced — the frontend
+    user's role is one of allowed_roles. Backend-enforced; the frontend
     never gets to decide who can access what."""
 
     def checker(current_user: User = Depends(get_current_user)) -> User:

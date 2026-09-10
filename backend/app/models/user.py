@@ -22,7 +22,7 @@ class User(Base):
 
     Role-specific details (e.g. a student's school, a mentor's expertise)
     live in their own tables added in later phases, linked back to this
-    User by foreign key — this table only ever holds login/identity data.
+    User by foreign key; this table only ever holds login/identity data.
     """
 
     __tablename__ = "users"

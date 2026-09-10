@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 from app.models.user import UserRole
 
-# Administrator accounts are seeded by the platform, not self-registered —
+# Administrator accounts are seeded by the platform, not self-registered,
 # so registration only accepts the roles a person can sign themselves up as.
 RegisterableRole = Literal["student", "teacher", "mentor", "provider", "parent"]
 

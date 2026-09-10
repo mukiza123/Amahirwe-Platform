@@ -1,5 +1,5 @@
 /**
- * Amahirwe — shared site behaviour: mobile nav, language switching,
+ * Amahirwe: shared site behaviour for mobile nav, language switching,
  * and the offline indicator banner. Loaded on every page.
  */
 

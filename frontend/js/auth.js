@@ -1,7 +1,7 @@
 /**
- * Amahirwe — registration, login, logout, and session handling.
+ * Amahirwe: registration, login, logout, and session handling.
  * The token itself is only ever trusted by the backend; this file just
- * stores it and redirects — it never decides who is "allowed" to see a page.
+ * stores it and redirects; it never decides who is "allowed" to see a page.
  */
 
 import { api, ApiError } from "./api.js";
