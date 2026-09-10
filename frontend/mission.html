@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="about.html" aria-current="page" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -65,9 +70,9 @@
 
   <main id="main-content">
     <section class="page-hero container">
-      <span class="hero__eyebrow">Our Mission</span>
-      <h1>Turning potential into a real next step.</h1>
-      <p class="text-secondary">
+      <span class="hero__eyebrow" data-i18n="mission_eyebrow">Our Mission</span>
+      <h1 data-i18n="mission_hero_title">Turning potential into a real next step.</h1>
+      <p class="text-secondary" data-i18n="mission_hero_body">
         Supporting young people to discover their strengths and connect those strengths to people, resources and
         opportunities.
       </p>
@@ -79,8 +84,8 @@
           <img src="assets/illustrations/objects/target.png" alt="Illustration of a target, representing vision and direction" width="180" height="200" />
         </div>
         <div>
-          <h2>Our vision</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="mission_vision_title">Our vision</h2>
+          <p class="text-secondary" data-i18n="mission_vision_body">
             A future where talent is not limited by where a young person grows up, where a student's location or
             circumstances don't determine whether their strengths are noticed and supported.
           </p>
@@ -90,27 +95,27 @@
 
     <section class="section section--tinted">
       <div class="container">
-        <h2>What we believe</h2>
+        <h2 data-i18n="mission_believe_title">What we believe</h2>
         <div class="cards-grid">
           <div class="card">
-            <h3>Every student has potential.</h3>
-            <p class="text-secondary">Talent isn't rare; the chance to have it noticed and supported often is.</p>
+            <h3 data-i18n="mission_believe1_title">Every student has potential.</h3>
+            <p class="text-secondary" data-i18n="mission_believe1_body">Talent isn't rare; the chance to have it noticed and supported often is.</p>
           </div>
           <div class="card">
-            <h3>Opportunity should be easier to discover.</h3>
-            <p class="text-secondary">Scholarships, competitions and internships shouldn't depend on who you already know.</p>
+            <h3 data-i18n="mission_believe2_title">Opportunity should be easier to discover.</h3>
+            <p class="text-secondary" data-i18n="mission_believe2_body">Scholarships, competitions and internships shouldn't depend on who you already know.</p>
           </div>
           <div class="card">
-            <h3>Schools can play an important role.</h3>
-            <p class="text-secondary">Teachers are often best placed to notice a student's strengths and vouch for them.</p>
+            <h3 data-i18n="mission_believe3_title">Schools can play an important role.</h3>
+            <p class="text-secondary" data-i18n="mission_believe3_body">Teachers are often best placed to notice a student's strengths and vouch for them.</p>
           </div>
           <div class="card">
-            <h3>Mentorship helps young people choose well.</h3>
-            <p class="text-secondary">A conversation with someone further along a path can change how a student sees their own options.</p>
+            <h3 data-i18n="mission_believe4_title">Mentorship helps young people choose well.</h3>
+            <p class="text-secondary" data-i18n="mission_believe4_body">A conversation with someone further along a path can change how a student sees their own options.</p>
           </div>
           <div class="card">
-            <h3>Technology can help bridge opportunity gaps.</h3>
-            <p class="text-secondary">Used carefully, and designed for low connectivity, it can reach students other tools don't.</p>
+            <h3 data-i18n="mission_believe5_title">Technology can help bridge opportunity gaps.</h3>
+            <p class="text-secondary" data-i18n="mission_believe5_body">Used carefully, and designed for low connectivity, it can reach students other tools don't.</p>
           </div>
         </div>
       </div>
@@ -118,43 +123,43 @@
 
     <section class="section">
       <div class="container">
-        <h2>Our goals</h2>
-        <p class="text-secondary">What this first phase of Amahirwe is working toward.</p>
+        <h2 data-i18n="mission_goals_title">Our goals</h2>
+        <p class="text-secondary" data-i18n="mission_goals_subtitle">What this first phase of Amahirwe is working toward.</p>
 
         <div class="process-steps">
           <div class="card process-step">
             <span class="process-step__index">1</span>
             <div>
-              <h3>Increase talent discovery among students</h3>
-              <p class="text-secondary">Give more students a simple way to identify their strengths, even without a stable internet connection.</p>
+              <h3 data-i18n="mission_goal1_title">Increase talent discovery among students</h3>
+              <p class="text-secondary" data-i18n="mission_goal1_body">Give more students a simple way to identify their strengths, even without a stable internet connection.</p>
             </div>
           </div>
           <div class="card process-step">
             <span class="process-step__index">2</span>
             <div>
-              <h3>Create structured connections with trusted mentors</h3>
-              <p class="text-secondary">Match students to verified mentors, with a teacher or administrator approving every connection.</p>
+              <h3 data-i18n="mission_goal2_title">Create structured connections with trusted mentors</h3>
+              <p class="text-secondary" data-i18n="mission_goal2_body">Match students to verified mentors, with a teacher or administrator approving every connection.</p>
             </div>
           </div>
           <div class="card process-step">
             <span class="process-step__index">3</span>
             <div>
-              <h3>Improve access to opportunities</h3>
-              <p class="text-secondary">Surface scholarships, competitions, internships and training relevant to each student's talent area.</p>
+              <h3 data-i18n="mission_goal3_title">Improve access to opportunities</h3>
+              <p class="text-secondary" data-i18n="mission_goal3_body">Surface scholarships, competitions, internships and training relevant to each student's talent area.</p>
             </div>
           </div>
           <div class="card process-step">
             <span class="process-step__index">4</span>
             <div>
-              <h3>Help teachers identify students who need encouragement</h3>
-              <p class="text-secondary">Give teachers visibility into which students have engaged, and which may need a nudge.</p>
+              <h3 data-i18n="mission_goal4_title">Help teachers identify students who need encouragement</h3>
+              <p class="text-secondary" data-i18n="mission_goal4_body">Give teachers visibility into which students have engaged, and which may need a nudge.</p>
             </div>
           </div>
           <div class="card process-step">
             <span class="process-step__index">5</span>
             <div>
-              <h3>Build a model that can expand over time</h3>
-              <p class="text-secondary">Start with a focused Rwanda pilot, with an architecture designed to grow beyond it.</p>
+              <h3 data-i18n="mission_goal5_title">Build a model that can expand over time</h3>
+              <p class="text-secondary" data-i18n="mission_goal5_body">Start with a focused Rwanda pilot, with an architecture designed to grow beyond it.</p>
             </div>
           </div>
         </div>
@@ -164,11 +169,11 @@
     <section class="section section--tinted">
       <div class="container">
         <div class="final-cta">
-          <h2>Read more about where this mission came from.</h2>
-          <p>Learn about the problem Amahirwe is trying to address and who it serves.</p>
+          <h2 data-i18n="mission_cta_title">Read more about where this mission came from.</h2>
+          <p data-i18n="mission_cta_body">Learn about the problem Amahirwe is trying to address and who it serves.</p>
           <div class="final-cta__actions">
-            <a href="about.html" class="btn btn-secondary">About Amahirwe</a>
-            <a href="impact.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);">Projected Impact</a>
+            <a href="about.html" class="btn btn-secondary" data-i18n="mission_cta_about">About Amahirwe</a>
+            <a href="impact.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);" data-i18n="mission_cta_impact">Projected Impact</a>
           </div>
         </div>
       </div>

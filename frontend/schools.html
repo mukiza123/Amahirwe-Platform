@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="about.html" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -65,9 +70,9 @@
 
   <main id="main-content">
     <section class="page-hero container">
-      <span class="hero__eyebrow">For Schools</span>
-      <h1>Welcome, schools.</h1>
-      <p class="text-secondary">
+      <span class="hero__eyebrow" data-i18n="nav_schools">For Schools</span>
+      <h1 data-i18n="schools_hero_title">Welcome, schools.</h1>
+      <p class="text-secondary" data-i18n="schools_hero_body">
         Supporting students starts with recognising their potential. Amahirwe works with schools as an important
         bridge between students, mentors and opportunities.
       </p>
@@ -76,27 +81,27 @@
     <section class="section">
       <div class="container split-block">
         <div>
-          <h2>What schools can do</h2>
+          <h2 data-i18n="schools_do_title">What schools can do</h2>
           <ul class="check-list">
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Help students complete their profiles
+              <span data-i18n="schools_do_li1">Help students complete their profiles</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Monitor student progress
+              <span data-i18n="schools_do_li2">Monitor student progress</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Recommend students who may be shy about registering themselves
+              <span data-i18n="schools_do_li3">Recommend students who may be shy about registering themselves</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Review mentor matches before any contact is made
+              <span data-i18n="schools_do_li4">Review mentor matches before any contact is made</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Help students discover opportunities suited to them
+              <span data-i18n="schools_do_li5">Help students discover opportunities suited to them</span>
             </li>
           </ul>
         </div>
@@ -112,8 +117,8 @@
           <img src="assets/illustrations/supporting/mentorship.png" alt="Illustration of a teacher supporting a student at a laptop" width="240" height="240" />
         </div>
         <div>
-          <h2>For teachers</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="schools_teachers_title">For teachers</h2>
+          <p class="text-secondary" data-i18n="schools_teachers_body">
             The teacher dashboard is built around one question: which students need attention right now? It shows,
             at a glance, who has completed a profile, who has a mentor match pending approval, and who may need a
             nudge to finish their talent assessment, without burying that under menus.
@@ -125,8 +130,8 @@
     <section class="section">
       <div class="container split-block">
         <div>
-          <h2>For school leaders</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="schools_leaders_title">For school leaders</h2>
+          <p class="text-secondary" data-i18n="schools_leaders_body">
             Beyond individual classrooms, Amahirwe is designed to give school leadership better visibility into
             where students' interests lie, how engagement is trending, and which external opportunities students
             are being connected to, without turning into a complex reporting tool.
@@ -140,13 +145,13 @@
 
     <section class="section section--tinted">
       <div class="container">
-        <h2>How schools participate</h2>
+        <h2 data-i18n="schools_participate_title">How schools participate</h2>
         <div class="process-steps process-steps--horizontal">
           <div class="card process-step">
             <span class="process-step__index">1</span>
             <div>
-              <h3>School joins</h3>
-              <p class="text-secondary">A school signs up to take part in the pilot.</p>
+              <h3 data-i18n="schools_participate1_title">School joins</h3>
+              <p class="text-secondary" data-i18n="schools_participate1_body">A school signs up to take part in the pilot.</p>
             </div>
           </div>
           <div class="process-arrow" aria-hidden="true">
@@ -155,8 +160,8 @@
           <div class="card process-step">
             <span class="process-step__index">2</span>
             <div>
-              <h3>Teachers support students</h3>
-              <p class="text-secondary">Teachers help students complete profiles and review matches.</p>
+              <h3 data-i18n="schools_participate2_title">Teachers support students</h3>
+              <p class="text-secondary" data-i18n="schools_participate2_body">Teachers help students complete profiles and review matches.</p>
             </div>
           </div>
           <div class="process-arrow" aria-hidden="true">
@@ -165,8 +170,8 @@
           <div class="card process-step">
             <span class="process-step__index">3</span>
             <div>
-              <h3>Students discover and connect</h3>
-              <p class="text-secondary">Students take the assessment, get matched and explore opportunities.</p>
+              <h3 data-i18n="schools_participate3_title">Students discover and connect</h3>
+              <p class="text-secondary" data-i18n="schools_participate3_body">Students take the assessment, get matched and explore opportunities.</p>
             </div>
           </div>
         </div>
@@ -176,10 +181,10 @@
     <section class="section">
       <div class="container">
         <div class="final-cta">
-          <h2>Interested in bringing Amahirwe to your school?</h2>
-          <p>We're building this pilot with a small number of schools. Get in touch to learn more.</p>
+          <h2 data-i18n="schools_cta_title">Interested in bringing Amahirwe to your school?</h2>
+          <p data-i18n="schools_cta_body">We're building this pilot with a small number of schools. Get in touch to learn more.</p>
           <div class="final-cta__actions">
-            <a href="contact.html" class="btn btn-secondary">Partner With Amahirwe</a>
+            <a href="contact.html" class="btn btn-secondary" data-i18n="schools_cta_button">Partner With Amahirwe</a>
           </div>
         </div>
       </div>

@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="about.html" aria-current="page" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -65,9 +70,9 @@
 
   <main id="main-content">
     <section class="page-hero container">
-      <span class="hero__eyebrow">About Amahirwe</span>
-      <h1>Helping students discover what they're good at.</h1>
-      <p class="text-secondary">
+      <span class="hero__eyebrow" data-i18n="about_eyebrow">About Amahirwe</span>
+      <h1 data-i18n="about_hero_title">Helping students discover what they're good at.</h1>
+      <p class="text-secondary" data-i18n="about_hero_body">
         Amahirwe is a platform designed for students in rural public schools in Rwanda to discover their talents
         and connect with mentors, teachers and opportunities, built around the idea that every student has
         something worth discovering.
@@ -77,14 +82,14 @@
     <section class="section">
       <div class="container split-block">
         <div>
-          <h2>What is Amahirwe?</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="about_what_title">What is Amahirwe?</h2>
+          <p class="text-secondary" data-i18n="about_what_body1">
             Amahirwe is a digital platform that helps students identify their strengths through a simple,
             offline-friendly talent assessment. Once a student's talent area is clearer, the platform can suggest a
             verified mentor and surface opportunities (scholarships, competitions and internships) related to
             that area.
           </p>
-          <p class="text-secondary">
+          <p class="text-secondary" data-i18n="about_what_body2">
             It isn't a replacement for school, and it isn't a general e-learning app. Its purpose is narrower and
             more specific: turning a student's hidden talent into something recognised, supported, and connected
             to a real next step.
@@ -102,13 +107,13 @@
           <img src="assets/illustrations/objects/light-bulb.png" alt="Illustration of a light bulb, representing an idea" width="160" height="220" />
         </div>
         <div>
-          <h2>Why we started</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="about_why_title">Why we started</h2>
+          <p class="text-secondary" data-i18n="about_why_body1">
             Students in rural schools often have real talents in areas like technology, art, sport or public
             speaking, but fewer chances to have those talents noticed, guided or connected to an opportunity.
             Most existing tools are either general e-learning platforms or career services centred on cities.
           </p>
-          <p class="text-secondary">
+          <p class="text-secondary" data-i18n="about_why_body2">
             Amahirwe is designed to work alongside schools rather than around them, starting with a focused pilot
             in Rwanda's Eastern Province before considering a wider rollout.
           </p>
@@ -118,44 +123,44 @@
 
     <section class="section">
       <div class="container">
-        <h2>Who we serve</h2>
-        <p class="text-secondary">Amahirwe is built around five groups working together.</p>
+        <h2 data-i18n="about_who_title">Who we serve</h2>
+        <p class="text-secondary" data-i18n="about_who_subtitle">Amahirwe is built around five groups working together.</p>
 
         <div class="audience-grid">
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
             </div>
-            <h3>Students</h3>
-            <p class="text-secondary">Ages 12–19 in rural public schools, discovering their strengths.</p>
+            <h3 data-i18n="who_students_title">Students</h3>
+            <p class="text-secondary" data-i18n="about_who_students_body">Ages 12–19 in rural public schools, discovering their strengths.</p>
           </div>
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 4.5-9 4.5-9-4.5 9-4.5z"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
             </div>
-            <h3>Schools</h3>
-            <p class="text-secondary">The trusted local base that grounds the whole platform.</p>
+            <h3 data-i18n="who_schools_title">Schools</h3>
+            <p class="text-secondary" data-i18n="about_who_schools_body">The trusted local base that grounds the whole platform.</p>
           </div>
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             </div>
-            <h3>Teachers</h3>
-            <p class="text-secondary">The trusted adults who confirm profiles and review matches.</p>
+            <h3 data-i18n="about_who_teachers_title">Teachers</h3>
+            <p class="text-secondary" data-i18n="about_who_teachers_body">The trusted adults who confirm profiles and review matches.</p>
           </div>
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-            <h3>Mentors</h3>
-            <p class="text-secondary">Verified volunteers offering guidance in their field.</p>
+            <h3 data-i18n="who_mentors_title">Mentors</h3>
+            <p class="text-secondary" data-i18n="about_who_mentors_body">Verified volunteers offering guidance in their field.</p>
           </div>
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a2 2 0 0 1 2 2v1a5 5 0 0 1-5 5h-1"/><path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/></svg>
             </div>
-            <h3>Opportunity providers</h3>
-            <p class="text-secondary">Schools, NGOs and organisations posting real opportunities.</p>
+            <h3 data-i18n="who_providers_title">Opportunity providers</h3>
+            <p class="text-secondary" data-i18n="about_who_providers_body">Schools, NGOs and organisations posting real opportunities.</p>
           </div>
         </div>
       </div>
@@ -163,15 +168,15 @@
 
     <section class="section section--tinted">
       <div class="container">
-        <h2>Our approach</h2>
-        <p class="text-secondary">Everything on Amahirwe follows the same three-step idea.</p>
+        <h2 data-i18n="about_approach_title">Our approach</h2>
+        <p class="text-secondary" data-i18n="about_approach_subtitle">Everything on Amahirwe follows the same three-step idea.</p>
 
         <div class="process-steps process-steps--horizontal">
           <div class="card process-step">
             <span class="process-step__index">1</span>
             <div>
-              <h3>Discover</h3>
-              <p class="text-secondary">A student explores their interests through a short, friendly assessment.</p>
+              <h3 data-i18n="step_discover_title">Discover</h3>
+              <p class="text-secondary" data-i18n="about_approach_step1_body">A student explores their interests through a short, friendly assessment.</p>
             </div>
           </div>
           <div class="process-arrow" aria-hidden="true">
@@ -180,8 +185,8 @@
           <div class="card process-step">
             <span class="process-step__index">2</span>
             <div>
-              <h3>Connect</h3>
-              <p class="text-secondary">A teacher-approved match links the student with a verified mentor.</p>
+              <h3 data-i18n="step_connect_title">Connect</h3>
+              <p class="text-secondary" data-i18n="about_approach_step2_body">A teacher-approved match links the student with a verified mentor.</p>
             </div>
           </div>
           <div class="process-arrow" aria-hidden="true">
@@ -190,8 +195,8 @@
           <div class="card process-step">
             <span class="process-step__index">3</span>
             <div>
-              <h3>Grow</h3>
-              <p class="text-secondary">The student tracks progress and discovers opportunities suited to them.</p>
+              <h3 data-i18n="step_grow_title">Grow</h3>
+              <p class="text-secondary" data-i18n="about_approach_step3_body">The student tracks progress and discovers opportunities suited to them.</p>
             </div>
           </div>
         </div>
@@ -201,11 +206,11 @@
     <section class="section">
       <div class="container">
         <div class="final-cta">
-          <h2>See how it works, step by step.</h2>
-          <p>Walk through the full process from talent assessment to opportunity.</p>
+          <h2 data-i18n="about_cta_title">See how it works, step by step.</h2>
+          <p data-i18n="about_cta_body">Walk through the full process from talent assessment to opportunity.</p>
           <div class="final-cta__actions">
-            <a href="how-it-works.html" class="btn btn-secondary">How It Works</a>
-            <a href="register.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);">Get Started</a>
+            <a href="how-it-works.html" class="btn btn-secondary" data-i18n="nav_how_it_works">How It Works</a>
+            <a href="register.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);" data-i18n="cta_get_started">Get Started</a>
           </div>
         </div>
       </div>

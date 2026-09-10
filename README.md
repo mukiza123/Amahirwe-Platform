@@ -162,7 +162,7 @@ Built in phases, per the project's development rule of not building everything a
 
 ## Design system
 
-Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Plus Jakarta Sans for headings, Inter for body) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Baloo 2 for headings, Inter for body) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
 
 ## Security notes
 

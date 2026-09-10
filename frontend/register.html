@@ -61,17 +61,18 @@
       display: block;
       padding: 12px 14px;
       border-radius: var(--radius-sm);
-      border: 1.5px solid var(--color-border);
+      border: 1.5px solid transparent;
       background: var(--color-bg);
+      box-shadow: var(--shadow-raised-sm);
       font-weight: 600;
       font-size: 0.9rem;
       cursor: pointer;
-      transition: border-color var(--transition-fast), background var(--transition-fast);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
     }
 
     .role-option input:checked + label {
       border-color: var(--color-primary-teal);
-      background: #EFFBF8;
+      box-shadow: var(--shadow-pressed);
       color: var(--color-primary-dark);
     }
 
@@ -89,7 +90,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
       <div class="navbar__actions">

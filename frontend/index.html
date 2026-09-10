@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" aria-current="page" data-i18n="nav_home">Home</a>
       <a href="about.html" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -64,8 +69,9 @@
   </header>
 
   <main id="main-content">
-    <!-- Hero -->
-    <section class="section hero container">
+    <!-- Hero: headline/copy/actions centered on top, illustration with
+         orbiting value badges centered below it. -->
+    <section class="section hero hero--centered container">
       <span class="hero__blob hero__blob--1" aria-hidden="true"></span>
       <span class="hero__blob hero__blob--2" aria-hidden="true"></span>
 
@@ -85,7 +91,68 @@
       </div>
 
       <div class="hero__art">
-        <img src="assets/illustrations/characters/student.png" alt="Illustration of an Amahirwe student carrying books" width="280" height="360" />
+        <div class="orbit">
+          <span class="orbit__ring" aria-hidden="true"></span>
+
+          <div class="orbit__portrait">
+            <img src="assets/illustrations/characters/student.png" alt="Illustration of an Amahirwe student carrying books" />
+          </div>
+
+          <div class="orbit__badge orbit__badge--1" aria-hidden="true">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-orange);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_talent_discovery">Talent Discovery</span>
+          </div>
+
+          <div class="orbit__badge orbit__badge--2" aria-hidden="true">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-teal);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_mentor_matched">Mentor Matched</span>
+          </div>
+
+          <div class="orbit__badge orbit__badge--3" aria-hidden="true">
+            <span class="orbit__badge-icon" style="--badge-color: #B04E0E;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_real_opportunities">Real Opportunities</span>
+          </div>
+
+          <div class="orbit__badge orbit__badge--4" aria-hidden="true">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-dark);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l22 22M16.7 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_works_offline">Works Offline</span>
+          </div>
+        </div>
+
+        <div class="hero__badges-mobile">
+          <div class="hero__badge-mobile">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-orange);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_talent_discovery">Talent Discovery</span>
+          </div>
+          <div class="hero__badge-mobile">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-teal);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_mentor_matched">Mentor Matched</span>
+          </div>
+          <div class="hero__badge-mobile">
+            <span class="orbit__badge-icon" style="--badge-color: #B04E0E;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="nav_opportunities">Opportunities</span>
+          </div>
+          <div class="hero__badge-mobile">
+            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-dark);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l22 22M16.7 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
+            </span>
+            <span class="orbit__badge-label" data-i18n="badge_works_offline">Works Offline</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -96,12 +163,12 @@
           <img src="assets/illustrations/supporting/talent-discovery.png" alt="Illustration of a student discovering their talent with a magnifying glass" width="220" height="280" />
         </div>
         <div>
-          <h2>Every student has potential.</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="why_title">Every student has potential.</h2>
+          <p class="text-secondary" data-i18n="why_body">
             Many students have talents and interests that aren't always recognised or connected to opportunity,
             especially in schools with fewer resources. Amahirwe is designed to help make those connections possible.
           </p>
-          <a href="about.html" class="btn btn-secondary">Learn About Amahirwe</a>
+          <a href="about.html" class="btn btn-secondary" data-i18n="cta_learn_about">Learn About Amahirwe</a>
         </div>
       </div>
     </section>
@@ -109,8 +176,8 @@
     <!-- How It Works -->
     <section class="section section--tinted">
       <div class="container">
-        <h2>How Amahirwe works</h2>
-        <p class="text-secondary">Three simple steps, built to work even without the internet.</p>
+        <h2 data-i18n="how_it_works_title">How Amahirwe works</h2>
+        <p class="text-secondary" data-i18n="how_it_works_subtitle">Three simple steps, built to work even without the internet.</p>
 
         <div class="steps-grid">
           <div class="card step-card">
@@ -118,8 +185,8 @@
             <div class="step-card__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
-            <h3>Discover</h3>
-            <p class="text-secondary">Students explore their interests and strengths through a simple talent assessment.</p>
+            <h3 data-i18n="step_discover_title">Discover</h3>
+            <p class="text-secondary" data-i18n="step_discover_body">Students explore their interests and strengths through a simple talent assessment.</p>
           </div>
 
           <div class="card step-card">
@@ -127,8 +194,8 @@
             <div class="step-card__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="18" cy="12" r="3"/><circle cx="6" cy="12" r="3"/></svg>
             </div>
-            <h3>Connect</h3>
-            <p class="text-secondary">Students can be connected with relevant mentors through a supervised matching process.</p>
+            <h3 data-i18n="step_connect_title">Connect</h3>
+            <p class="text-secondary" data-i18n="step_connect_body">Students can be connected with relevant mentors through a supervised matching process.</p>
           </div>
 
           <div class="card step-card">
@@ -136,8 +203,8 @@
             <div class="step-card__icon" aria-hidden="true">
               <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
             </div>
-            <h3>Grow</h3>
-            <p class="text-secondary">Students discover opportunities and continue building their skills and achievements.</p>
+            <h3 data-i18n="step_grow_title">Grow</h3>
+            <p class="text-secondary" data-i18n="step_grow_body">Students discover opportunities and continue building their skills and achievements.</p>
           </div>
         </div>
       </div>
@@ -146,40 +213,40 @@
     <!-- Who Amahirwe is for -->
     <section class="section">
       <div class="container">
-        <h2>Who Amahirwe is for</h2>
-        <p class="text-secondary">A shared platform for everyone involved in a student's growth.</p>
+        <h2 data-i18n="who_title">Who Amahirwe is for</h2>
+        <p class="text-secondary" data-i18n="who_subtitle">A shared platform for everyone involved in a student's growth.</p>
 
         <div class="audience-grid">
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
             </div>
-            <h3>Students</h3>
-            <p class="text-secondary">Discover your strengths and opportunities.</p>
+            <h3 data-i18n="who_students_title">Students</h3>
+            <p class="text-secondary" data-i18n="who_students_body">Discover your strengths and opportunities.</p>
           </div>
 
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 4.5-9 4.5-9-4.5 9-4.5z"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
             </div>
-            <h3>Schools</h3>
-            <p class="text-secondary">Support students and help identify emerging talent.</p>
+            <h3 data-i18n="who_schools_title">Schools</h3>
+            <p class="text-secondary" data-i18n="who_schools_body">Support students and help identify emerging talent.</p>
           </div>
 
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
-            <h3>Mentors</h3>
-            <p class="text-secondary">Share your knowledge and support the next generation.</p>
+            <h3 data-i18n="who_mentors_title">Mentors</h3>
+            <p class="text-secondary" data-i18n="who_mentors_body">Share your knowledge and support the next generation.</p>
           </div>
 
           <div class="card audience-card">
             <div class="audience-card__icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a2 2 0 0 1 2 2v1a5 5 0 0 1-5 5h-1"/><path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/></svg>
             </div>
-            <h3>Opportunity Providers</h3>
-            <p class="text-secondary">Connect young people with meaningful opportunities.</p>
+            <h3 data-i18n="who_providers_title">Opportunity Providers</h3>
+            <p class="text-secondary" data-i18n="who_providers_body">Connect young people with meaningful opportunities.</p>
           </div>
         </div>
       </div>
@@ -189,31 +256,31 @@
     <section class="section section--tinted">
       <div class="container split-block">
         <div>
-          <h2>One connection can open a new path.</h2>
-          <p class="text-secondary">Mentors can help young people:</p>
+          <h2 data-i18n="mentors_matter_title">One connection can open a new path.</h2>
+          <p class="text-secondary" data-i18n="mentors_matter_intro">Mentors can help young people:</p>
           <ul class="check-list">
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Understand their field
+              <span data-i18n="mentors_matter_li1">Understand their field</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Build confidence
+              <span data-i18n="mentors_matter_li2">Build confidence</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Learn from experience
+              <span data-i18n="mentors_matter_li3">Learn from experience</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Explore career possibilities
+              <span data-i18n="mentors_matter_li4">Explore career possibilities</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Develop practical skills
+              <span data-i18n="mentors_matter_li5">Develop practical skills</span>
             </li>
           </ul>
-          <a href="mentors.html" class="btn btn-primary" style="margin-top: var(--space-4);">Become a Mentor</a>
+          <a href="mentors.html" class="btn btn-primary" style="margin-top: var(--space-4);" data-i18n="footer_become_mentor">Become a Mentor</a>
         </div>
         <div class="split-block__art">
           <img src="assets/illustrations/supporting/mentorship.png" alt="Illustration of a mentor supporting a student at a laptop" width="240" height="240" />
@@ -228,33 +295,33 @@
           <img src="assets/illustrations/characters/teacher.png" alt="Illustration of an Amahirwe teacher" width="200" height="280" />
         </div>
         <div>
-          <h2>Schools are where talent begins.</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="schools_title">Schools are where talent begins.</h2>
+          <p class="text-secondary" data-i18n="schools_intro">
             Amahirwe works with schools as an important bridge between students, mentors and opportunities.
           </p>
           <ul class="check-list">
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Student progress
+              <span data-i18n="schools_li1">Student progress</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Talent discovery
+              <span data-i18n="schools_li2">Talent discovery</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Teacher involvement
+              <span data-i18n="schools_li3">Teacher involvement</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Mentor approval
+              <span data-i18n="schools_li4">Mentor approval</span>
             </li>
             <li>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg>
-              Opportunity discovery
+              <span data-i18n="schools_li5">Opportunity discovery</span>
             </li>
           </ul>
-          <a href="schools.html" class="btn btn-secondary" style="margin-top: var(--space-4);">For Schools</a>
+          <a href="schools.html" class="btn btn-secondary" style="margin-top: var(--space-4);" data-i18n="nav_schools">For Schools</a>
         </div>
       </div>
     </section>
@@ -262,37 +329,37 @@
     <!-- Projected impact -->
     <section class="section section--tinted">
       <div class="container">
-        <h2>Our projected impact</h2>
-        <p class="text-secondary">Amahirwe is a pilot project. Here's what it's designed to achieve.</p>
+        <h2 data-i18n="impact_title">Our projected impact</h2>
+        <p class="text-secondary" data-i18n="impact_subtitle">Amahirwe is a pilot project. Here's what it's designed to achieve.</p>
 
         <div class="impact-grid">
           <div class="card">
             <div class="impact-card__icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
             </div>
-            <h3>More talent discovered</h3>
-            <p class="text-secondary">Helping students recognise strengths that may otherwise remain hidden.</p>
+            <h3 data-i18n="impact1_title">More talent discovered</h3>
+            <p class="text-secondary" data-i18n="impact1_body">Helping students recognise strengths that may otherwise remain hidden.</p>
           </div>
           <div class="card">
             <div class="impact-card__icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
             </div>
-            <h3>Stronger mentorship</h3>
-            <p class="text-secondary">Creating structured connections between students and trusted mentors.</p>
+            <h3 data-i18n="impact2_title">Stronger mentorship</h3>
+            <p class="text-secondary" data-i18n="impact2_body">Creating structured connections between students and trusted mentors.</p>
           </div>
           <div class="card">
             <div class="impact-card__icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
             </div>
-            <h3>Greater access to opportunity</h3>
-            <p class="text-secondary">Making scholarships, competitions, internships and other opportunities easier to discover.</p>
+            <h3 data-i18n="impact3_title">Greater access to opportunity</h3>
+            <p class="text-secondary" data-i18n="impact3_body">Making scholarships, competitions, internships and other opportunities easier to discover.</p>
           </div>
           <div class="card">
             <div class="impact-card__icon" aria-hidden="true">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             </div>
-            <h3>Stronger school support</h3>
-            <p class="text-secondary">Giving teachers better visibility into student progress and areas where support may be needed.</p>
+            <h3 data-i18n="impact4_title">Stronger school support</h3>
+            <p class="text-secondary" data-i18n="impact4_body">Giving teachers better visibility into student progress and areas where support may be needed.</p>
           </div>
         </div>
       </div>
@@ -302,11 +369,11 @@
     <section class="section">
       <div class="container">
         <div class="final-cta">
-          <h2>Help us create more pathways for young talent.</h2>
-          <p>Amahirwe is designed to bring students, schools, mentors and opportunity providers closer together.</p>
+          <h2 data-i18n="final_cta_title">Help us create more pathways for young talent.</h2>
+          <p data-i18n="final_cta_body">Amahirwe is designed to bring students, schools, mentors and opportunity providers closer together.</p>
           <div class="final-cta__actions">
-            <a href="register.html" class="btn btn-secondary">Get Started</a>
-            <a href="mentors.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);">Become a Mentor</a>
+            <a href="register.html" class="btn btn-secondary" data-i18n="cta_get_started">Get Started</a>
+            <a href="mentors.html" class="btn" style="background: rgba(255,255,255,0.15); color:#fff; border: 1px solid rgba(255,255,255,0.4);" data-i18n="footer_become_mentor">Become a Mentor</a>
           </div>
         </div>
       </div>

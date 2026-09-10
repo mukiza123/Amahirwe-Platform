@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="about.html" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -65,9 +70,9 @@
 
   <main id="main-content">
     <section class="page-hero container">
-      <span class="hero__eyebrow">Get Involved</span>
-      <h1>Be part of the journey.</h1>
-      <p class="text-secondary">
+      <span class="hero__eyebrow" data-i18n="contact_eyebrow">Get Involved</span>
+      <h1 data-i18n="contact_hero_title">Be part of the journey.</h1>
+      <p class="text-secondary" data-i18n="contact_hero_body">
         Whether you're a school, a mentor, or an organisation with an opportunity to share, here's how to reach us.
       </p>
     </section>
@@ -78,25 +83,25 @@
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 4.5-9 4.5-9-4.5 9-4.5z"/><path d="M5 10.5V16c0 1.5 3 3 7 3s7-1.5 7-3v-5.5"/></svg>
           </div>
-          <h3>Schools</h3>
-          <p class="text-secondary">Interested in bringing Amahirwe to your school?</p>
-          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);">Talk to Us</a>
+          <h3 data-i18n="who_schools_title">Schools</h3>
+          <p class="text-secondary" data-i18n="contact_schools_body">Interested in bringing Amahirwe to your school?</p>
+          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);" data-i18n="contact_schools_button">Talk to Us</a>
         </div>
         <div class="card audience-card">
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
           </div>
-          <h3>Mentors</h3>
-          <p class="text-secondary">Interested in mentoring a student?</p>
-          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);">Become a Mentor</a>
+          <h3 data-i18n="who_mentors_title">Mentors</h3>
+          <p class="text-secondary" data-i18n="contact_mentors_body">Interested in mentoring a student?</p>
+          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);" data-i18n="footer_become_mentor">Become a Mentor</a>
         </div>
         <div class="card audience-card">
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a2 2 0 0 1 2 2v1a5 5 0 0 1-5 5h-1"/><path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/></svg>
           </div>
-          <h3>Opportunity Providers</h3>
-          <p class="text-secondary">Have an opportunity for young people?</p>
-          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);">Partner With Us</a>
+          <h3 data-i18n="who_providers_title">Opportunity Providers</h3>
+          <p class="text-secondary" data-i18n="contact_providers_body">Have an opportunity for young people?</p>
+          <a href="#contact-form" class="btn btn-secondary" style="margin-top:var(--space-2);" data-i18n="opp_cta_button">Partner With Us</a>
         </div>
       </div>
     </section>
@@ -104,50 +109,50 @@
     <section class="section section--tinted" id="contact-form">
       <div class="container" style="max-width: 560px;">
         <div class="card">
-          <h2>Send us a message</h2>
-          <p class="text-secondary" style="margin-bottom: var(--space-4);">
+          <h2 data-i18n="contact_form_title">Send us a message</h2>
+          <p class="text-secondary" style="margin-bottom: var(--space-4);" data-i18n="contact_form_notice">
             This form is part of the Amahirwe prototype and doesn't send a real message yet, but this is what it
             will look like once contact handling is built.
           </p>
 
           <form id="contact-form-el" novalidate>
             <div class="form-field">
-              <label class="form-label" for="c_name">Full name</label>
+              <label class="form-label" for="c_name" data-i18n="form_full_name">Full name</label>
               <input class="form-input" type="text" id="c_name" name="name" required />
             </div>
 
             <div class="form-field">
-              <label class="form-label" for="c_email">Email</label>
+              <label class="form-label" for="c_email" data-i18n="form_email">Email</label>
               <input class="form-input" type="email" id="c_email" name="email" required />
             </div>
 
             <div class="form-field">
-              <label class="form-label" for="c_org">Organisation <span class="text-secondary" style="font-weight:400;">(optional)</span></label>
+              <label class="form-label" for="c_org" data-i18n="contact_form_org">Organisation <span class="text-secondary" style="font-weight:400;" data-i18n="contact_form_optional">(optional)</span></label>
               <input class="form-input" type="text" id="c_org" name="organisation" />
             </div>
 
             <div class="form-field">
-              <label class="form-label" for="c_interest">I'm interested as a</label>
+              <label class="form-label" for="c_interest" data-i18n="contact_form_interest">I'm interested as a</label>
               <select class="form-select" id="c_interest" name="interest">
-                <option value="school">School</option>
-                <option value="mentor">Mentor</option>
-                <option value="provider">Opportunity Provider</option>
-                <option value="other">Other</option>
+                <option value="school" data-i18n="role_school_option">School</option>
+                <option value="mentor" data-i18n="role_mentor">Mentor</option>
+                <option value="provider" data-i18n="role_provider">Opportunity Provider</option>
+                <option value="other" data-i18n="contact_form_other">Other</option>
               </select>
             </div>
 
             <div class="form-field">
-              <label class="form-label" for="c_message">Message</label>
+              <label class="form-label" for="c_message" data-i18n="contact_form_message">Message</label>
               <textarea class="form-textarea" id="c_message" name="message" required></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="contact_form_submit">Send Message</button>
           </form>
 
           <div id="contact-confirmation" class="state-message" hidden>
             <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--color-success);"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-            <h3>Thanks, message captured</h3>
-            <p>This is a prototype, so nothing was actually sent. In a full deployment, our team would follow up by email.</p>
+            <h3 data-i18n="contact_confirm_title">Thanks, message captured</h3>
+            <p data-i18n="contact_confirm_body">This is a prototype, so nothing was actually sent. In a full deployment, our team would follow up by email.</p>
           </div>
         </div>
       </div>

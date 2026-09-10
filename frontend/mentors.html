@@ -24,7 +24,7 @@
   <header class="navbar">
     <div class="navbar__inner">
       <a href="index.html" class="navbar__brand">
-        <span class="navbar__logo-mark" aria-hidden="true">A</span>
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
         <span data-i18n="brand_name">Amahirwe</span>
       </a>
 
@@ -52,6 +52,11 @@
     </div>
 
     <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
       <a href="index.html" data-i18n="nav_home">Home</a>
       <a href="about.html" data-i18n="nav_about">About</a>
       <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
@@ -65,9 +70,9 @@
 
   <main id="main-content">
     <section class="page-hero container">
-      <span class="hero__eyebrow">For Mentors</span>
-      <h1>Your experience could help shape someone's next step.</h1>
-      <p class="text-secondary">
+      <span class="hero__eyebrow" data-i18n="nav_mentors">For Mentors</span>
+      <h1 data-i18n="mentors_hero_title">Your experience could help shape someone's next step.</h1>
+      <p class="text-secondary" data-i18n="mentors_hero_body">
         Mentoring on Amahirwe is a light, structured commitment, not an open-ended one. Here's what it realistically
         involves.
       </p>
@@ -79,29 +84,29 @@
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           </div>
-          <h3>Share what you know</h3>
-          <p class="text-secondary">Mentors bring experience that students may not have access to in their immediate environment.</p>
+          <h3 data-i18n="mentors_share_title">Share what you know</h3>
+          <p class="text-secondary" data-i18n="mentors_share_body">Mentors bring experience that students may not have access to in their immediate environment.</p>
         </div>
         <div class="card audience-card">
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>
           </div>
-          <h3>Help students explore</h3>
-          <p class="text-secondary">Help young people understand different careers and possibilities open to them.</p>
+          <h3 data-i18n="mentors_explore_title">Help students explore</h3>
+          <p class="text-secondary" data-i18n="mentors_explore_body">Help young people understand different careers and possibilities open to them.</p>
         </div>
         <div class="card audience-card">
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
           </div>
-          <h3>Build confidence</h3>
-          <p class="text-secondary">Encourage students to believe their interests can become real skills.</p>
+          <h3 data-i18n="mentors_confidence_title">Build confidence</h3>
+          <p class="text-secondary" data-i18n="mentors_confidence_body">Encourage students to believe their interests can become real skills.</p>
         </div>
         <div class="card audience-card">
           <div class="audience-card__icon" aria-hidden="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
-          <h3>Give back</h3>
-          <p class="text-secondary">Support the next generation of students working toward their own path.</p>
+          <h3 data-i18n="mentors_giveback_title">Give back</h3>
+          <p class="text-secondary" data-i18n="mentors_giveback_body">Support the next generation of students working toward their own path.</p>
         </div>
       </div>
     </section>
@@ -112,8 +117,8 @@
           <img src="assets/illustrations/characters/mentor.png" alt="Illustration of an Amahirwe mentor" width="200" height="280" />
         </div>
         <div>
-          <h2>How mentoring works</h2>
-          <p class="text-secondary">
+          <h2 data-i18n="mentors_how_title">How mentoring works</h2>
+          <p class="text-secondary" data-i18n="mentors_how_body">
             After registering, mentors go through a verification step by an administrator. Once verified, a mentor
             may be suggested to a student based on a simple match of talent area and language. That match still
             needs a teacher or administrator's approval before it becomes active. Mentors don't search for
@@ -125,19 +130,19 @@
 
     <section class="section">
       <div class="container">
-        <h2>Mentorship with safeguards</h2>
+        <h2 data-i18n="mentors_safeguards_title">Mentorship with safeguards</h2>
         <div class="notice-box">
           <span class="notice-box__icon" aria-hidden="true">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/></svg>
           </span>
           <div>
-            <p class="text-secondary" style="margin:0 0 var(--space-2) 0;">
+            <p class="text-secondary" style="margin:0 0 var(--space-2) 0;" data-i18n="mentors_safeguards_intro">
               Because Amahirwe's students are minors, mentorship is built around safeguards from the start:
             </p>
             <ul>
-              <li>Mentors are expected to be verified by an administrator before appearing in any match.</li>
-              <li>Every mentor connection requires teacher or administrator approval before it becomes active.</li>
-              <li>Students are not given unrestricted private communication with mentors.</li>
+              <li data-i18n="mentors_safeguards_li1">Mentors are expected to be verified by an administrator before appearing in any match.</li>
+              <li data-i18n="mentors_safeguards_li2">Every mentor connection requires teacher or administrator approval before it becomes active.</li>
+              <li data-i18n="mentors_safeguards_li3">Students are not given unrestricted private communication with mentors.</li>
             </ul>
           </div>
         </div>
@@ -147,10 +152,10 @@
     <section class="section section--tinted">
       <div class="container">
         <div class="final-cta">
-          <h2>Ready to become a mentor?</h2>
-          <p>Register your interest and complete the verification process to get started.</p>
+          <h2 data-i18n="mentors_cta_title">Ready to become a mentor?</h2>
+          <p data-i18n="mentors_cta_body">Register your interest and complete the verification process to get started.</p>
           <div class="final-cta__actions">
-            <a href="register.html" class="btn btn-secondary">Become a Mentor</a>
+            <a href="register.html" class="btn btn-secondary" data-i18n="footer_become_mentor">Become a Mentor</a>
           </div>
         </div>
       </div>
