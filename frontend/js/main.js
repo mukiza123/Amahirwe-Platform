@@ -41,6 +41,11 @@ function applyTranslations() {
   document.querySelectorAll(".lang-switch button").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === getStoredLang()));
   });
+
+  // Lets pages with JS-built text (e.g. a dashboard's "Muraho, <name>!"
+  // heading) know a language switch happened, since that text has no
+  // data-i18n attribute for applyTranslations() to update on its own.
+  window.dispatchEvent(new CustomEvent("amahirwe:translationsapplied"));
 }
 
 async function setLanguage(lang) {

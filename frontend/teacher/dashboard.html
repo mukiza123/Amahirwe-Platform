@@ -31,7 +31,12 @@
         <span>Amahirwe</span>
       </a>
       <div class="navbar__actions">
-        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
       </div>
     </div>
   </header>
@@ -39,16 +44,16 @@
   <main class="container dash-wrap">
     <div id="state-loading" class="state-message">
       <span class="spinner" aria-hidden="true"></span>
-      <p>Loading your dashboard…</p>
+      <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
 
     <div id="dashboard-content" hidden>
       <div class="dash-welcome">
         <div>
           <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary">Teacher dashboard</p>
+          <p class="text-secondary" data-i18n="dash_teacher_subtitle">Teacher dashboard</p>
         </div>
-        <span class="badge badge-mint">Teacher</span>
+        <span class="badge badge-mint" data-i18n="role_teacher">Teacher</span>
       </div>
 
       <div id="notifications-list" hidden></div>
@@ -56,15 +61,15 @@
       <!-- Profile completion -->
       <section id="profile-section" class="dash-section" hidden>
         <div class="card">
-          <h2>Which school do you teach at?</h2>
+          <h2 data-i18n="dash_teacher_profile_title">Which school do you teach at?</h2>
           <form id="profile-form" novalidate>
             <div class="form-field">
-              <label class="form-label" for="school_id">School</label>
+              <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
               <select class="form-select" id="school_id" name="school_id" required></select>
               <p class="form-error" id="school_id-error" hidden></p>
             </div>
             <p class="form-error" id="form-error" hidden></p>
-            <button type="submit" class="btn btn-primary btn-block">Save</button>
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="dash_save">Save</button>
           </form>
         </div>
       </section>
@@ -72,25 +77,25 @@
       <div id="main-content" hidden>
         <!-- Pending matches -->
         <section class="dash-section">
-          <h2>Mentor match requests</h2>
-          <div id="matches-list"><p class="text-secondary">No pending requests right now.</p></div>
+          <h2 data-i18n="dash_match_requests">Mentor match requests</h2>
+          <div id="matches-list"><p class="text-secondary" data-i18n="dash_no_pending_requests">No pending requests right now.</p></div>
         </section>
 
         <!-- Students -->
         <section class="dash-section">
-          <h2>Your students</h2>
+          <h2 data-i18n="dash_your_students">Your students</h2>
           <div class="card">
-            <div id="students-list"><p class="text-secondary">No students added yet.</p></div>
+            <div id="students-list"><p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p></div>
             <div class="card__actions">
-              <button type="button" class="btn btn-secondary btn-sm" id="add-student-btn">Add a student</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="add-student-btn" data-i18n="dash_add_student">Add a student</button>
             </div>
             <form id="add-student-form" novalidate hidden style="margin-top: var(--space-3);">
               <div class="form-field">
-                <label class="form-label" for="student_full_name">Full name</label>
+                <label class="form-label" for="student_full_name" data-i18n="form_full_name">Full name</label>
                 <input class="form-input" type="text" id="student_full_name" name="full_name" required />
               </div>
               <div class="form-field">
-                <label class="form-label" for="student_age_range">Age range</label>
+                <label class="form-label" for="student_age_range" data-i18n="dash_age_range">Age range</label>
                 <select class="form-select" id="student_age_range" name="age_range">
                   <option value="12-14">12-14</option>
                   <option value="15-16">15-16</option>
@@ -98,7 +103,7 @@
                 </select>
               </div>
               <p class="form-error" id="add-student-error" hidden></p>
-              <button type="submit" class="btn btn-primary btn-sm">Add student</button>
+              <button type="submit" class="btn btn-primary btn-sm" data-i18n="dash_add_student_submit">Add student</button>
             </form>
           </div>
         </section>
@@ -106,10 +111,11 @@
     </div>
   </main>
 
+  <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, loadNotifications, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, loadNotifications, formatDate, greetingWord } from "../js/dashboard.js";
     import { listSchoolMatches, approveMatch, rejectMatch, renderMatchCard } from "../js/matching.js";
 
     const loadingEl = document.querySelector("#state-loading");
@@ -221,10 +227,16 @@
 
     requireRole("teacher").then(async (user) => {
       if (!user) return;
-      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      showContent(loadingEl, contentEl);
+      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      window.addEventListener("amahirwe:translationsapplied", () => {
+        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      });
       await loadNotifications(document.querySelector("#notifications-list"));
       await render();
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Dashboard failed to load:", err);
+      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
     });
   </script>
 </body>

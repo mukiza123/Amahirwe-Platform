@@ -37,7 +37,12 @@
         <span>Amahirwe</span>
       </a>
       <div class="navbar__actions">
-        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
       </div>
     </div>
   </header>
@@ -45,21 +50,21 @@
   <main class="container dash-wrap">
     <div id="state-loading" class="state-message">
       <span class="spinner" aria-hidden="true"></span>
-      <p>Loading your dashboard…</p>
+      <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
 
     <div id="dashboard-content" hidden>
       <div class="dash-welcome">
         <div>
           <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary">Student dashboard</p>
+          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
         </div>
-        <span class="badge badge-mint">Student</span>
+        <span class="badge badge-mint" data-i18n="role_student">Student</span>
       </div>
 
       <div id="sync-banner" class="card sync-banner" hidden>
-        <p>Some assessment answers are saved on this device and haven't synced yet.</p>
-        <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn">Sync now</button>
+        <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
+        <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
       </div>
 
       <div id="notifications-list" hidden></div>
@@ -67,21 +72,21 @@
       <!-- Profile completion -->
       <section id="profile-section" class="dash-section" hidden>
         <div class="card">
-          <h2>Complete your profile</h2>
-          <p class="text-secondary">Tell us your school so we can get you started.</p>
+          <h2 data-i18n="dash_student_profile_title">Complete your profile</h2>
+          <p class="text-secondary" data-i18n="dash_student_profile_body">Tell us your school so we can get you started.</p>
           <form id="profile-form" novalidate>
             <div class="form-field">
-              <label class="form-label" for="full_name">Full name</label>
+              <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
               <input class="form-input" type="text" id="full_name" name="full_name" required />
               <p class="form-error" id="full_name-error" hidden></p>
             </div>
             <div class="form-field">
-              <label class="form-label" for="school_id">School</label>
+              <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
               <select class="form-select" id="school_id" name="school_id" required></select>
               <p class="form-error" id="school_id-error" hidden></p>
             </div>
             <div class="form-field">
-              <label class="form-label" for="age_range">Age range</label>
+              <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
               <select class="form-select" id="age_range" name="age_range" required>
                 <option value="12-14">12-14</option>
                 <option value="15-16">15-16</option>
@@ -89,7 +94,7 @@
               </select>
             </div>
             <p class="form-error" id="form-error" hidden></p>
-            <button type="submit" class="btn btn-primary btn-block">Save profile</button>
+            <button type="submit" class="btn btn-primary btn-block" data-i18n="dash_save_profile">Save profile</button>
           </form>
         </div>
       </section>
@@ -98,9 +103,9 @@
       <section id="assessment-intro-section" class="dash-section" hidden>
         <div class="card dash-placeholder">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-          <h3>Discover your talent</h3>
-          <p class="text-secondary">Answer a few questions and we'll show you your top strengths.</p>
-          <button type="button" class="btn btn-primary" id="start-assessment-btn">Start assessment</button>
+          <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
+          <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
+          <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>
         </div>
       </section>
 
@@ -114,8 +119,8 @@
           <h2 id="question-text" style="margin-top:var(--space-4)"></h2>
           <div class="choice-list" id="choice-list"></div>
           <div class="assessment-nav">
-            <button type="button" class="btn btn-secondary" id="prev-question-btn">Back</button>
-            <button type="button" class="btn btn-primary" id="next-question-btn">Next</button>
+            <button type="button" class="btn btn-secondary" id="prev-question-btn" data-i18n="dash_back">Back</button>
+            <button type="button" class="btn btn-primary" id="next-question-btn" data-i18n="dash_next">Next</button>
           </div>
           <p class="form-error" id="assessment-error" hidden></p>
         </div>
@@ -123,25 +128,26 @@
 
       <!-- Results -->
       <section id="results-section" class="dash-section" hidden>
-        <h2>Your top strengths</h2>
+        <h2 data-i18n="dash_top_strengths">Your top strengths</h2>
         <div class="card" id="results-card"></div>
         <div class="card__actions">
-          <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn">Retake assessment</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
         </div>
       </section>
 
       <!-- Mentor match -->
       <section id="match-section" class="dash-section" hidden>
-        <h2>Mentor match</h2>
+        <h2 data-i18n="dash_mentor_match">Mentor match</h2>
         <div id="match-content"></div>
       </section>
     </div>
   </main>
 
+  <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, loadNotifications, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
+    import { showContent, showError, loadNotifications, talentAreaIcon, talentAreaLabel, greetingWord } from "../js/dashboard.js";
     import { loadQuestions, submitAssessment } from "../js/assessment.js";
     import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
     import { findAMentor, listMyMatches, renderMatchCard } from "../js/matching.js";
@@ -170,7 +176,19 @@
       document.querySelector("#sync-banner").hidden = queued.length === 0;
     }
 
-    async function trySync() {
+    let syncPromise = null;
+
+    function trySync() {
+      if (syncPromise) return syncPromise;
+      syncPromise = doSync().finally(() => {
+        syncPromise = null;
+      });
+      return syncPromise;
+    }
+
+    async function doSync() {
+      const queued = await listQueuedAssessments();
+      if (queued.length === 0) return;
       await syncQueuedAssessments((payload) => api.post("/assessments", payload));
       await checkSyncQueue();
       await render();
@@ -340,7 +358,21 @@
     document.querySelector("#sync-now-btn").addEventListener("click", trySync);
     window.addEventListener("online", trySync);
 
-    async function render() {
+    let renderPromise = null;
+
+    function render() {
+      if (renderPromise) return renderPromise;
+      renderPromise = doRender()
+        .catch((err) => {
+          console.error("Dashboard render failed:", err);
+        })
+        .finally(() => {
+          renderPromise = null;
+        });
+      return renderPromise;
+    }
+
+    async function doRender() {
       hideAllSections();
       await loadStudentProfile();
 
@@ -365,12 +397,18 @@
     requireRole("student").then(async (user) => {
       if (!user) return;
       currentUser = user;
-      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      showContent(loadingEl, contentEl);
+      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      window.addEventListener("amahirwe:translationsapplied", () => {
+        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      });
       await loadNotifications(document.querySelector("#notifications-list"));
       await checkSyncQueue();
       await render();
+      showContent(loadingEl, contentEl);
       if (navigator.onLine) trySync();
+    }).catch((err) => {
+      console.error("Dashboard failed to load:", err);
+      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
     });
   </script>
 </body>

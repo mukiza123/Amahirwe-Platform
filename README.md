@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **Phase 3: Student** (registration/login, student profile, talent assessment and results are working end to end). Teacher, mentor matching, opportunities and admin tools are built out in the phases that follow; see [Development Plan](#development-plan) below.
+> Project status: **Phases 1-9 complete.** Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard), opportunities, admin user management, and multilingual support (Kinyarwanda/English/French) are all working end to end, backend and frontend. See [Development Plan](#development-plan) below for what's in Phase 10 (ongoing polish).
 
 ## Live demo
 
@@ -21,16 +21,16 @@ This is a university final software prototype built from scratch with:
 
 Run `database/seed.py` (see setup steps below) to create these. Password for all of them: `password123`.
 
-| Role | Email |
-|---|---|
-| Student (with a completed talent assessment) | `student@amahirwe.demo` |
-| Teacher | `teacher@amahirwe.demo` |
-| Mentor | `mentor@amahirwe.demo` |
-| Opportunity provider | `provider@amahirwe.demo` |
-| Administrator | `admin@amahirwe.demo` |
-| Parent / guardian | `parent@amahirwe.demo` |
+| Role | Email | What's seeded for them |
+|---|---|---|
+| Student | `student@amahirwe.demo` | Profile at Nyagatare Secondary School, a completed talent assessment, and a pending mentor match awaiting the teacher's review |
+| Teacher | `teacher@amahirwe.demo` | Profile at the same school, so they see the student above and can approve/reject their pending match |
+| Mentor | `mentor@amahirwe.demo` | Verified profile with technology/leadership expertise, matched to the student above |
+| Opportunity provider | `provider@amahirwe.demo` | Verified account with one posted opportunity |
+| Administrator | `admin@amahirwe.demo` | Can list/verify/deactivate users and view the audit log |
+| Parent / guardian | `parent@amahirwe.demo` | Account only; parent dashboard is not yet built |
 
-Only the student account has a working dashboard so far (profile + assessment results); the other roles exist so registration/login/role-gating can be demonstrated, with their dashboards built out in later phases.
+All five built-out roles (student, teacher, mentor, provider, admin) have working dashboards wired to the real API.
 
 ## Project structure
 
@@ -169,20 +169,20 @@ pytest tests/ -v
 
 Built in phases, per the project's development rule of not building everything at once:
 
-1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config
-2. **Authentication**: registration, login, JWT, role-based access, protected pages
-3. **Student**: profile and talent assessment API done (`/api/students`, `/api/assessments`) with the matching migration and demo data *(current; the student-facing dashboard UI that calls these endpoints is still to come)*
-4. **Offline assessment**: service worker, IndexedDB sync queue
-5. **Teacher**: dashboard, students, mentor match approvals
-6. **Mentor matching**: rule-based matching algorithm, approval workflow, audit log, notifications
-7. **Opportunities**: provider dashboard, opportunity creation, listing, filtering
-8. **Admin**: user management, verification, audit logs
-9. **Multilingual**: Kinyarwanda, English, French; done for the marketing site and login/register pages, still to do for the student/teacher/mentor/provider/admin dashboards once they're built
-10. **Polish**: mobile QA, accessibility, loading/empty/error states, illustrations
+1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config ✅
+2. **Authentication**: registration, login, JWT, role-based access, protected pages ✅
+3. **Student**: profile and talent assessment (`/api/students`, `/api/assessments`), with a dashboard UI to complete a profile, take the assessment, and see ranked results ✅
+4. **Offline assessment**: service worker precaching the app shell, IndexedDB queue for assessment answers taken with no connection, auto-sync (with a manual "Sync now" fallback) once back online ✅
+5. **Teacher**: dashboard to add/view students at their school and review mentor match requests ✅
+6. **Mentor matching**: rule-based matching (top talent area → verified mentor with matching expertise), teacher/admin approval workflow, audit log, in-app notifications. Mentor and student contact details are only exposed after approval, with no unsupervised contact before that ✅
+7. **Opportunities**: provider dashboard to post/edit/deactivate/delete opportunities; public listing endpoint ✅
+8. **Admin**: list/filter users, verify mentors and providers, activate/deactivate accounts, audit log viewer ✅
+9. **Multilingual**: Kinyarwanda, English, French. Done for the marketing site, login/register, and the static chrome (headings, labels, buttons, forms) of every dashboard. JS-rendered dynamic content on dashboards (match cards, notifications, admin table rows, form validation messages) is still English-only; translating those would mean threading the translation dictionary through every render function, which is a larger follow-up, not a quick addition ✅ (dashboard chrome) / ⏳ (dynamic content)
+10. **Polish**: mobile QA, accessibility, loading/empty/error states, illustrations *(ongoing: dashboards have loading/error states and were smoke-tested end to end, but haven't had a dedicated mobile/accessibility pass yet)*
 
 ## Design system
 
-Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Baloo 2 for headings, Inter for body) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Manrope throughout) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
 
 ## Security notes
 

@@ -36,7 +36,12 @@
         <span>Amahirwe</span>
       </a>
       <div class="navbar__actions">
-        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
       </div>
     </div>
   </header>
@@ -44,21 +49,21 @@
   <main class="container dash-wrap">
     <div id="state-loading" class="state-message">
       <span class="spinner" aria-hidden="true"></span>
-      <p>Loading your dashboard…</p>
+      <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
 
     <div id="dashboard-content" hidden>
       <div class="dash-welcome">
         <div>
           <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary">Mentor dashboard</p>
+          <p class="text-secondary" data-i18n="dash_mentor_subtitle">Mentor dashboard</p>
         </div>
-        <span class="badge badge-mint">Mentor</span>
+        <span class="badge badge-mint" data-i18n="role_mentor">Mentor</span>
       </div>
 
       <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
         <span aria-hidden="true">⏳</span>
-        <p>Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
+        <p data-i18n="dash_mentor_pending_verification">Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
       </div>
 
       <div id="notifications-list" hidden></div>
@@ -66,38 +71,39 @@
       <!-- Profile completion / edit -->
       <section id="profile-section" class="dash-section" hidden>
         <div class="card">
-          <h2 id="profile-heading">Complete your mentor profile</h2>
+          <h2 id="profile-heading" data-i18n="dash_mentor_profile_title">Complete your mentor profile</h2>
           <form id="profile-form" novalidate>
             <div class="form-field">
-              <label class="form-label" for="district">District</label>
+              <label class="form-label" for="district" data-i18n="dash_district">District</label>
               <input class="form-input" type="text" id="district" name="district" required />
             </div>
             <div class="form-field">
-              <span class="form-label">Areas you can mentor in</span>
+              <span class="form-label" data-i18n="dash_expertise_areas">Areas you can mentor in</span>
               <div class="expertise-grid" id="expertise-grid"></div>
             </div>
             <div class="form-field">
-              <label class="form-label" for="bio">Short bio (optional)</label>
+              <label class="form-label" for="bio" data-i18n="dash_bio">Short bio (optional)</label>
               <textarea class="form-textarea" id="bio" name="bio"></textarea>
             </div>
             <p class="form-error" id="form-error" hidden></p>
-            <button type="submit" class="btn btn-primary btn-block" id="profile-submit-btn">Save profile</button>
+            <button type="submit" class="btn btn-primary btn-block" id="profile-submit-btn" data-i18n="dash_save_profile">Save profile</button>
           </form>
         </div>
       </section>
 
       <!-- Matches -->
       <section id="matches-section" class="dash-section" hidden>
-        <h2>Your mentor matches</h2>
-        <div id="matches-list"><p class="text-secondary">No match requests yet.</p></div>
+        <h2 data-i18n="dash_your_mentor_matches">Your mentor matches</h2>
+        <div id="matches-list"><p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p></div>
       </section>
     </div>
   </main>
 
+  <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, loadNotifications, talentAreaLabel, TALENT_AREA_LABELS } from "../js/dashboard.js";
+    import { showContent, showError, loadNotifications, talentAreaLabel, TALENT_AREA_LABELS, greetingWord } from "../js/dashboard.js";
     import { listMyMatches, renderMatchCard } from "../js/matching.js";
 
     const loadingEl = document.querySelector("#state-loading");
@@ -180,10 +186,16 @@
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
-      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      showContent(loadingEl, contentEl);
+      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      window.addEventListener("amahirwe:translationsapplied", () => {
+        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      });
       await loadNotifications(document.querySelector("#notifications-list"));
       await render();
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Dashboard failed to load:", err);
+      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
     });
   </script>
 </body>

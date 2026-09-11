@@ -42,6 +42,15 @@ function formatDate(iso) {
   }
 }
 
+const GREETINGS = { rw: "Muraho", en: "Hello", fr: "Bonjour" };
+
+/** The dashboard welcome heading is built in JS (it needs the user's
+ * first name), so it can't pick up a static data-i18n translation. */
+function greetingWord() {
+  const lang = document.documentElement.getAttribute("lang");
+  return GREETINGS[lang] || GREETINGS.rw;
+}
+
 /** Swap between a loading/empty/error state block and the real content
  * block, matching the #state-loading / #dashboard-content pattern used
  * on every dashboard page. */
@@ -78,4 +87,13 @@ async function loadNotifications(container) {
   }
 }
 
-export { talentAreaLabel, talentAreaIcon, formatDate, showContent, showError, loadNotifications, TALENT_AREA_LABELS };
+export {
+  talentAreaLabel,
+  talentAreaIcon,
+  formatDate,
+  greetingWord,
+  showContent,
+  showError,
+  loadNotifications,
+  TALENT_AREA_LABELS,
+};

@@ -40,9 +40,9 @@ function renderMatchCard(match, perspective, { showActions = false } = {}) {
   let contactLine = "";
   if (match.status === "approved") {
     if (perspective === "student" && match.mentor_contact_email) {
-      contactLine = `<p class="text-secondary">Mentor: ${match.mentor_name || ""} — ${match.mentor_contact_email}</p>`;
+      contactLine = `<p class="text-secondary">Mentor: ${match.mentor_name || ""} (${match.mentor_contact_email})</p>`;
     } else if (perspective === "mentor" && match.student_contact_email) {
-      contactLine = `<p class="text-secondary">Student: ${match.student_name || ""} — ${match.student_contact_email}</p>`;
+      contactLine = `<p class="text-secondary">Student: ${match.student_name || ""} (${match.student_contact_email})</p>`;
     } else if (perspective === "reviewer") {
       contactLine = `<p class="text-secondary">${match.student_name || "Student"} &harr; ${match.mentor_name || "Mentor"}</p>`;
     }

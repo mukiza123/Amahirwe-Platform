@@ -31,7 +31,12 @@
         <span>Amahirwe</span>
       </a>
       <div class="navbar__actions">
-        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
       </div>
     </div>
   </header>
@@ -39,67 +44,68 @@
   <main class="container dash-wrap">
     <div id="state-loading" class="state-message">
       <span class="spinner" aria-hidden="true"></span>
-      <p>Loading your dashboard…</p>
+      <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
 
     <div id="dashboard-content" hidden>
       <div class="dash-welcome">
         <div>
           <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary">Opportunity provider dashboard</p>
+          <p class="text-secondary" data-i18n="dash_provider_subtitle">Opportunity provider dashboard</p>
         </div>
-        <span class="badge badge-mint">Provider</span>
+        <span class="badge badge-mint" data-i18n="role_provider">Provider</span>
       </div>
 
       <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
         <span aria-hidden="true">⏳</span>
-        <p>Your account is awaiting verification by an administrator. You'll be able to post opportunities once verified.</p>
+        <p data-i18n="dash_provider_pending_verification">Your account is awaiting verification by an administrator. You'll be able to post opportunities once verified.</p>
       </div>
 
       <div id="notifications-list" hidden></div>
 
       <section class="dash-section">
         <div class="card">
-          <h2>Post a new opportunity</h2>
+          <h2 data-i18n="dash_post_opportunity_title">Post a new opportunity</h2>
           <form id="opportunity-form" novalidate>
             <div class="form-field">
-              <label class="form-label" for="title">Title</label>
+              <label class="form-label" for="title" data-i18n="dash_title">Title</label>
               <input class="form-input" type="text" id="title" name="title" required />
             </div>
             <div class="form-field">
-              <label class="form-label" for="description">Description</label>
+              <label class="form-label" for="description" data-i18n="dash_description">Description</label>
               <textarea class="form-textarea" id="description" name="description" required></textarea>
             </div>
             <div class="form-field">
-              <label class="form-label" for="talent_area">Talent area</label>
+              <label class="form-label" for="talent_area" data-i18n="dash_talent_area">Talent area</label>
               <select class="form-select" id="talent_area" name="talent_area">
-                <option value="">Open to all talents</option>
+                <option value="" data-i18n="dash_open_to_all">Open to all talents</option>
               </select>
             </div>
             <div class="form-field">
-              <label class="form-label" for="location">Location</label>
+              <label class="form-label" for="location" data-i18n="dash_location">Location</label>
               <input class="form-input" type="text" id="location" name="location" required />
             </div>
             <div class="form-field">
-              <label class="form-label" for="deadline">Deadline (optional)</label>
+              <label class="form-label" for="deadline" data-i18n="dash_deadline">Deadline (optional)</label>
               <input class="form-input" type="date" id="deadline" name="deadline" />
             </div>
             <p class="form-error" id="form-error" hidden></p>
-            <button type="submit" class="btn btn-primary" id="submit-btn">Post opportunity</button>
+            <button type="submit" class="btn btn-primary" id="submit-btn" data-i18n="dash_post_opportunity">Post opportunity</button>
           </form>
         </div>
       </section>
 
       <section class="dash-section">
-        <h2>Your opportunities</h2>
-        <div class="opportunity-list" id="opportunity-list"><p class="text-secondary">You haven't posted anything yet.</p></div>
+        <h2 data-i18n="dash_your_opportunities">Your opportunities</h2>
+        <div class="opportunity-list" id="opportunity-list"><p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p></div>
       </section>
     </div>
   </main>
 
+  <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
-    import { showContent, loadNotifications, TALENT_AREA_LABELS, talentAreaLabel } from "../js/dashboard.js";
+    import { showContent, showError, loadNotifications, TALENT_AREA_LABELS, talentAreaLabel, greetingWord } from "../js/dashboard.js";
     import { listMyOpportunities, createOpportunity, updateOpportunity, deleteOpportunity, renderOpportunityCard } from "../js/opportunities.js";
 
     const loadingEl = document.querySelector("#state-loading");
@@ -163,12 +169,18 @@
 
     requireRole("provider").then(async (user) => {
       if (!user) return;
-      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
+      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      window.addEventListener("amahirwe:translationsapplied", () => {
+        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      });
       document.querySelector("#verification-banner").hidden = user.is_verified;
       document.querySelector("#opportunity-form button[type='submit']").disabled = !user.is_verified;
-      showContent(loadingEl, contentEl);
       await loadNotifications(document.querySelector("#notifications-list"));
       await renderOpportunities();
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Dashboard failed to load:", err);
+      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
     });
   </script>
 </body>

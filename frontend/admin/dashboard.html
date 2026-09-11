@@ -34,7 +34,12 @@
         <span>Amahirwe</span>
       </a>
       <div class="navbar__actions">
-        <button type="button" class="btn btn-secondary" data-action="logout">Log out</button>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
       </div>
     </div>
   </header>
@@ -42,31 +47,31 @@
   <main class="container dash-wrap">
     <div id="state-loading" class="state-message">
       <span class="spinner" aria-hidden="true"></span>
-      <p>Loading your dashboard…</p>
+      <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
 
     <div id="dashboard-content" hidden>
       <div class="dash-welcome">
         <div>
           <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary">Administrator dashboard</p>
+          <p class="text-secondary" data-i18n="dash_admin_subtitle">Administrator dashboard</p>
         </div>
-        <span class="badge badge-mint">Admin</span>
+        <span class="badge badge-mint" data-i18n="role_admin">Admin</span>
       </div>
 
       <section class="dash-section">
-        <h2>Users</h2>
+        <h2 data-i18n="dash_users">Users</h2>
         <div class="card">
           <div class="filter-row">
-            <label class="form-label" for="role-filter" style="margin:0;">Filter by role</label>
+            <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
             <select id="role-filter" class="form-select">
-              <option value="">All roles</option>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="mentor">Mentor</option>
-              <option value="provider">Provider</option>
-              <option value="parent">Parent</option>
-              <option value="admin">Admin</option>
+              <option value="" data-i18n="dash_all_roles">All roles</option>
+              <option value="student" data-i18n="role_student">Student</option>
+              <option value="teacher" data-i18n="role_teacher">Teacher</option>
+              <option value="mentor" data-i18n="role_mentor">Mentor</option>
+              <option value="provider" data-i18n="role_provider">Provider</option>
+              <option value="parent" data-i18n="role_parent">Parent</option>
+              <option value="admin" data-i18n="role_admin">Admin</option>
             </select>
           </div>
           <div id="users-list"></div>
@@ -74,16 +79,17 @@
       </section>
 
       <section class="dash-section">
-        <h2>Audit log</h2>
+        <h2 data-i18n="dash_audit_log">Audit log</h2>
         <div class="card" id="audit-log"></div>
       </section>
     </div>
   </main>
 
+  <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, formatDate, greetingWord } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -154,7 +160,7 @@
       container.innerHTML = entries
         .map(
           (e) => `<div class="audit-row">
-            <strong>${e.action.replace(/_/g, " ")}</strong> — ${e.target_type} ${e.detail ? `(${e.detail})` : ""}
+            <strong>${e.action.replace(/_/g, " ")}</strong>, ${e.target_type} ${e.detail ? `(${e.detail})` : ""}
             <span class="text-secondary"> · ${formatDate(e.created_at)}</span>
           </div>`
         )
@@ -166,9 +172,15 @@
     requireRole("admin").then(async (user) => {
       if (!user) return;
       currentAdminId = user.id;
-      document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      showContent(loadingEl, contentEl);
+      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      window.addEventListener("amahirwe:translationsapplied", () => {
+        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
+      });
       await Promise.all([renderUsers(), renderAuditLog()]);
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Dashboard failed to load:", err);
+      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
     });
   </script>
 </body>
