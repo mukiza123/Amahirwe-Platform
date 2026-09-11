@@ -12,10 +12,20 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-wrap { padding: var(--space-6) 0 var(--space-7); }
-    .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-4); }
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .verify-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .dash-wrap { padding: var(--space-6) 0 var(--space-7); max-width: 720px; margin: 0 auto; }
+    .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
+    .dash-section { margin-bottom: var(--space-5); }
+    .dash-section h2 { margin-bottom: var(--space-3); }
+    .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .status-banner--pending { color: #8A5B00; }
+    .expertise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); margin: var(--space-2) 0 var(--space-4); }
+    .expertise-option { position: relative; }
+    .expertise-option input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .expertise-option label { display: block; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--color-bg); box-shadow: var(--shadow-raised-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+    .expertise-option input:checked + label { box-shadow: var(--shadow-pressed); color: var(--color-primary-dark); }
+    .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
+    .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
+    .match-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
   </style>
 </head>
 <body>
@@ -46,28 +56,134 @@
         <span class="badge badge-mint">Mentor</span>
       </div>
 
-      <div id="verify-banner" class="card verify-banner" hidden>
-        <span class="badge badge-yellow">Pending verification</span>
-        <p class="text-secondary" style="margin:0;">An administrator needs to verify your account before you can be matched with students.</p>
+      <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
+        <span aria-hidden="true">⏳</span>
+        <p>Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
       </div>
 
-      <div class="card dash-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
-        <h3>Your approved mentorships are coming soon</h3>
-        <p>Mentor matching, approved connections and notifications are built in a later phase.</p>
-      </div>
+      <div id="notifications-list" hidden></div>
+
+      <!-- Profile completion / edit -->
+      <section id="profile-section" class="dash-section" hidden>
+        <div class="card">
+          <h2 id="profile-heading">Complete your mentor profile</h2>
+          <form id="profile-form" novalidate>
+            <div class="form-field">
+              <label class="form-label" for="district">District</label>
+              <input class="form-input" type="text" id="district" name="district" required />
+            </div>
+            <div class="form-field">
+              <span class="form-label">Areas you can mentor in</span>
+              <div class="expertise-grid" id="expertise-grid"></div>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="bio">Short bio (optional)</label>
+              <textarea class="form-textarea" id="bio" name="bio"></textarea>
+            </div>
+            <p class="form-error" id="form-error" hidden></p>
+            <button type="submit" class="btn btn-primary btn-block" id="profile-submit-btn">Save profile</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Matches -->
+      <section id="matches-section" class="dash-section" hidden>
+        <h2>Your mentor matches</h2>
+        <div id="matches-list"><p class="text-secondary">No match requests yet.</p></div>
+      </section>
     </div>
   </main>
 
   <script type="module">
     import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, loadNotifications, talentAreaLabel, TALENT_AREA_LABELS } from "../js/dashboard.js";
+    import { listMyMatches, renderMatchCard } from "../js/matching.js";
 
-    requireRole("mentor").then((user) => {
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+    let currentMentor = null;
+
+    function buildExpertiseGrid(selected = []) {
+      const grid = document.querySelector("#expertise-grid");
+      grid.innerHTML = Object.keys(TALENT_AREA_LABELS)
+        .map(
+          (area) => `<div class="expertise-option">
+            <input type="checkbox" id="area_${area}" name="expertise_areas" value="${area}" ${selected.includes(area) ? "checked" : ""} />
+            <label for="area_${area}">${talentAreaLabel(area)}</label>
+          </div>`
+        )
+        .join("");
+    }
+
+    async function renderMatches() {
+      const matches = await listMyMatches();
+      const list = document.querySelector("#matches-list");
+      if (matches.length === 0) {
+        list.innerHTML = `<p class="text-secondary">No match requests yet.</p>`;
+        return;
+      }
+      list.innerHTML = matches.map((m) => renderMatchCard(m, "mentor")).join("");
+    }
+
+    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const errorEl = document.querySelector("#form-error");
+      errorEl.hidden = true;
+
+      const expertise_areas = Array.from(form.querySelectorAll("input[name='expertise_areas']:checked")).map((el) => el.value);
+      if (expertise_areas.length === 0) {
+        errorEl.textContent = "Choose at least one area you can mentor in.";
+        errorEl.hidden = false;
+        return;
+      }
+
+      const payload = { district: form.district.value.trim(), bio: form.bio.value.trim() || null, expertise_areas };
+
+      try {
+        if (currentMentor) {
+          currentMentor = await api.patch("/mentors/me", payload);
+        } else {
+          currentMentor = await api.post("/mentors/me", payload);
+        }
+        await render();
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
+
+    async function render() {
+      try {
+        currentMentor = await api.get("/mentors/me");
+      } catch {
+        currentMentor = null;
+      }
+
+      buildExpertiseGrid(currentMentor ? currentMentor.expertise_areas : []);
+
+      if (currentMentor) {
+        document.querySelector("#profile-heading").textContent = "Your mentor profile";
+        document.querySelector("#district").value = currentMentor.district;
+        document.querySelector("#bio").value = currentMentor.bio || "";
+        document.querySelector("#profile-submit-btn").textContent = "Update profile";
+        document.querySelector("#verification-banner").hidden = currentMentor.is_verified;
+        document.querySelector("#matches-section").hidden = false;
+        await renderMatches();
+      } else {
+        document.querySelector("#verification-banner").hidden = true;
+        document.querySelector("#matches-section").hidden = true;
+      }
+      document.querySelector("#profile-section").hidden = false;
+    }
+
+    requireRole("mentor").then(async (user) => {
       if (!user) return;
       document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      document.querySelector("#verify-banner").hidden = user.is_verified;
-      document.querySelector("#state-loading").hidden = true;
-      document.querySelector("#dashboard-content").hidden = false;
+      showContent(loadingEl, contentEl);
+      await loadNotifications(document.querySelector("#notifications-list"));
+      await render();
     });
   </script>
 </body>

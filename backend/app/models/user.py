@@ -31,7 +31,10 @@ class User(Base):
     full_name: Mapped[str] = mapped_column(String(120), nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[UserRole] = mapped_column(Enum(UserRole, name="user_role"), nullable=False)
+    role: Mapped[UserRole] = mapped_column(
+        Enum(UserRole, name="user_role", values_callable=lambda cls: [e.value for e in cls]),
+        nullable=False,
+    )
 
     # Mentors and opportunity providers must be verified by an administrator
     # before they can appear in matches or publish opportunities (SRS 5.5).

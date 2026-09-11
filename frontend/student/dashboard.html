@@ -12,8 +12,20 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-wrap { padding: var(--space-6) 0 var(--space-7); }
+    .dash-wrap { padding: var(--space-6) 0 var(--space-7); max-width: 720px; margin: 0 auto; }
     .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
+    .dash-section { margin-bottom: var(--space-5); }
+    .dash-section h2 { margin-bottom: var(--space-3); }
+    .talent-result { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+    .talent-result:last-child { border-bottom: none; }
+    .talent-result__icon { font-size: 1.6rem; }
+    .talent-result__rank { font-weight: 800; color: var(--color-primary-teal); min-width: 24px; }
+    .question-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); font-size: 0.85rem; color: var(--color-text-secondary); }
+    .choice-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-3) 0; }
+    .assessment-nav { display: flex; justify-content: space-between; margin-top: var(--space-4); }
+    .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
+    .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
+    .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
   </style>
 </head>
@@ -45,22 +57,320 @@
         <span class="badge badge-mint">Student</span>
       </div>
 
-      <div class="card dash-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
-        <h3>Your talent assessment is coming soon</h3>
-        <p>The profile, talent assessment, mentor matches and opportunities sections for students are built in the next phases.</p>
+      <div id="sync-banner" class="card sync-banner" hidden>
+        <p>Some assessment answers are saved on this device and haven't synced yet.</p>
+        <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn">Sync now</button>
       </div>
+
+      <div id="notifications-list" hidden></div>
+
+      <!-- Profile completion -->
+      <section id="profile-section" class="dash-section" hidden>
+        <div class="card">
+          <h2>Complete your profile</h2>
+          <p class="text-secondary">Tell us your school so we can get you started.</p>
+          <form id="profile-form" novalidate>
+            <div class="form-field">
+              <label class="form-label" for="full_name">Full name</label>
+              <input class="form-input" type="text" id="full_name" name="full_name" required />
+              <p class="form-error" id="full_name-error" hidden></p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="school_id">School</label>
+              <select class="form-select" id="school_id" name="school_id" required></select>
+              <p class="form-error" id="school_id-error" hidden></p>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="age_range">Age range</label>
+              <select class="form-select" id="age_range" name="age_range" required>
+                <option value="12-14">12-14</option>
+                <option value="15-16">15-16</option>
+                <option value="17-19">17-19</option>
+              </select>
+            </div>
+            <p class="form-error" id="form-error" hidden></p>
+            <button type="submit" class="btn btn-primary btn-block">Save profile</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Assessment intro -->
+      <section id="assessment-intro-section" class="dash-section" hidden>
+        <div class="card dash-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+          <h3>Discover your talent</h3>
+          <p class="text-secondary">Answer a few questions and we'll show you your top strengths.</p>
+          <button type="button" class="btn btn-primary" id="start-assessment-btn">Start assessment</button>
+        </div>
+      </section>
+
+      <!-- Assessment in progress -->
+      <section id="assessment-section" class="dash-section" hidden>
+        <div class="card">
+          <div class="question-meta">
+            <span id="question-progress-label">Question 1 of 12</span>
+          </div>
+          <div class="progress"><div class="progress__fill" id="progress-fill" style="width:0%"></div></div>
+          <h2 id="question-text" style="margin-top:var(--space-4)"></h2>
+          <div class="choice-list" id="choice-list"></div>
+          <div class="assessment-nav">
+            <button type="button" class="btn btn-secondary" id="prev-question-btn">Back</button>
+            <button type="button" class="btn btn-primary" id="next-question-btn">Next</button>
+          </div>
+          <p class="form-error" id="assessment-error" hidden></p>
+        </div>
+      </section>
+
+      <!-- Results -->
+      <section id="results-section" class="dash-section" hidden>
+        <h2>Your top strengths</h2>
+        <div class="card" id="results-card"></div>
+        <div class="card__actions">
+          <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn">Retake assessment</button>
+        </div>
+      </section>
+
+      <!-- Mentor match -->
+      <section id="match-section" class="dash-section" hidden>
+        <h2>Mentor match</h2>
+        <div id="match-content"></div>
+      </section>
     </div>
   </main>
 
   <script type="module">
     import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, loadNotifications, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
+    import { loadQuestions, submitAssessment } from "../js/assessment.js";
+    import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
+    import { findAMentor, listMyMatches, renderMatchCard } from "../js/matching.js";
 
-    requireRole("student").then((user) => {
+    let currentUser = null;
+    let currentStudent = null;
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let answers = {};
+
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+
+    function section(id) {
+      return document.querySelector(id);
+    }
+
+    function hideAllSections() {
+      ["#profile-section", "#assessment-intro-section", "#assessment-section", "#results-section", "#match-section"].forEach(
+        (id) => (section(id).hidden = true)
+      );
+    }
+
+    async function checkSyncQueue() {
+      const queued = await listQueuedAssessments();
+      document.querySelector("#sync-banner").hidden = queued.length === 0;
+    }
+
+    async function trySync() {
+      await syncQueuedAssessments((payload) => api.post("/assessments", payload));
+      await checkSyncQueue();
+      await render();
+    }
+
+    async function loadStudentProfile() {
+      try {
+        currentStudent = await api.get("/students/me");
+      } catch {
+        currentStudent = null;
+      }
+    }
+
+    async function loadSchoolsInto(select) {
+      const schools = await api.get("/schools");
+      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
+    }
+
+    function renderResults(results) {
+      const card = document.querySelector("#results-card");
+      card.innerHTML = results
+        .map(
+          (r) => `
+          <div class="talent-result">
+            <span class="talent-result__rank">#${r.rank}</span>
+            <span class="talent-result__icon">${talentAreaIcon(r.talent_area)}</span>
+            <div>
+              <strong>${talentAreaLabel(r.talent_area)}</strong>
+              <p class="text-secondary">${r.explanation}</p>
+            </div>
+          </div>`
+        )
+        .join("");
+    }
+
+    async function renderMatchSection() {
+      const matches = await listMyMatches();
+      const content = document.querySelector("#match-content");
+      if (matches.length === 0) {
+        content.innerHTML = `<div class="card"><p>Ready to connect with a mentor in your top talent area?</p>
+          <button type="button" class="btn btn-primary" id="find-mentor-btn">Find a mentor</button></div>`;
+        document.querySelector("#find-mentor-btn").addEventListener("click", async (e) => {
+          e.target.disabled = true;
+          try {
+            await findAMentor();
+            await renderMatchSection();
+          } catch (err) {
+            content.innerHTML = `<div class="card"><p class="form-error">${err.message}</p></div>`;
+          }
+        });
+      } else {
+        content.innerHTML = matches.map((m) => renderMatchCard(m, "student")).join("");
+      }
+      section("#match-section").hidden = false;
+    }
+
+    function startAssessment() {
+      currentQuestionIndex = 0;
+      answers = {};
+      hideAllSections();
+      section("#assessment-section").hidden = false;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.querySelector("#question-progress-label").textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      document.querySelector("#progress-fill").style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+      document.querySelector("#question-text").textContent = q.text;
+      document.querySelector("#prev-question-btn").disabled = currentQuestionIndex === 0;
+      document.querySelector("#next-question-btn").textContent =
+        currentQuestionIndex === questions.length - 1 ? "Submit" : "Next";
+
+      const list = document.querySelector("#choice-list");
+      list.innerHTML = q.choices
+        .map(
+          (c) => `<button type="button" class="choice-btn" data-choice-id="${c.id}" aria-pressed="${answers[q.id] === c.id}">
+            <span class="choice-btn__dot"></span>${c.text}
+          </button>`
+        )
+        .join("");
+      list.querySelectorAll(".choice-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          answers[q.id] = btn.dataset.choiceId;
+          list.querySelectorAll(".choice-btn").forEach((b) => b.setAttribute("aria-pressed", "false"));
+          btn.setAttribute("aria-pressed", "true");
+        });
+      });
+    }
+
+    document.querySelector("#prev-question-btn").addEventListener("click", () => {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex -= 1;
+        renderQuestion();
+      }
+    });
+
+    document.querySelector("#next-question-btn").addEventListener("click", async () => {
+      const q = questions[currentQuestionIndex];
+      const errorEl = document.querySelector("#assessment-error");
+      errorEl.hidden = true;
+
+      if (!answers[q.id]) {
+        errorEl.textContent = "Please choose an answer before continuing.";
+        errorEl.hidden = false;
+        return;
+      }
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex += 1;
+        renderQuestion();
+        return;
+      }
+
+      const payload = {
+        language: document.documentElement.getAttribute("lang") || "rw",
+        answers: Object.entries(answers).map(([question_id, choice_id]) => ({ question_id, choice_id })),
+      };
+
+      try {
+        const { queued } = await submitAssessment(payload);
+        if (queued) {
+          hideAllSections();
+          section("#assessment-intro-section").hidden = false;
+          section("#assessment-intro-section").querySelector("h3").textContent = "Saved on this device";
+          section("#assessment-intro-section").querySelector("p").textContent =
+            "You're offline. Your answers will be sent automatically once you're back online.";
+          section("#assessment-intro-section").querySelector("button").hidden = true;
+          await checkSyncQueue();
+        } else {
+          await render();
+        }
+      } catch (err) {
+        errorEl.textContent = err.message || "Couldn't submit your assessment. Please try again.";
+        errorEl.hidden = false;
+      }
+    });
+
+    document.querySelector("#start-assessment-btn").addEventListener("click", async () => {
+      questions = await loadQuestions();
+      startAssessment();
+    });
+
+    document.querySelector("#retake-assessment-btn").addEventListener("click", async () => {
+      questions = await loadQuestions();
+      startAssessment();
+    });
+
+    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const errorEl = document.querySelector("#form-error");
+      errorEl.hidden = true;
+      try {
+        await api.post("/students/me", {
+          full_name: form.full_name.value.trim(),
+          school_id: form.school_id.value,
+          age_range: form.age_range.value,
+        });
+        await render();
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
+
+    document.querySelector("#sync-now-btn").addEventListener("click", trySync);
+    window.addEventListener("online", trySync);
+
+    async function render() {
+      hideAllSections();
+      await loadStudentProfile();
+
+      if (!currentStudent) {
+        document.querySelector("#full_name").value = currentUser.full_name;
+        await loadSchoolsInto(document.querySelector("#school_id"));
+        section("#profile-section").hidden = false;
+        return;
+      }
+
+      const assessments = await api.get("/assessments");
+      if (assessments.length === 0) {
+        section("#assessment-intro-section").hidden = false;
+        return;
+      }
+
+      renderResults(assessments[0].results);
+      section("#results-section").hidden = false;
+      await renderMatchSection();
+    }
+
+    requireRole("student").then(async (user) => {
       if (!user) return;
+      currentUser = user;
       document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      document.querySelector("#state-loading").hidden = true;
-      document.querySelector("#dashboard-content").hidden = false;
+      showContent(loadingEl, contentEl);
+      await loadNotifications(document.querySelector("#notifications-list"));
+      await checkSyncQueue();
+      await render();
+      if (navigator.onLine) trySync();
     });
   </script>
 </body>

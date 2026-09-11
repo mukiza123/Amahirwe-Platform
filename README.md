@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **Phase 1: Foundation** (folder structure, FastAPI app, database wiring, design system, base pages). Authentication, dashboards, the talent assessment, mentor matching, opportunities and admin tools are built out in the phases that follow; see [Development Plan](#development-plan) below.
+> Project status: **Phase 3: Student** (registration/login, student profile, talent assessment and results are working end to end). Teacher, mentor matching, opportunities and admin tools are built out in the phases that follow; see [Development Plan](#development-plan) below.
 
 ## Live demo
 
@@ -19,7 +19,18 @@ This is a university final software prototype built from scratch with:
 
 ## Demo accounts
 
-_Not yet available: seed data is added in a later phase. This section will list a demo student, teacher, mentor, opportunity provider and administrator account once `database/seed.py` is implemented._
+Run `database/seed.py` (see setup steps below) to create these. Password for all of them: `password123`.
+
+| Role | Email |
+|---|---|
+| Student (with a completed talent assessment) | `student@amahirwe.demo` |
+| Teacher | `teacher@amahirwe.demo` |
+| Mentor | `mentor@amahirwe.demo` |
+| Opportunity provider | `provider@amahirwe.demo` |
+| Administrator | `admin@amahirwe.demo` |
+| Parent / guardian | `parent@amahirwe.demo` |
+
+Only the student account has a working dashboard so far (profile + assessment results); the other roles exist so registration/login/role-gating can be demonstrated, with their dashboards built out in later phases.
 
 ## Project structure
 
@@ -107,7 +118,16 @@ pip install -r requirements.txt
 alembic upgrade head
 ```
 
-### 6. Start the backend API
+### 6. Load demo data (optional)
+
+```bash
+# from backend/, with venv activated
+python ../database/seed.py
+```
+
+Creates the [demo accounts](#demo-accounts) above, plus one completed talent assessment for the demo student. Safe to re-run; it skips anything that already exists.
+
+### 7. Start the backend API
 
 ```bash
 # from backend/, with venv activated
@@ -119,7 +139,7 @@ The API is now running at `http://127.0.0.1:8000`. Confirm it works by opening:
 - `http://127.0.0.1:8000/api/health` → should return `{"status":"ok","service":"Amahirwe API"}`
 - `http://127.0.0.1:8000/docs` → interactive API documentation
 
-### 7. Start the frontend (in a second terminal)
+### 8. Start the frontend (in a second terminal)
 
 The frontend is plain HTML/CSS/JS, so it just needs to be served as static files (opening the HTML files directly with `file://` will break the API calls and JS modules).
 
@@ -136,7 +156,7 @@ http://127.0.0.1:5500/frontend/index.html
 
 The frontend automatically talks to the backend at `http://127.0.0.1:8000/api` when running locally like this.
 
-### 8. Run backend tests (optional)
+### 9. Run backend tests (optional)
 
 ```bash
 cd backend
@@ -150,14 +170,14 @@ pytest tests/ -v
 Built in phases, per the project's development rule of not building everything at once:
 
 1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config
-2. **Authentication**: registration, login, JWT, role-based access, protected pages *(current)*
-3. **Student**: dashboard, profile, talent assessment, results
+2. **Authentication**: registration, login, JWT, role-based access, protected pages
+3. **Student**: profile and talent assessment API done (`/api/students`, `/api/assessments`) with the matching migration and demo data *(current; the student-facing dashboard UI that calls these endpoints is still to come)*
 4. **Offline assessment**: service worker, IndexedDB sync queue
 5. **Teacher**: dashboard, students, mentor match approvals
 6. **Mentor matching**: rule-based matching algorithm, approval workflow, audit log, notifications
 7. **Opportunities**: provider dashboard, opportunity creation, listing, filtering
 8. **Admin**: user management, verification, audit logs
-9. **Multilingual**: Kinyarwanda, English, French across all screens
+9. **Multilingual**: Kinyarwanda, English, French; done for the marketing site and login/register pages, still to do for the student/teacher/mentor/provider/admin dashboards once they're built
 10. **Polish**: mobile QA, accessibility, loading/empty/error states, illustrations
 
 ## Design system

@@ -193,4 +193,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initLogoutButtons();
 });
 
-export { requireRole, getCurrentUser, isLoggedIn, logout, dashboardUrlFor };
+export {
+  requireRole,
+  getCurrentUser,
+  isLoggedIn,
+  logout,
+  dashboardUrlFor,
+  setFormError,
+  setFieldError,
+  clearErrors,
+  setLoading,
+};

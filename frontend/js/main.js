@@ -88,6 +88,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   initLanguageSwitcher();
   initMobileNav();
   initOfflineBanner();
+
+  import("./offline.js").then(({ registerServiceWorker }) => registerServiceWorker());
 });
 
 export { setLanguage, loadTranslations, applyTranslations };

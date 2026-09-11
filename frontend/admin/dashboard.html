@@ -12,9 +12,18 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-wrap { padding: var(--space-6) 0 var(--space-7); }
+    .dash-wrap { padding: var(--space-6) 0 var(--space-7); max-width: 920px; margin: 0 auto; }
     .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+    .dash-section { margin-bottom: var(--space-5); }
+    .dash-section h2 { margin-bottom: var(--space-3); }
+    .filter-row { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); }
+    .filter-row select { width: auto; min-height: 40px; padding: 8px 14px; }
+    .user-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+    .user-row:last-child { border-bottom: none; }
+    .user-row__meta { display: flex; flex-direction: column; }
+    .user-row__actions { display: flex; gap: var(--space-2); }
+    .audit-row { padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
+    .audit-row:last-child { border-bottom: none; }
   </style>
 </head>
 <body>
@@ -42,25 +51,124 @@
           <h1 id="welcome-heading">Muraho!</h1>
           <p class="text-secondary">Administrator dashboard</p>
         </div>
-        <span class="badge badge-mint">Administrator</span>
+        <span class="badge badge-mint">Admin</span>
       </div>
 
-      <div class="card dash-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
-        <h3>User and verification management is coming soon</h3>
-        <p>Mentor/provider verification, opportunity management and audit logs are built in a later phase.</p>
-      </div>
+      <section class="dash-section">
+        <h2>Users</h2>
+        <div class="card">
+          <div class="filter-row">
+            <label class="form-label" for="role-filter" style="margin:0;">Filter by role</label>
+            <select id="role-filter" class="form-select">
+              <option value="">All roles</option>
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="mentor">Mentor</option>
+              <option value="provider">Provider</option>
+              <option value="parent">Parent</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div id="users-list"></div>
+        </div>
+      </section>
+
+      <section class="dash-section">
+        <h2>Audit log</h2>
+        <div class="card" id="audit-log"></div>
+      </section>
     </div>
   </main>
 
   <script type="module">
     import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, formatDate } from "../js/dashboard.js";
 
-    requireRole("admin").then((user) => {
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+    let currentAdminId = null;
+
+    async function renderUsers() {
+      const role = document.querySelector("#role-filter").value;
+      const query = role ? `?role=${role}` : "";
+      const users = await api.get(`/admin/users${query}`);
+      const list = document.querySelector("#users-list");
+
+      list.innerHTML = users
+        .map((u) => {
+          const needsVerification = ["mentor", "provider"].includes(u.role);
+          const verifyBtn =
+            needsVerification && !u.is_verified
+              ? `<button type="button" class="btn btn-secondary btn-sm" data-action="verify" data-id="${u.id}">Verify</button>`
+              : "";
+          const toggleBtn =
+            u.id === currentAdminId
+              ? ""
+              : u.is_active
+              ? `<button type="button" class="btn btn-danger btn-sm" data-action="deactivate" data-id="${u.id}">Deactivate</button>`
+              : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">Reactivate</button>`;
+
+          return `<div class="user-row">
+            <div class="user-row__meta">
+              <strong>${u.full_name}</strong>
+              <span class="text-secondary">${u.email}</span>
+            </div>
+            <div class="user-row__actions">
+              <span class="badge badge-mint">${u.role}</span>
+              ${needsVerification ? `<span class="badge ${u.is_verified ? "badge-success" : "badge-neutral"}">${u.is_verified ? "Verified" : "Unverified"}</span>` : ""}
+              <span class="badge ${u.is_active ? "badge-success" : "badge-error"}">${u.is_active ? "Active" : "Deactivated"}</span>
+              ${verifyBtn}${toggleBtn}
+            </div>
+          </div>`;
+        })
+        .join("");
+
+      list.querySelectorAll("[data-action='verify']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/verify`);
+          await renderUsers();
+        });
+      });
+      list.querySelectorAll("[data-action='deactivate']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/deactivate`);
+          await renderUsers();
+        });
+      });
+      list.querySelectorAll("[data-action='activate']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/activate`);
+          await renderUsers();
+        });
+      });
+    }
+
+    async function renderAuditLog() {
+      const entries = await api.get("/admin/audit-log");
+      const container = document.querySelector("#audit-log");
+      if (entries.length === 0) {
+        container.innerHTML = `<p class="text-secondary">No actions recorded yet.</p>`;
+        return;
+      }
+      container.innerHTML = entries
+        .map(
+          (e) => `<div class="audit-row">
+            <strong>${e.action.replace(/_/g, " ")}</strong> — ${e.target_type} ${e.detail ? `(${e.detail})` : ""}
+            <span class="text-secondary"> · ${formatDate(e.created_at)}</span>
+          </div>`
+        )
+        .join("");
+    }
+
+    document.querySelector("#role-filter").addEventListener("change", renderUsers);
+
+    requireRole("admin").then(async (user) => {
       if (!user) return;
+      currentAdminId = user.id;
       document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      document.querySelector("#state-loading").hidden = true;
-      document.querySelector("#dashboard-content").hidden = false;
+      showContent(loadingEl, contentEl);
+      await Promise.all([renderUsers(), renderAuditLog()]);
     });
   </script>
 </body>

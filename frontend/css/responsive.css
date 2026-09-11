@@ -49,7 +49,7 @@
 
 /* --- Nav breakpoint: kept separate from (and wider than) the grid
    breakpoint above, and above the 1120px container max-width, so the
-   full link row is only ever shown where it's guaranteed to fit —
+   full link row is only ever shown where it's guaranteed to fit,
    including with longer French labels. Below it, everything (links,
    language switch, Login/Get Started) lives in the hamburger panel. --- */
 @media (max-width: 1199px) {

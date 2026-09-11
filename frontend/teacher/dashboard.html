@@ -12,9 +12,15 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-wrap { padding: var(--space-6) 0 var(--space-7); }
+    .dash-wrap { padding: var(--space-6) 0 var(--space-7); max-width: 820px; margin: 0 auto; }
     .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+    .dash-section { margin-bottom: var(--space-5); }
+    .dash-section h2 { margin-bottom: var(--space-3); }
+    .student-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); }
+    .student-row:last-child { border-bottom: none; }
+    .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
+    .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
+    .match-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
   </style>
 </head>
 <body>
@@ -45,22 +51,180 @@
         <span class="badge badge-mint">Teacher</span>
       </div>
 
-      <div class="card dash-placeholder">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="18" cy="12" r="3"/><circle cx="6" cy="12" r="3"/></svg>
-        <h3>Your students list is coming soon</h3>
-        <p>Student profile status and pending mentor-match approvals for teachers are built in the next phases.</p>
+      <div id="notifications-list" hidden></div>
+
+      <!-- Profile completion -->
+      <section id="profile-section" class="dash-section" hidden>
+        <div class="card">
+          <h2>Which school do you teach at?</h2>
+          <form id="profile-form" novalidate>
+            <div class="form-field">
+              <label class="form-label" for="school_id">School</label>
+              <select class="form-select" id="school_id" name="school_id" required></select>
+              <p class="form-error" id="school_id-error" hidden></p>
+            </div>
+            <p class="form-error" id="form-error" hidden></p>
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
+          </form>
+        </div>
+      </section>
+
+      <div id="main-content" hidden>
+        <!-- Pending matches -->
+        <section class="dash-section">
+          <h2>Mentor match requests</h2>
+          <div id="matches-list"><p class="text-secondary">No pending requests right now.</p></div>
+        </section>
+
+        <!-- Students -->
+        <section class="dash-section">
+          <h2>Your students</h2>
+          <div class="card">
+            <div id="students-list"><p class="text-secondary">No students added yet.</p></div>
+            <div class="card__actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="add-student-btn">Add a student</button>
+            </div>
+            <form id="add-student-form" novalidate hidden style="margin-top: var(--space-3);">
+              <div class="form-field">
+                <label class="form-label" for="student_full_name">Full name</label>
+                <input class="form-input" type="text" id="student_full_name" name="full_name" required />
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="student_age_range">Age range</label>
+                <select class="form-select" id="student_age_range" name="age_range">
+                  <option value="12-14">12-14</option>
+                  <option value="15-16">15-16</option>
+                  <option value="17-19">17-19</option>
+                </select>
+              </div>
+              <p class="form-error" id="add-student-error" hidden></p>
+              <button type="submit" class="btn btn-primary btn-sm">Add student</button>
+            </form>
+          </div>
+        </section>
       </div>
     </div>
   </main>
 
   <script type="module">
     import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, loadNotifications, formatDate } from "../js/dashboard.js";
+    import { listSchoolMatches, approveMatch, rejectMatch, renderMatchCard } from "../js/matching.js";
 
-    requireRole("teacher").then((user) => {
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+    let hasProfile = false;
+
+    async function loadSchoolsInto(select) {
+      const schools = await api.get("/schools");
+      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
+    }
+
+    async function renderStudents() {
+      const students = await api.get("/teachers/me/students");
+      const list = document.querySelector("#students-list");
+      if (students.length === 0) {
+        list.innerHTML = `<p class="text-secondary">No students added yet.</p>`;
+        return;
+      }
+      list.innerHTML = students
+        .map(
+          (s) => `<div class="student-row">
+            <span>${s.full_name} <span class="text-secondary">(${s.age_range})</span></span>
+            <span class="badge ${s.user_id ? "badge-success" : "badge-neutral"}">${s.user_id ? "Registered" : "Not registered yet"}</span>
+          </div>`
+        )
+        .join("");
+    }
+
+    async function renderMatches() {
+      const matches = await listSchoolMatches("pending");
+      const list = document.querySelector("#matches-list");
+      if (matches.length === 0) {
+        list.innerHTML = `<p class="text-secondary">No pending requests right now.</p>`;
+        return;
+      }
+      list.innerHTML = matches.map((m) => renderMatchCard(m, "reviewer", { showActions: true })).join("");
+
+      list.querySelectorAll("[data-action='approve-match']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          await approveMatch(btn.dataset.id);
+          await renderMatches();
+        });
+      });
+      list.querySelectorAll("[data-action='reject-match']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          btn.disabled = true;
+          await rejectMatch(btn.dataset.id);
+          await renderMatches();
+        });
+      });
+    }
+
+    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const errorEl = document.querySelector("#form-error");
+      errorEl.hidden = true;
+      try {
+        await api.post("/teachers/me", { school_id: event.target.school_id.value });
+        await render();
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
+
+    document.querySelector("#add-student-btn").addEventListener("click", () => {
+      document.querySelector("#add-student-form").hidden = false;
+    });
+
+    document.querySelector("#add-student-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const errorEl = document.querySelector("#add-student-error");
+      errorEl.hidden = true;
+      try {
+        await api.post("/teachers/students", {
+          full_name: form.full_name.value.trim(),
+          age_range: form.age_range.value,
+        });
+        form.reset();
+        form.hidden = true;
+        await renderStudents();
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
+
+    async function render() {
+      try {
+        await api.get("/teachers/me");
+        hasProfile = true;
+      } catch {
+        hasProfile = false;
+      }
+
+      if (!hasProfile) {
+        await loadSchoolsInto(document.querySelector("#school_id"));
+        document.querySelector("#profile-section").hidden = false;
+        document.querySelector("#main-content").hidden = true;
+        return;
+      }
+
+      document.querySelector("#profile-section").hidden = true;
+      document.querySelector("#main-content").hidden = false;
+      await Promise.all([renderStudents(), renderMatches()]);
+    }
+
+    requireRole("teacher").then(async (user) => {
       if (!user) return;
       document.querySelector("#welcome-heading").textContent = `Muraho, ${user.full_name.split(" ")[0]}!`;
-      document.querySelector("#state-loading").hidden = true;
-      document.querySelector("#dashboard-content").hidden = false;
+      showContent(loadingEl, contentEl);
+      await loadNotifications(document.querySelector("#notifications-list"));
+      await render();
     });
   </script>
 </body>
