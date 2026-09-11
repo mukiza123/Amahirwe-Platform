@@ -26,10 +26,14 @@
     .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
     .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
     .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .sync-banner__icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .sync-banner p { flex: 1; margin: 0; }
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
@@ -47,8 +51,8 @@
     </div>
   </header>
 
-  <main class="container dash-wrap">
-    <div id="state-loading" class="state-message">
+  <main id="main-content" class="container dash-wrap">
+    <div id="state-loading" class="state-message" role="status" aria-live="polite">
       <span class="spinner" aria-hidden="true"></span>
       <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
@@ -63,6 +67,7 @@
       </div>
 
       <div id="sync-banner" class="card sync-banner" hidden>
+        <img class="sync-banner__icon" src="../assets/illustrations/system/offline.png" alt="" />
         <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
         <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
       </div>
@@ -102,7 +107,7 @@
       <!-- Assessment intro -->
       <section id="assessment-intro-section" class="dash-section" hidden>
         <div class="card dash-placeholder">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg>
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
           <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
           <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
           <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>

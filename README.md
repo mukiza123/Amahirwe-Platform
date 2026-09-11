@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **Phases 1-9 complete.** Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard), opportunities, admin user management, and multilingual support (Kinyarwanda/English/French) are all working end to end, backend and frontend. See [Development Plan](#development-plan) below for what's in Phase 10 (ongoing polish).
+> Project status: **All 10 phases complete.** Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. See [Development Plan](#development-plan) below for the remaining known gap (JS-rendered dynamic dashboard content is not yet translated).
 
 ## Live demo
 
@@ -178,7 +178,7 @@ Built in phases, per the project's development rule of not building everything a
 7. **Opportunities**: provider dashboard to post/edit/deactivate/delete opportunities; public listing endpoint ✅
 8. **Admin**: list/filter users, verify mentors and providers, activate/deactivate accounts, audit log viewer ✅
 9. **Multilingual**: Kinyarwanda, English, French. Done for the marketing site, login/register, and the static chrome (headings, labels, buttons, forms) of every dashboard. JS-rendered dynamic content on dashboards (match cards, notifications, admin table rows, form validation messages) is still English-only; translating those would mean threading the translation dictionary through every render function, which is a larger follow-up, not a quick addition ✅ (dashboard chrome) / ⏳ (dynamic content)
-10. **Polish**: mobile QA, accessibility, loading/empty/error states, illustrations *(ongoing: dashboards have loading/error states and were smoke-tested end to end, but haven't had a dedicated mobile/accessibility pass yet)*
+10. **Polish**: mobile QA (390/768/1024px sweep across every dashboard, no overflow, verified visually), accessibility (skip-to-content link and `role="status"` loading state on every dashboard, matching the marketing site's existing focus-visible and semantic-landmark conventions), loading/empty/error states (every dashboard shows a loading spinner, a real error message on failure, and an illustrated empty state rather than nothing), and illustrations (the provided character/object/system artwork is now used in the student assessment intro, the offline sync banner, and the teacher/mentor/provider empty states, instead of generic icons) ✅
 
 ## Design system
 

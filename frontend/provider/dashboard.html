@@ -18,12 +18,15 @@
     .dash-section h2 { margin-bottom: var(--space-3); }
     .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
     .status-banner--pending { color: #8A5B00; }
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); }
+    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
     .opportunity-list { display: flex; flex-direction: column; gap: var(--space-3); }
     .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
     .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
@@ -41,8 +44,8 @@
     </div>
   </header>
 
-  <main class="container dash-wrap">
-    <div id="state-loading" class="state-message">
+  <main id="main-content" class="container dash-wrap">
+    <div id="state-loading" class="state-message" role="status" aria-live="polite">
       <span class="spinner" aria-hidden="true"></span>
       <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
@@ -97,7 +100,12 @@
 
       <section class="dash-section">
         <h2 data-i18n="dash_your_opportunities">Your opportunities</h2>
-        <div class="opportunity-list" id="opportunity-list"><p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p></div>
+        <div class="opportunity-list" id="opportunity-list">
+          <div class="dash-placeholder">
+            <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
+            <p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p>
+          </div>
+        </div>
       </section>
     </div>
   </main>
@@ -123,7 +131,10 @@
       const opportunities = await listMyOpportunities();
       const list = document.querySelector("#opportunity-list");
       if (opportunities.length === 0) {
-        list.innerHTML = `<p class="text-secondary">You haven't posted anything yet.</p>`;
+        list.innerHTML = `<div class="dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
+          <p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p>
+        </div>`;
         return;
       }
       list.innerHTML = opportunities.map(renderOpportunityCard).join("");

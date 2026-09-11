@@ -18,12 +18,15 @@
     .dash-section h2 { margin-bottom: var(--space-3); }
     .student-row { display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); }
     .student-row:last-child { border-bottom: none; }
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-5); }
+    .dash-placeholder__illustration { width: 88px; height: auto; margin-bottom: var(--space-1); }
     .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
     .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
     .match-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
@@ -41,8 +44,8 @@
     </div>
   </header>
 
-  <main class="container dash-wrap">
-    <div id="state-loading" class="state-message">
+  <main id="main-content" class="container dash-wrap">
+    <div id="state-loading" class="state-message" role="status" aria-live="polite">
       <span class="spinner" aria-hidden="true"></span>
       <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
@@ -74,18 +77,28 @@
         </div>
       </section>
 
-      <div id="main-content" hidden>
+      <div id="teacher-main" hidden>
         <!-- Pending matches -->
         <section class="dash-section">
           <h2 data-i18n="dash_match_requests">Mentor match requests</h2>
-          <div id="matches-list"><p class="text-secondary" data-i18n="dash_no_pending_requests">No pending requests right now.</p></div>
+          <div id="matches-list">
+            <div class="dash-placeholder">
+              <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
+              <p class="text-secondary" data-i18n="dash_no_pending_requests">No pending requests right now.</p>
+            </div>
+          </div>
         </section>
 
         <!-- Students -->
         <section class="dash-section">
           <h2 data-i18n="dash_your_students">Your students</h2>
           <div class="card">
-            <div id="students-list"><p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p></div>
+            <div id="students-list">
+              <div class="dash-placeholder">
+                <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
+                <p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p>
+              </div>
+            </div>
             <div class="card__actions">
               <button type="button" class="btn btn-secondary btn-sm" id="add-student-btn" data-i18n="dash_add_student">Add a student</button>
             </div>
@@ -131,7 +144,10 @@
       const students = await api.get("/teachers/me/students");
       const list = document.querySelector("#students-list");
       if (students.length === 0) {
-        list.innerHTML = `<p class="text-secondary">No students added yet.</p>`;
+        list.innerHTML = `<div class="dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
+          <p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p>
+        </div>`;
         return;
       }
       list.innerHTML = students
@@ -148,7 +164,10 @@
       const matches = await listSchoolMatches("pending");
       const list = document.querySelector("#matches-list");
       if (matches.length === 0) {
-        list.innerHTML = `<p class="text-secondary">No pending requests right now.</p>`;
+        list.innerHTML = `<div class="dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
+          <p class="text-secondary" data-i18n="dash_no_pending_requests">No pending requests right now.</p>
+        </div>`;
         return;
       }
       list.innerHTML = matches.map((m) => renderMatchCard(m, "reviewer", { showActions: true })).join("");
@@ -216,12 +235,12 @@
       if (!hasProfile) {
         await loadSchoolsInto(document.querySelector("#school_id"));
         document.querySelector("#profile-section").hidden = false;
-        document.querySelector("#main-content").hidden = true;
+        document.querySelector("#teacher-main").hidden = true;
         return;
       }
 
       document.querySelector("#profile-section").hidden = true;
-      document.querySelector("#main-content").hidden = false;
+      document.querySelector("#teacher-main").hidden = false;
       await Promise.all([renderStudents(), renderMatches()]);
     }
 

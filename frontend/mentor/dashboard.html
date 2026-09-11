@@ -18,6 +18,8 @@
     .dash-section h2 { margin-bottom: var(--space-3); }
     .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
     .status-banner--pending { color: #8A5B00; }
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-5); }
+    .dash-placeholder__illustration { width: 88px; height: auto; margin-bottom: var(--space-1); }
     .expertise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); margin: var(--space-2) 0 var(--space-4); }
     .expertise-option { position: relative; }
     .expertise-option input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
@@ -29,6 +31,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
   <header class="navbar">
     <div class="navbar__inner">
       <a href="../index.html" class="navbar__brand">
@@ -46,8 +49,8 @@
     </div>
   </header>
 
-  <main class="container dash-wrap">
-    <div id="state-loading" class="state-message">
+  <main id="main-content" class="container dash-wrap">
+    <div id="state-loading" class="state-message" role="status" aria-live="polite">
       <span class="spinner" aria-hidden="true"></span>
       <p data-i18n="dash_loading">Loading your dashboard…</p>
     </div>
@@ -94,7 +97,12 @@
       <!-- Matches -->
       <section id="matches-section" class="dash-section" hidden>
         <h2 data-i18n="dash_your_mentor_matches">Your mentor matches</h2>
-        <div id="matches-list"><p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p></div>
+        <div id="matches-list">
+          <div class="dash-placeholder">
+            <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
+            <p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p>
+          </div>
+        </div>
       </section>
     </div>
   </main>
@@ -126,7 +134,10 @@
       const matches = await listMyMatches();
       const list = document.querySelector("#matches-list");
       if (matches.length === 0) {
-        list.innerHTML = `<p class="text-secondary">No match requests yet.</p>`;
+        list.innerHTML = `<div class="dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
+          <p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p>
+        </div>`;
         return;
       }
       list.innerHTML = matches.map((m) => renderMatchCard(m, "mentor")).join("");
