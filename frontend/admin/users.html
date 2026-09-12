@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users - Amahirwe</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .filter-row { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); }
+    .filter-row select { width: auto; min-height: 40px; padding: 8px 14px; }
+    .user-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+    .user-row:last-child { border-bottom: none; }
+    .user-row__meta { display: flex; flex-direction: column; }
+    .user-row__actions { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
+  <div class="dash-shell">
+  <div class="dash-sidebar-backdrop"></div>
+  <aside class="dash-sidebar">
+    <button type="button" class="dash-sidebar__close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="../index.html" class="dash-sidebar__brand">
+      <img src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+      <span>Amahirwe</span>
+    </a>
+    <nav class="dash-sidebar__nav">
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="users.html" class="dash-sidebar__link is-active" data-page="users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_users">Users</span></a>
+      <a href="audit-log.html" class="dash-sidebar__link" data-page="audit-log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="nav_audit_log">Audit Log</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
+    </div>
+  </aside>
+    <div class="dash-body">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div class="dash-topbar__title">
+          <h1 data-i18n="nav_users">Users</h1>
+          <p class="text-secondary" data-i18n="dash_admin_subtitle">Administrator dashboard</p>
+        </div>
+      </div>
+      <div class="dash-topbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <div class="dash-user">
+          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <div>
+            <div class="dash-user__name" id="dash-user-name"></div>
+            <div class="dash-user__role" id="dash-user-role"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+      <main id="main-content" class="dash-main">
+        <div id="state-loading" class="state-message" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p data-i18n="dash_loading">Loading&hellip;</p>
+        </div>
+        <div id="dashboard-content" hidden>
+          <div class="card">
+            <div class="filter-row">
+              <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
+              <select id="role-filter" class="form-select">
+                <option value="" data-i18n="dash_all_roles">All roles</option>
+                <option value="student" data-i18n="role_student">Student</option>
+                <option value="teacher" data-i18n="role_teacher">Teacher</option>
+                <option value="mentor" data-i18n="role_mentor">Mentor</option>
+                <option value="provider" data-i18n="role_provider">Provider</option>
+                <option value="parent" data-i18n="role_parent">Parent</option>
+                <option value="admin" data-i18n="role_admin">Admin</option>
+              </select>
+            </div>
+            <div id="users-list"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+    let currentAdminId = null;
+
+    async function renderUsers() {
+      const role = document.querySelector("#role-filter").value;
+      const query = role ? `?role=${role}` : "";
+      const users = await api.get(`/admin/users${query}`);
+      const list = document.querySelector("#users-list");
+
+      list.innerHTML = users
+        .map((u) => {
+          const needsVerification = ["mentor", "provider"].includes(u.role);
+          const verifyBtn =
+            needsVerification && !u.is_verified
+              ? `<button type="button" class="btn btn-secondary btn-sm" data-action="verify" data-id="${u.id}">Verify</button>`
+              : "";
+          const toggleBtn =
+            u.id === currentAdminId
+              ? ""
+              : u.is_active
+              ? `<button type="button" class="btn btn-danger btn-sm" data-action="deactivate" data-id="${u.id}">Deactivate</button>`
+              : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">Reactivate</button>`;
+
+          return `<div class="user-row">
+            <div class="user-row__meta">
+              <strong>${u.full_name}</strong>
+              <span class="text-secondary">${u.email}</span>
+            </div>
+            <div class="user-row__actions">
+              <span class="badge badge-mint">${u.role}</span>
+              ${needsVerification ? `<span class="badge ${u.is_verified ? "badge-success" : "badge-neutral"}">${u.is_verified ? "Verified" : "Unverified"}</span>` : ""}
+              <span class="badge ${u.is_active ? "badge-success" : "badge-error"}">${u.is_active ? "Active" : "Deactivated"}</span>
+              ${verifyBtn}${toggleBtn}
+            </div>
+          </div>`;
+        })
+        .join("");
+
+      list.querySelectorAll("[data-action='verify']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/verify`);
+          await renderUsers();
+        });
+      });
+      list.querySelectorAll("[data-action='deactivate']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/deactivate`);
+          await renderUsers();
+        });
+      });
+      list.querySelectorAll("[data-action='activate']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/admin/users/${btn.dataset.id}/activate`);
+          await renderUsers();
+        });
+      });
+    }
+
+    document.querySelector("#role-filter").addEventListener("change", renderUsers);
+
+    requireRole("admin").then(async (user) => {
+      if (!user) return;
+      currentAdminId = user.id;
+      initDashShell(user, "users");
+      await renderUsers();
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Failed to load users:", err);
+      showError(loadingEl, "Couldn't load users. Please check your connection and refresh the page.");
+    });
+  </script>
+</body>
+</html>

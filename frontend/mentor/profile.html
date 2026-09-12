@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - Amahirwe</title>
+  <title>My Profile - Amahirwe</title>
   <link rel="manifest" href="../manifest.json" />
   <meta name="theme-color" content="#0F6B52" />
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
@@ -12,10 +12,14 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
     .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
     .status-banner--pending { color: #8A5B00; }
+    .expertise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); margin: var(--space-2) 0 var(--space-4); }
+    .expertise-option { position: relative; }
+    .expertise-option input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+    .expertise-option label { display: block; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--color-bg); box-shadow: var(--shadow-raised-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+    .expertise-option input:checked + label { box-shadow: var(--shadow-pressed); color: var(--color-primary-dark); }
+    .card-narrow { max-width: 560px; }
   </style>
 </head>
 <body>
@@ -29,9 +33,9 @@
       <span>Amahirwe</span>
     </a>
     <nav class="dash-sidebar__nav">
-      <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="mentees.html" class="dash-sidebar__link" data-page="mentees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_my_mentees">My Mentees</span></a>
-      <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
+      <a href="profile.html" class="dash-sidebar__link is-active" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
       <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
@@ -45,7 +49,7 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
+          <h1 data-i18n="nav_my_profile">My Profile</h1>
           <p class="text-secondary" data-i18n="dash_mentor_subtitle">Mentor dashboard</p>
         </div>
       </div>
@@ -73,46 +77,29 @@
           <span class="spinner" aria-hidden="true"></span>
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
-
-        <div id="dashboard-content" hidden>
+        <div id="dashboard-content" class="card-narrow" hidden>
           <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
             <span aria-hidden="true">&#9203;</span>
             <p data-i18n="dash_mentor_pending_verification">Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
           </div>
-
-          <div id="prompt-card" class="card dash-placeholder" hidden>
-            <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/mentor.png" alt="" />
-            <h3 data-i18n="dash_mentor_need_profile_title">Complete your mentor profile</h3>
-            <p class="text-secondary" data-i18n="dash_mentor_need_profile_body">Tell us your district and the areas you can guide students in.</p>
-            <a class="btn btn-primary" href="profile.html" data-i18n="dash_mentor_profile_title">Complete your mentor profile</a>
-          </div>
-
-          <div id="stats-area" hidden>
-            <div class="stat-grid">
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/></svg></span>
-                <span class="stat-card__value" id="stat-mentees">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_mentees">Active mentees</span>
+          <div class="card">
+            <h2 id="profile-heading" data-i18n="dash_mentor_profile_title">Complete your mentor profile</h2>
+            <form id="profile-form" novalidate>
+              <div class="form-field">
+                <label class="form-label" for="district" data-i18n="dash_district">District</label>
+                <input class="form-input" type="text" id="district" name="district" required />
               </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
-                <span class="stat-card__value" id="stat-pending">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_pending_requests">Pending requests</span>
+              <div class="form-field">
+                <span class="form-label" data-i18n="dash_expertise_areas">Areas you can mentor in</span>
+                <div class="expertise-grid" id="expertise-grid"></div>
               </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-                <span class="stat-card__value" id="stat-areas">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_expertise_areas">Areas of expertise</span>
+              <div class="form-field">
+                <label class="form-label" for="bio" data-i18n="dash_bio">Short bio (optional)</label>
+                <textarea class="form-textarea" id="bio" name="bio"></textarea>
               </div>
-            </div>
-
-            <div class="dash-panel">
-              <div class="dash-panel__header">
-                <h2 data-i18n="dash_your_mentor_matches">Your mentor matches</h2>
-                <a href="mentees.html" data-i18n="dash_view_all">View all</a>
-              </div>
-              <div id="matches-preview"><p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p></div>
-            </div>
+              <p class="form-error" id="form-error" hidden></p>
+              <button type="submit" class="btn btn-primary btn-block" id="profile-submit-btn" data-i18n="dash_save_profile">Save profile</button>
+            </form>
           </div>
         </div>
       </main>
@@ -123,49 +110,80 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell } from "../js/dashboard.js";
-    import { listMyMatches, renderMatchCard } from "../js/matching.js";
+    import { showContent, showError, initDashShell, talentAreaLabel, TALENT_AREA_LABELS } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+    let currentMentor = null;
 
-    async function render(user) {
-      let mentor;
-      try {
-        mentor = await api.get("/mentors/me");
-      } catch {
-        document.querySelector("#prompt-card").hidden = false;
-        document.querySelector("#stats-area").hidden = true;
-        document.querySelector("#verification-banner").hidden = true;
+    function buildExpertiseGrid(selected = []) {
+      const grid = document.querySelector("#expertise-grid");
+      grid.innerHTML = Object.keys(TALENT_AREA_LABELS)
+        .map(
+          (area) => `<div class="expertise-option">
+            <input type="checkbox" id="area_${area}" name="expertise_areas" value="${area}" ${selected.includes(area) ? "checked" : ""} />
+            <label for="area_${area}">${talentAreaLabel(area)}</label>
+          </div>`
+        )
+        .join("");
+    }
+
+    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const errorEl = document.querySelector("#form-error");
+      errorEl.hidden = true;
+
+      const expertise_areas = Array.from(form.querySelectorAll("input[name='expertise_areas']:checked")).map((el) => el.value);
+      if (expertise_areas.length === 0) {
+        errorEl.textContent = "Choose at least one area you can mentor in.";
+        errorEl.hidden = false;
         return;
       }
 
-      document.querySelector("#prompt-card").hidden = true;
-      document.querySelector("#stats-area").hidden = false;
-      document.querySelector("#verification-banner").hidden = mentor.is_verified;
+      const payload = { district: form.district.value.trim(), bio: form.bio.value.trim() || null, expertise_areas };
 
-      const overview = await api.get("/mentors/me/overview");
-      document.querySelector("#stat-mentees").textContent = overview.approved_mentee_count;
-      document.querySelector("#stat-pending").textContent = overview.pending_request_count;
-      document.querySelector("#stat-areas").textContent = overview.expertise_count;
+      try {
+        if (currentMentor) {
+          currentMentor = await api.patch("/mentors/me", payload);
+        } else {
+          currentMentor = await api.post("/mentors/me", payload);
+        }
+        await render();
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
 
-      const matches = await listMyMatches();
-      const preview = document.querySelector("#matches-preview");
-      if (matches.length === 0) {
-        preview.innerHTML = `<p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p>`;
+    async function render() {
+      try {
+        currentMentor = await api.get("/mentors/me");
+      } catch {
+        currentMentor = null;
+      }
+
+      buildExpertiseGrid(currentMentor ? currentMentor.expertise_areas : []);
+
+      if (currentMentor) {
+        document.querySelector("#profile-heading").textContent = "Your mentor profile";
+        document.querySelector("#district").value = currentMentor.district;
+        document.querySelector("#bio").value = currentMentor.bio || "";
+        document.querySelector("#profile-submit-btn").textContent = "Update profile";
+        document.querySelector("#verification-banner").hidden = currentMentor.is_verified;
       } else {
-        preview.innerHTML = matches.slice(0, 3).map((m) => renderMatchCard(m, "mentor")).join("");
+        document.querySelector("#verification-banner").hidden = true;
       }
     }
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
-      initDashShell(user, "home");
-      await render(user);
+      initDashShell(user, "profile");
+      await render();
       showContent(loadingEl, contentEl);
     }).catch((err) => {
-      console.error("Dashboard failed to load:", err);
-      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
+      console.error("Failed to load profile:", err);
+      showError(loadingEl, "Couldn't load your profile. Please check your connection and refresh the page.");
     });
   </script>
 </body>

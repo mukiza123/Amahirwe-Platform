@@ -15,3 +15,4 @@ from app.models.teacher import TeacherProfile  # noqa: E402,F401
 from app.models.mentor import Mentor, MentorExpertise, MentorMatch, MatchStatus  # noqa: E402,F401
 from app.models.opportunity import Opportunity  # noqa: E402,F401
 from app.models.audit import AuditLog, Notification  # noqa: E402,F401
+from app.models.guardian import StudentGuardian  # noqa: E402,F401

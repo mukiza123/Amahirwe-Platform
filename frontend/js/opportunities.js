@@ -6,6 +6,11 @@
 import { api } from "./api.js";
 import { talentAreaIcon, talentAreaLabel, formatDate } from "./dashboard.js";
 
+function listOpportunities(talentArea) {
+  const query = talentArea ? `?talent_area=${talentArea}` : "";
+  return api.get(`/opportunities${query}`);
+}
+
 function listMyOpportunities() {
   return api.get("/opportunities/mine");
 }
@@ -49,4 +54,30 @@ function renderOpportunityCard(opportunity) {
     </div>`;
 }
 
-export { listMyOpportunities, createOpportunity, updateOpportunity, deleteOpportunity, renderOpportunityCard };
+/** A read-only opportunity card for students/teachers/parents/mentors
+ * browsing what's available, no management actions. */
+function renderPublicOpportunityCard(opportunity) {
+  const areaTag = opportunity.talent_area
+    ? `<span class="badge badge-mint">${talentAreaIcon(opportunity.talent_area)} ${talentAreaLabel(opportunity.talent_area)}</span>`
+    : `<span class="badge badge-neutral">Open to all talents</span>`;
+  const deadline = opportunity.deadline ? `<p class="text-secondary">Deadline: ${formatDate(opportunity.deadline)}</p>` : "";
+
+  return `
+    <div class="card opportunity-card" data-id="${opportunity.id}">
+      ${areaTag}
+      <h3>${opportunity.title}</h3>
+      <p>${opportunity.description}</p>
+      <p class="text-secondary">${opportunity.location} &middot; ${opportunity.provider_name || ""}</p>
+      ${deadline}
+    </div>`;
+}
+
+export {
+  listOpportunities,
+  listMyOpportunities,
+  createOpportunity,
+  updateOpportunity,
+  deleteOpportunity,
+  renderOpportunityCard,
+  renderPublicOpportunityCard,
+};

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications - Amahirwe</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
+    .notification-row { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+    .notification-row:last-child { border-bottom: none; }
+    .notification-row--unread { border-left: 3px solid var(--color-primary-teal); padding-left: var(--space-2); }
+    .card-narrow { max-width: 640px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
+  <div class="dash-shell">
+  <div class="dash-sidebar-backdrop"></div>
+  <aside class="dash-sidebar">
+    <button type="button" class="dash-sidebar__close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="../index.html" class="dash-sidebar__brand">
+      <img src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+      <span>Amahirwe</span>
+    </a>
+    <nav class="dash-sidebar__nav">
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="children.html" class="dash-sidebar__link" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
+      <a href="notifications.html" class="dash-sidebar__link is-active" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
+    </div>
+  </aside>
+    <div class="dash-body">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div class="dash-topbar__title">
+          <h1 data-i18n="nav_notifications">Notifications</h1>
+          <p class="text-secondary" data-i18n="dash_parent_subtitle">Parent dashboard</p>
+        </div>
+      </div>
+      <div class="dash-topbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="notifications.html" class="dash-notif-bell" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg>
+          <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
+        </a>
+        <div class="dash-user">
+          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <div>
+            <div class="dash-user__name" id="dash-user-name"></div>
+            <div class="dash-user__role" id="dash-user-role"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+      <main id="main-content" class="dash-main">
+        <div id="state-loading" class="state-message" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p data-i18n="dash_loading">Loading&hellip;</p>
+        </div>
+        <div id="dashboard-content" class="card-narrow" hidden>
+          <div class="card" id="notification-list"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, showError, initDashShell, formatDate } from "../js/dashboard.js";
+
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+
+    async function render() {
+      const notifications = await api.get("/notifications/me");
+      const list = document.querySelector("#notification-list");
+      if (notifications.length === 0) {
+        list.innerHTML = `<div class="dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/system/notifications.png" alt="" />
+          <p class="text-secondary" data-i18n="dash_no_notifications">No notifications yet.</p>
+        </div>`;
+        return;
+      }
+      list.innerHTML = notifications
+        .map(
+          (n) => `<div class="notification-row${n.is_read ? "" : " notification-row--unread"}" data-id="${n.id}">
+            <div><p>${n.message}</p><time class="text-secondary" style="font-size:0.8rem">${formatDate(n.created_at)}</time></div>
+            ${n.is_read ? "" : `<button type="button" class="btn btn-secondary btn-sm" data-action="mark-read" data-id="${n.id}" data-i18n="dash_mark_read">Mark read</button>`}
+          </div>`
+        )
+        .join("");
+
+      list.querySelectorAll("[data-action='mark-read']").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          await api.patch(`/notifications/${btn.dataset.id}/read`);
+          await render();
+        });
+      });
+    }
+
+    requireRole("parent").then(async (user) => {
+      if (!user) return;
+      initDashShell(user, "notifications");
+      await render();
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Failed to load notifications:", err);
+      showError(loadingEl, "Couldn't load notifications. Please check your connection and refresh the page.");
+    });
+  </script>
+</body>
+</html>

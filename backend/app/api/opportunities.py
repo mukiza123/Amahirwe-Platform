@@ -3,12 +3,15 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from collections import Counter
+
 from app.api.deps import require_roles
 from app.core.database import get_db
 from app.models.opportunity import Opportunity
 from app.models.talent import TalentArea
 from app.models.user import User, UserRole
 from app.schemas.opportunity import OpportunityCreate, OpportunityRead, OpportunityUpdate
+from app.schemas.stats import OpportunityOverview
 
 router = APIRouter(prefix="/api/opportunities", tags=["opportunities"])
 
@@ -46,6 +49,21 @@ def list_my_opportunities(
         .all()
     )
     return [_to_read(o) for o in opportunities]
+
+
+@router.get("/mine/overview", response_model=OpportunityOverview)
+def read_my_overview(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(UserRole.PROVIDER)),
+):
+    opportunities = db.query(Opportunity).filter(Opportunity.provider_id == current_user.id).all()
+    by_area = Counter(o.talent_area.value for o in opportunities if o.talent_area is not None)
+
+    return OpportunityOverview(
+        total_count=len(opportunities),
+        active_count=sum(1 for o in opportunities if o.is_active),
+        by_talent_area=dict(by_area),
+    )
 
 
 @router.post("", response_model=OpportunityRead, status_code=status.HTTP_201_CREATED)

@@ -318,6 +318,13 @@
   font-weight: 600;
 }
 
+.form-success {
+  font-size: 0.8rem;
+  color: var(--color-success);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
 .form-input,
 .form-select,
 .form-textarea {
@@ -1086,5 +1093,531 @@
 
   .process-steps--horizontal .process-arrow svg {
     transform: none;
+  }
+}
+
+/* =========================================================================
+   DASHBOARD SHELL
+   Shared sidebar + topbar layout for every role's dashboard pages, built
+   once here so each page only supplies its own nav items and content.
+   ========================================================================= */
+
+.dash-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
+}
+
+.dash-sidebar {
+  width: 248px;
+  flex-shrink: 0;
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, 0.92);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) var(--space-3);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: transform var(--transition-base);
+  z-index: 60;
+}
+
+.dash-sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #fff;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+}
+
+.dash-sidebar__brand:hover {
+  text-decoration: none;
+}
+
+.dash-sidebar__brand img {
+  width: 26px;
+  height: 26px;
+}
+
+.dash-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.dash-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 11px var(--space-2);
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+  font-size: 0.92rem;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.dash-sidebar__link svg {
+  flex-shrink: 0;
+  width: 19px;
+  height: 19px;
+}
+
+.dash-sidebar__link:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+}
+
+.dash-sidebar__link.is-active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.dash-sidebar__footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.dash-sidebar__close {
+  display: none;
+}
+
+.dash-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dash-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.dash-topbar > div:first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.dash-topbar__title {
+  min-width: 0;
+}
+
+.dash-topbar__title h1 {
+  font-size: 1.3rem;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-topbar__title p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-topbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.dash-sidebar-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px;
+  color: var(--color-text);
+}
+
+.dash-sidebar-toggle svg,
+.dash-notif-bell svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.dash-notif-bell {
+  position: relative;
+  border: none;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-raised-sm);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.dash-notif-bell__dot {
+  position: absolute;
+  top: 8px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-orange);
+  border: 1.5px solid var(--color-bg);
+}
+
+.dash-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.dash-user__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-mint);
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.dash-user__name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.dash-user__role {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.dash-main {
+  padding: var(--space-5);
+  flex: 1;
+}
+
+.dash-main .state-message {
+  padding-top: var(--space-6);
+}
+
+/* --- Stat cards --- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.stat-card {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stat-card__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-mint);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-1);
+}
+
+.stat-card__icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.stat-card__value {
+  font-family: var(--font-heading);
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.stat-card__label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* --- Dashboard content grid --- */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.dash-panel {
+  background: var(--color-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  padding: var(--space-4);
+}
+
+.dash-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.dash-panel__header h2 {
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* --- Recent-activity rows --- */
+.activity-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+.activity-row:last-child {
+  border-bottom: none;
+}
+
+.activity-row__icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-primary-teal);
+}
+
+.activity-row__icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.activity-row time {
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+
+/* --- Talent / bar-chart rows --- */
+.chart-bar-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  font-size: 0.85rem;
+}
+
+.chart-bar-row__label {
+  width: 108px;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-bar-row__track {
+  flex: 1;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-pressed);
+  overflow: hidden;
+}
+
+.chart-bar-row__fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary-teal);
+}
+
+.chart-bar-row__value {
+  width: 34px;
+  text-align: right;
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* --- Donut / ring stat --- */
+.chart-donut {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.chart-donut__value {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  fill: var(--color-text);
+}
+
+/* --- Mini bar chart (e.g. signups over time) --- */
+.mini-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 90px;
+}
+
+.mini-bars__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+
+.mini-bars__bar {
+  width: 100%;
+  max-width: 18px;
+  border-radius: 4px 4px 0 0;
+  background: var(--color-primary-teal);
+  min-height: 2px;
+}
+
+.mini-bars__col-label {
+  font-size: 0.62rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* --- Empty / list rows reused across role pages --- */
+.simple-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.simple-row:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 700px) {
+  .dash-grid--2 {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+@media (max-width: 899px) {
+  .dash-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .dash-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .dash-sidebar__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-bottom: var(--space-2);
+    cursor: pointer;
+  }
+
+  .dash-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dash-topbar {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .dash-topbar__actions {
+    gap: var(--space-2);
+  }
+
+  .dash-topbar__title p {
+    display: none;
+  }
+
+  .lang-switch button {
+    padding: 7px 10px;
+    font-size: 0.72rem;
+  }
+
+  .dash-main {
+    padding: var(--space-3);
+  }
+
+  .dash-user__name,
+  .dash-user__role {
+    display: none;
+  }
+}
+
+.dash-sidebar-backdrop {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .dash-sidebar-backdrop.is-open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 55;
   }
 }

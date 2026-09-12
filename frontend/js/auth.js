@@ -15,7 +15,7 @@ const DASHBOARD_BY_ROLE = {
   mentor: "mentor/dashboard.html",
   provider: "provider/dashboard.html",
   admin: "admin/dashboard.html",
-  parent: "student/dashboard.html",
+  parent: "parent/dashboard.html",
 };
 
 function saveSession(token, user) {
@@ -44,7 +44,7 @@ function logout() {
 
 /** Path prefix back to frontend/ root, based on current page depth. */
 function pathToRoot() {
-  const inRoleFolder = /\/frontend\/(student|teacher|mentor|provider|admin)\//.test(window.location.pathname);
+  const inRoleFolder = /\/frontend\/(student|teacher|mentor|provider|admin|parent)\//.test(window.location.pathname);
   return inRoleFolder ? "../" : "";
 }
 

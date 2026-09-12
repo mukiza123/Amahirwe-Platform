@@ -5,10 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, require_roles
 from app.core.database import get_db
-from app.models.mentor import Mentor, MentorExpertise
+from app.models.mentor import MatchStatus, Mentor, MentorExpertise, MentorMatch
 from app.models.talent import TalentArea
 from app.models.user import User, UserRole
 from app.schemas.mentor import MentorCreate, MentorRead, MentorUpdate
+from app.schemas.stats import MentorOverview
 
 router = APIRouter(prefix="/api/mentors", tags=["mentors"])
 
@@ -103,3 +104,25 @@ def list_mentors(
         )
     mentors = query.order_by(Mentor.created_at.desc()).all()
     return [_to_read(m, m.user) for m in mentors]
+
+
+@router.get("/me/overview", response_model=MentorOverview)
+def read_my_overview(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(UserRole.MENTOR)),
+):
+    mentor = _get_own_mentor(db, current_user)
+    expertise_count = db.query(MentorExpertise).filter(MentorExpertise.mentor_id == mentor.id).count()
+
+    counts = {status_: 0 for status_ in MatchStatus}
+    for row in (
+        db.query(MentorMatch.status, MentorMatch.id).filter(MentorMatch.mentor_id == mentor.id).all()
+    ):
+        counts[row.status] = counts.get(row.status, 0) + 1
+
+    return MentorOverview(
+        expertise_count=expertise_count,
+        approved_mentee_count=counts[MatchStatus.APPROVED],
+        pending_request_count=counts[MatchStatus.PENDING],
+        rejected_count=counts[MatchStatus.REJECTED],
+    )

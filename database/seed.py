@@ -5,10 +5,11 @@ Populates fictional demo accounts and data so the platform can be
 demonstrated end to end. Safe to re-run: it skips anything that already
 exists (matched by email/name) rather than creating duplicates.
 
-Covers auth, student/assessment, teacher, mentor matching, opportunities
-and admin: one school, one student with a completed assessment, a
-teacher and mentor at that school, a pending mentor match awaiting the
-teacher's review, and one opportunity posted by the provider account.
+Covers auth, student/assessment, teacher, mentor matching, opportunities,
+admin and guardians: one school, one student with a completed assessment,
+a teacher and mentor at that school, a pending mentor match awaiting the
+teacher's review, one opportunity posted by the provider account, and the
+parent account linked as that student's guardian.
 
 Run with:
 
@@ -23,6 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
 from app.core.database import SessionLocal  # noqa: E402
 from app.core.security import hash_password  # noqa: E402
 from app.models.audit import Notification  # noqa: E402
+from app.models.guardian import StudentGuardian  # noqa: E402
 from app.models.mentor import MatchStatus, Mentor, MentorExpertise, MentorMatch  # noqa: E402
 from app.models.opportunity import Opportunity  # noqa: E402
 from app.models.school import School  # noqa: E402
@@ -192,6 +194,22 @@ def seed_demo_match(db, student, mentor, teacher_profile):
     return match
 
 
+def get_or_create_guardian_link(db, student, guardian_user, teacher_user):
+    existing = (
+        db.query(StudentGuardian)
+        .filter(StudentGuardian.student_id == student.id, StudentGuardian.guardian_user_id == guardian_user.id)
+        .first()
+    )
+    if existing is None:
+        existing = StudentGuardian(
+            student_id=student.id, guardian_user_id=guardian_user.id, linked_by_teacher_id=teacher_user.id
+        )
+        db.add(existing)
+        db.flush()
+        print(f"  + guardian link: {guardian_user.full_name} -> {student.full_name}")
+    return existing
+
+
 def main():
     db = SessionLocal()
     try:
@@ -204,7 +222,7 @@ def main():
         mentor_user = get_or_create_user(db, "Grace Mukamana", "mentor@amahirwe.demo", UserRole.MENTOR)
         provider_user = get_or_create_user(db, "TechHub Rwanda", "provider@amahirwe.demo", UserRole.PROVIDER)
         get_or_create_user(db, "Amahirwe Admin", "admin@amahirwe.demo", UserRole.ADMIN)
-        get_or_create_user(db, "Emmanuel Nshuti", "parent@amahirwe.demo", UserRole.PARENT)
+        parent_user = get_or_create_user(db, "Emmanuel Nshuti", "parent@amahirwe.demo", UserRole.PARENT)
 
         student = get_or_create_student(db, student_user, school, "Aline Uwase", "15-16")
         seed_demo_assessment(db, student)
@@ -213,6 +231,7 @@ def main():
         mentor = get_or_create_mentor(db, mentor_user, school.district, [TalentArea.TECHNOLOGY, TalentArea.LEADERSHIP])
         get_or_create_opportunity(db, provider_user)
         seed_demo_match(db, student, mentor, teacher_profile)
+        get_or_create_guardian_link(db, student, parent_user, teacher_user)
 
         db.commit()
         print("Done.")

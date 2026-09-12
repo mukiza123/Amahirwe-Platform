@@ -14,7 +14,6 @@
   <style>
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
     .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
-    .simple-row__meta { display: flex; align-items: center; gap: var(--space-2); }
   </style>
 </head>
 <body>
@@ -29,8 +28,7 @@
     </a>
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
-      <a href="students.html" class="dash-sidebar__link" data-page="students"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_my_students">My Students</span></a>
-      <a href="matches.html" class="dash-sidebar__link" data-page="matches"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentor_requests">Mentor Requests</span></a>
+      <a href="children.html" class="dash-sidebar__link" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
       <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
@@ -45,7 +43,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_teacher_subtitle">Teacher dashboard</p>
+          <p class="text-secondary" data-i18n="dash_parent_subtitle">Parent dashboard</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -74,46 +72,37 @@
         </div>
 
         <div id="dashboard-content" hidden>
-          <div id="prompt-card" class="card dash-placeholder" hidden>
-            <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/teacher.png" alt="" />
-            <h3 data-i18n="dash_teacher_need_school_title">Which school do you teach at?</h3>
-            <p class="text-secondary" data-i18n="dash_teacher_need_school_body">Tell us your school so you can add students and review mentor requests.</p>
-            <a class="btn btn-primary" href="students.html" data-i18n="dash_set_up_school">Set up school</a>
+          <div id="empty-card" class="card dash-placeholder" hidden>
+            <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
+            <h3 data-i18n="dash_no_children_title">No children linked yet</h3>
+            <p class="text-secondary" data-i18n="dash_no_children_body">Ask your child's teacher to link your account so you can follow their progress.</p>
           </div>
 
           <div id="stats-area" hidden>
             <div class="stat-grid">
               <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/></svg></span>
-                <span class="stat-card__value" id="stat-students">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_total_students">Total students</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
-                <span class="stat-card__value" id="stat-pending">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_pending_requests">Mentor requests</span>
+                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg></span>
+                <span class="stat-card__value" id="stat-children">0</span>
+                <span class="stat-card__label" data-i18n="dash_stat_children">Children</span>
               </div>
               <div class="stat-card">
                 <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l2 2 4-4"/></svg></span>
                 <span class="stat-card__value" id="stat-assessed">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_assessed">Completed assessment</span>
+                <span class="stat-card__label" data-i18n="dash_stat_children_assessed">Completed assessment</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
+                <span class="stat-card__value" id="stat-matched">0</span>
+                <span class="stat-card__label" data-i18n="dash_stat_children_matched">With a mentor</span>
               </div>
             </div>
 
-            <div class="dash-grid dash-grid--2">
-              <div class="dash-panel">
-                <div class="dash-panel__header">
-                  <h2 data-i18n="dash_your_students">Your students</h2>
-                  <a href="students.html" data-i18n="dash_view_all">View all</a>
-                </div>
-                <div id="students-preview"></div>
+            <div class="dash-panel">
+              <div class="dash-panel__header">
+                <h2 data-i18n="dash_my_children">My children</h2>
+                <a href="children.html" data-i18n="dash_view_all">View all</a>
               </div>
-              <div class="dash-panel">
-                <div class="dash-panel__header">
-                  <h2 data-i18n="dash_recent_activity">Recent activity</h2>
-                </div>
-                <div id="recent-activity"><p class="text-secondary" data-i18n="dash_no_activity">No recent activity yet.</p></div>
-              </div>
+              <div id="children-preview"></div>
             </div>
           </div>
         </div>
@@ -125,61 +114,41 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
-    async function renderRecentActivity() {
-      const container = document.querySelector("#recent-activity");
-      const notifications = await api.get("/notifications/me");
-      if (notifications.length === 0) return;
-      container.innerHTML = notifications
-        .slice(0, 5)
+    async function render() {
+      const children = await api.get("/parents/me/children");
+
+      if (children.length === 0) {
+        document.querySelector("#empty-card").hidden = false;
+        document.querySelector("#stats-area").hidden = true;
+        return;
+      }
+
+      document.querySelector("#empty-card").hidden = true;
+      document.querySelector("#stats-area").hidden = false;
+      document.querySelector("#stat-children").textContent = children.length;
+      document.querySelector("#stat-assessed").textContent = children.filter((c) => c.has_completed_assessment).length;
+      document.querySelector("#stat-matched").textContent = children.filter((c) => c.mentor_match_status === "approved").length;
+
+      document.querySelector("#children-preview").innerHTML = children
         .map(
-          (n) => `<div class="activity-row">
-            <span class="activity-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/></svg></span>
-            <div><p>${n.message}</p><time>${formatDate(n.created_at)}</time></div>
+          (c) => `<div class="simple-row">
+            <span>${c.full_name} <span class="text-secondary">(${c.school_name})</span></span>
+            <span>${
+              c.top_talents.length > 0
+                ? `${talentAreaIcon(c.top_talents[0].talent_area)} ${talentAreaLabel(c.top_talents[0].talent_area)}`
+                : '<span class="text-secondary">No assessment yet</span>'
+            }</span>
           </div>`
         )
         .join("");
     }
 
-    async function render() {
-      let overview;
-      try {
-        overview = await api.get("/teachers/me/overview");
-      } catch {
-        document.querySelector("#prompt-card").hidden = false;
-        document.querySelector("#stats-area").hidden = true;
-        return;
-      }
-
-      document.querySelector("#prompt-card").hidden = true;
-      document.querySelector("#stats-area").hidden = false;
-      document.querySelector("#stat-students").textContent = overview.student_count;
-      document.querySelector("#stat-pending").textContent = overview.pending_match_count;
-      document.querySelector("#stat-assessed").textContent = overview.students_with_assessment_count;
-
-      const preview = document.querySelector("#students-preview");
-      if (overview.students.length === 0) {
-        preview.innerHTML = `<p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p>`;
-      } else {
-        preview.innerHTML = overview.students
-          .slice(0, 5)
-          .map(
-            (s) => `<div class="simple-row">
-              <span>${s.full_name}</span>
-              <span>${s.top_talent_area ? `${talentAreaIcon(s.top_talent_area)} ${talentAreaLabel(s.top_talent_area)}` : '<span class="text-secondary">No assessment yet</span>'}</span>
-            </div>`
-          )
-          .join("");
-      }
-
-      await renderRecentActivity();
-    }
-
-    requireRole("teacher").then(async (user) => {
+    requireRole("parent").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
       await render();

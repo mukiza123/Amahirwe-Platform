@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assessment - Amahirwe</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    .talent-result { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+    .talent-result:last-child { border-bottom: none; }
+    .talent-result__icon { font-size: 1.6rem; }
+    .talent-result__rank { font-weight: 800; color: var(--color-primary-teal); min-width: 24px; }
+    .question-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); font-size: 0.85rem; color: var(--color-text-secondary); }
+    .choice-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-3) 0; }
+    .assessment-nav { display: flex; justify-content: space-between; margin-top: var(--space-4); }
+    .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .sync-banner__icon { width: 32px; height: 32px; flex-shrink: 0; }
+    .sync-banner p { flex: 1; margin: 0; }
+    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
+    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
+    .card-narrow { max-width: 640px; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
+  <div class="dash-shell">
+  <div class="dash-sidebar-backdrop"></div>
+  <aside class="dash-sidebar">
+    <button type="button" class="dash-sidebar__close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="../index.html" class="dash-sidebar__brand">
+      <img src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+      <span>Amahirwe</span>
+    </a>
+    <nav class="dash-sidebar__nav">
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
+      <a href="assessment.html" class="dash-sidebar__link is-active" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
+      <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
+    </div>
+  </aside>
+    <div class="dash-body">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div class="dash-topbar__title">
+          <h1 data-i18n="nav_assessment">Assessment</h1>
+          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+        </div>
+      </div>
+      <div class="dash-topbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="notifications.html" class="dash-notif-bell" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg>
+          <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
+        </a>
+        <div class="dash-user">
+          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <div>
+            <div class="dash-user__name" id="dash-user-name"></div>
+            <div class="dash-user__role" id="dash-user-role"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+      <main id="main-content" class="dash-main">
+        <div id="state-loading" class="state-message" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p data-i18n="dash_loading">Loading&hellip;</p>
+        </div>
+
+        <div id="dashboard-content" hidden>
+          <div id="sync-banner" class="card sync-banner" hidden>
+            <img class="sync-banner__icon" src="../assets/illustrations/system/offline.png" alt="" />
+            <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
+            <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
+          </div>
+
+          <section id="no-profile-section" class="card-narrow dash-placeholder card" hidden>
+            <h3 data-i18n="dash_need_profile_title">Complete your profile first</h3>
+            <p class="text-secondary" data-i18n="dash_need_profile_body">We need your school on file before you can take the assessment.</p>
+            <a class="btn btn-primary" href="profile.html" data-i18n="nav_my_profile">My Profile</a>
+          </section>
+
+          <section id="assessment-intro-section" class="card-narrow dash-placeholder card" hidden>
+            <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
+            <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
+            <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
+            <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>
+          </section>
+
+          <section id="assessment-section" class="card-narrow" hidden>
+            <div class="card">
+              <div class="question-meta">
+                <span id="question-progress-label">Question 1 of 12</span>
+              </div>
+              <div class="progress"><div class="progress__fill" id="progress-fill" style="width:0%"></div></div>
+              <h2 id="question-text" style="margin-top:var(--space-4)"></h2>
+              <div class="choice-list" id="choice-list"></div>
+              <div class="assessment-nav">
+                <button type="button" class="btn btn-secondary" id="prev-question-btn" data-i18n="dash_back">Back</button>
+                <button type="button" class="btn btn-primary" id="next-question-btn" data-i18n="dash_next">Next</button>
+              </div>
+              <p class="form-error" id="assessment-error" hidden></p>
+            </div>
+          </section>
+
+          <section id="results-section" class="card-narrow" hidden>
+            <h2 data-i18n="dash_top_strengths">Your top strengths</h2>
+            <div class="card" id="results-card"></div>
+            <div class="card__actions">
+              <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
+    import { loadQuestions, submitAssessment } from "../js/assessment.js";
+    import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
+
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let answers = {};
+
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+
+    function section(id) {
+      return document.querySelector(id);
+    }
+
+    function hideAllSections() {
+      ["#no-profile-section", "#assessment-intro-section", "#assessment-section", "#results-section"].forEach(
+        (id) => (section(id).hidden = true)
+      );
+    }
+
+    async function checkSyncQueue() {
+      const queued = await listQueuedAssessments();
+      document.querySelector("#sync-banner").hidden = queued.length === 0;
+    }
+
+    document.querySelector("#sync-now-btn").addEventListener("click", async () => {
+      await syncQueuedAssessments((payload) => api.post("/assessments", payload));
+      await checkSyncQueue();
+      await render();
+    });
+
+    function renderResults(results) {
+      const card = document.querySelector("#results-card");
+      card.innerHTML = results
+        .map(
+          (r) => `
+          <div class="talent-result">
+            <span class="talent-result__rank">#${r.rank}</span>
+            <span class="talent-result__icon">${talentAreaIcon(r.talent_area)}</span>
+            <div>
+              <strong>${talentAreaLabel(r.talent_area)}</strong>
+              <p class="text-secondary">${r.explanation}</p>
+            </div>
+          </div>`
+        )
+        .join("");
+    }
+
+    function startAssessment() {
+      currentQuestionIndex = 0;
+      answers = {};
+      hideAllSections();
+      section("#assessment-section").hidden = false;
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questions[currentQuestionIndex];
+      document.querySelector("#question-progress-label").textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      document.querySelector("#progress-fill").style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+      document.querySelector("#question-text").textContent = q.text;
+      document.querySelector("#prev-question-btn").disabled = currentQuestionIndex === 0;
+      document.querySelector("#next-question-btn").textContent =
+        currentQuestionIndex === questions.length - 1 ? "Submit" : "Next";
+
+      const list = document.querySelector("#choice-list");
+      list.innerHTML = q.choices
+        .map(
+          (c) => `<button type="button" class="choice-btn" data-choice-id="${c.id}" aria-pressed="${answers[q.id] === c.id}">
+            <span class="choice-btn__dot"></span>${c.text}
+          </button>`
+        )
+        .join("");
+      list.querySelectorAll(".choice-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          answers[q.id] = btn.dataset.choiceId;
+          list.querySelectorAll(".choice-btn").forEach((b) => b.setAttribute("aria-pressed", "false"));
+          btn.setAttribute("aria-pressed", "true");
+        });
+      });
+    }
+
+    document.querySelector("#prev-question-btn").addEventListener("click", () => {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex -= 1;
+        renderQuestion();
+      }
+    });
+
+    document.querySelector("#next-question-btn").addEventListener("click", async () => {
+      const q = questions[currentQuestionIndex];
+      const errorEl = document.querySelector("#assessment-error");
+      errorEl.hidden = true;
+
+      if (!answers[q.id]) {
+        errorEl.textContent = "Please choose an answer before continuing.";
+        errorEl.hidden = false;
+        return;
+      }
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex += 1;
+        renderQuestion();
+        return;
+      }
+
+      const payload = {
+        language: document.documentElement.getAttribute("lang") || "rw",
+        answers: Object.entries(answers).map(([question_id, choice_id]) => ({ question_id, choice_id })),
+      };
+
+      try {
+        const { queued } = await submitAssessment(payload);
+        if (queued) {
+          hideAllSections();
+          section("#assessment-intro-section").hidden = false;
+          section("#assessment-intro-section").querySelector("h3").textContent = "Saved on this device";
+          section("#assessment-intro-section").querySelector("p").textContent =
+            "You're offline. Your answers will be sent automatically once you're back online.";
+          section("#assessment-intro-section").querySelector("button").hidden = true;
+          await checkSyncQueue();
+        } else {
+          await render();
+        }
+      } catch (err) {
+        errorEl.textContent = err.message || "Couldn't submit your assessment. Please try again.";
+        errorEl.hidden = false;
+      }
+    });
+
+    document.querySelector("#start-assessment-btn").addEventListener("click", async () => {
+      questions = await loadQuestions();
+      startAssessment();
+    });
+
+    document.querySelector("#retake-assessment-btn").addEventListener("click", async () => {
+      questions = await loadQuestions();
+      startAssessment();
+    });
+
+    async function render() {
+      hideAllSections();
+
+      try {
+        await api.get("/students/me");
+      } catch {
+        section("#no-profile-section").hidden = false;
+        return;
+      }
+
+      const assessments = await api.get("/assessments");
+      if (assessments.length === 0) {
+        section("#assessment-intro-section").hidden = false;
+        return;
+      }
+
+      renderResults(assessments[0].results);
+      section("#results-section").hidden = false;
+    }
+
+    requireRole("student").then(async (user) => {
+      if (!user) return;
+      initDashShell(user, "assessment");
+      await checkSyncQueue();
+      await render();
+      showContent(loadingEl, contentEl);
+      if (navigator.onLine) {
+        syncQueuedAssessments((payload) => api.post("/assessments", payload)).then(() => checkSyncQueue());
+      }
+    }).catch((err) => {
+      console.error("Failed to load assessment:", err);
+      showError(loadingEl, "Couldn't load the assessment. Please check your connection and refresh the page.");
+    });
+  </script>
+</body>
+</html>

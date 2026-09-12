@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Amahirwe</title>
+  <title>Home - Amahirwe</title>
   <link rel="manifest" href="../manifest.json" />
   <meta name="theme-color" content="#0F6B52" />
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
@@ -12,19 +12,6 @@
   <link rel="stylesheet" href="../css/components.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-wrap { padding: var(--space-6) 0 var(--space-7); max-width: 720px; margin: 0 auto; }
-    .dash-welcome { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-5); }
-    .dash-section { margin-bottom: var(--space-5); }
-    .dash-section h2 { margin-bottom: var(--space-3); }
-    .talent-result { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
-    .talent-result:last-child { border-bottom: none; }
-    .talent-result__icon { font-size: 1.6rem; }
-    .talent-result__rank { font-weight: 800; color: var(--color-primary-teal); min-width: 24px; }
-    .question-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); font-size: 0.85rem; color: var(--color-text-secondary); }
-    .choice-list { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-3) 0; }
-    .assessment-nav { display: flex; justify-content: space-between; margin-top: var(--space-4); }
-    .notification-card { margin-bottom: var(--space-2); box-shadow: var(--shadow-raised-sm); }
-    .notification-card--unread { border-left: 3px solid var(--color-primary-teal); }
     .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
     .sync-banner__icon { width: 32px; height: 32px; flex-shrink: 0; }
     .sync-banner p { flex: 1; margin: 0; }
@@ -34,383 +21,235 @@
 </head>
 <body>
   <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
-  <header class="navbar">
-    <div class="navbar__inner">
-      <a href="../index.html" class="navbar__brand">
-        <img class="navbar__logo-mark" src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
-        <span>Amahirwe</span>
-      </a>
-      <div class="navbar__actions">
+  <div class="dash-shell">
+  <div class="dash-sidebar-backdrop"></div>
+  <aside class="dash-sidebar">
+    <button type="button" class="dash-sidebar__close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="../index.html" class="dash-sidebar__brand">
+      <img src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+      <span>Amahirwe</span>
+    </a>
+    <nav class="dash-sidebar__nav">
+      <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
+      <a href="assessment.html" class="dash-sidebar__link" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
+      <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
+    </div>
+  </aside>
+    <div class="dash-body">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div class="dash-topbar__title">
+          <h1 data-i18n="dash_home">Home</h1>
+          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+        </div>
+      </div>
+      <div class="dash-topbar__actions">
         <div class="lang-switch" role="group" aria-label="Language">
           <button type="button" data-lang="rw" aria-pressed="true">RW</button>
           <button type="button" data-lang="en" aria-pressed="false">EN</button>
           <button type="button" data-lang="fr" aria-pressed="false">FR</button>
         </div>
-        <button type="button" class="btn btn-secondary" data-action="logout" data-i18n="dash_logout">Log out</button>
-      </div>
-    </div>
-  </header>
-
-  <main id="main-content" class="container dash-wrap">
-    <div id="state-loading" class="state-message" role="status" aria-live="polite">
-      <span class="spinner" aria-hidden="true"></span>
-      <p data-i18n="dash_loading">Loading your dashboard…</p>
-    </div>
-
-    <div id="dashboard-content" hidden>
-      <div class="dash-welcome">
-        <div>
-          <h1 id="welcome-heading">Muraho!</h1>
-          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
-        </div>
-        <span class="badge badge-mint" data-i18n="role_student">Student</span>
-      </div>
-
-      <div id="sync-banner" class="card sync-banner" hidden>
-        <img class="sync-banner__icon" src="../assets/illustrations/system/offline.png" alt="" />
-        <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
-        <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
-      </div>
-
-      <div id="notifications-list" hidden></div>
-
-      <!-- Profile completion -->
-      <section id="profile-section" class="dash-section" hidden>
-        <div class="card">
-          <h2 data-i18n="dash_student_profile_title">Complete your profile</h2>
-          <p class="text-secondary" data-i18n="dash_student_profile_body">Tell us your school so we can get you started.</p>
-          <form id="profile-form" novalidate>
-            <div class="form-field">
-              <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
-              <input class="form-input" type="text" id="full_name" name="full_name" required />
-              <p class="form-error" id="full_name-error" hidden></p>
-            </div>
-            <div class="form-field">
-              <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
-              <select class="form-select" id="school_id" name="school_id" required></select>
-              <p class="form-error" id="school_id-error" hidden></p>
-            </div>
-            <div class="form-field">
-              <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
-              <select class="form-select" id="age_range" name="age_range" required>
-                <option value="12-14">12-14</option>
-                <option value="15-16">15-16</option>
-                <option value="17-19">17-19</option>
-              </select>
-            </div>
-            <p class="form-error" id="form-error" hidden></p>
-            <button type="submit" class="btn btn-primary btn-block" data-i18n="dash_save_profile">Save profile</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- Assessment intro -->
-      <section id="assessment-intro-section" class="dash-section" hidden>
-        <div class="card dash-placeholder">
-          <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
-          <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
-          <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
-          <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>
-        </div>
-      </section>
-
-      <!-- Assessment in progress -->
-      <section id="assessment-section" class="dash-section" hidden>
-        <div class="card">
-          <div class="question-meta">
-            <span id="question-progress-label">Question 1 of 12</span>
+        <a href="notifications.html" class="dash-notif-bell" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg>
+          <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
+        </a>
+        <div class="dash-user">
+          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <div>
+            <div class="dash-user__name" id="dash-user-name"></div>
+            <div class="dash-user__role" id="dash-user-role"></div>
           </div>
-          <div class="progress"><div class="progress__fill" id="progress-fill" style="width:0%"></div></div>
-          <h2 id="question-text" style="margin-top:var(--space-4)"></h2>
-          <div class="choice-list" id="choice-list"></div>
-          <div class="assessment-nav">
-            <button type="button" class="btn btn-secondary" id="prev-question-btn" data-i18n="dash_back">Back</button>
-            <button type="button" class="btn btn-primary" id="next-question-btn" data-i18n="dash_next">Next</button>
+        </div>
+      </div>
+    </header>
+      <main id="main-content" class="dash-main">
+        <div id="state-loading" class="state-message" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p data-i18n="dash_loading">Loading your dashboard&hellip;</p>
+        </div>
+
+        <div id="dashboard-content" hidden>
+          <div id="sync-banner" class="card sync-banner" hidden>
+            <img class="sync-banner__icon" src="../assets/illustrations/system/offline.png" alt="" />
+            <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
+            <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
           </div>
-          <p class="form-error" id="assessment-error" hidden></p>
-        </div>
-      </section>
 
-      <!-- Results -->
-      <section id="results-section" class="dash-section" hidden>
-        <h2 data-i18n="dash_top_strengths">Your top strengths</h2>
-        <div class="card" id="results-card"></div>
-        <div class="card__actions">
-          <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
-        </div>
-      </section>
+          <div id="prompt-card" class="card dash-placeholder" hidden>
+            <img class="dash-placeholder__illustration" id="prompt-illustration" src="" alt="" />
+            <h3 id="prompt-title"></h3>
+            <p class="text-secondary" id="prompt-body"></p>
+            <a class="btn btn-primary" id="prompt-cta" href="#"></a>
+          </div>
 
-      <!-- Mentor match -->
-      <section id="match-section" class="dash-section" hidden>
-        <h2 data-i18n="dash_mentor_match">Mentor match</h2>
-        <div id="match-content"></div>
-      </section>
+          <div id="stats-area" hidden>
+            <div class="stat-grid">
+              <div class="stat-card">
+                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
+                <span class="stat-card__value" id="stat-top-talent">-</span>
+                <span class="stat-card__label" data-i18n="dash_stat_top_talent">Top strength</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l2 2 4-4"/></svg></span>
+                <span class="stat-card__value" id="stat-assessments">0</span>
+                <span class="stat-card__label" data-i18n="dash_stat_assessments">Assessments completed</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
+                <span class="stat-card__value" id="stat-mentor-status">-</span>
+                <span class="stat-card__label" data-i18n="dash_stat_mentor_status">Mentor status</span>
+              </div>
+            </div>
+
+            <div class="dash-grid dash-grid--2">
+              <div class="dash-panel">
+                <div class="dash-panel__header">
+                  <h2 data-i18n="dash_your_strengths_chart">Your strengths</h2>
+                  <a href="assessment.html" data-i18n="dash_view_details">View details</a>
+                </div>
+                <div id="talent-chart"></div>
+              </div>
+              <div class="dash-panel">
+                <div class="dash-panel__header">
+                  <h2 data-i18n="dash_recent_activity">Recent activity</h2>
+                </div>
+                <div id="recent-activity"><p class="text-secondary" data-i18n="dash_no_activity">No recent activity yet.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
-  </main>
+  </div>
 
   <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, loadNotifications, talentAreaIcon, talentAreaLabel, greetingWord } from "../js/dashboard.js";
-    import { loadQuestions, submitAssessment } from "../js/assessment.js";
+    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel, formatDate } from "../js/dashboard.js";
+    import { barRow } from "../js/charts.js";
     import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
-    import { findAMentor, listMyMatches, renderMatchCard } from "../js/matching.js";
-
-    let currentUser = null;
-    let currentStudent = null;
-    let questions = [];
-    let currentQuestionIndex = 0;
-    let answers = {};
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
-    function section(id) {
-      return document.querySelector(id);
-    }
-
-    function hideAllSections() {
-      ["#profile-section", "#assessment-intro-section", "#assessment-section", "#results-section", "#match-section"].forEach(
-        (id) => (section(id).hidden = true)
-      );
-    }
+    const MATCH_STATUS_LABELS = { pending: "Pending", approved: "Approved", rejected: "Not approved" };
 
     async function checkSyncQueue() {
       const queued = await listQueuedAssessments();
       document.querySelector("#sync-banner").hidden = queued.length === 0;
     }
 
-    let syncPromise = null;
-
-    function trySync() {
-      if (syncPromise) return syncPromise;
-      syncPromise = doSync().finally(() => {
-        syncPromise = null;
-      });
-      return syncPromise;
-    }
-
-    async function doSync() {
-      const queued = await listQueuedAssessments();
-      if (queued.length === 0) return;
+    document.querySelector("#sync-now-btn").addEventListener("click", async () => {
       await syncQueuedAssessments((payload) => api.post("/assessments", payload));
       await checkSyncQueue();
       await render();
+    });
+
+    function showPrompt(illustration, title, body, ctaHref, ctaLabel) {
+      document.querySelector("#prompt-illustration").src = illustration;
+      document.querySelector("#prompt-title").textContent = title;
+      document.querySelector("#prompt-body").textContent = body;
+      const cta = document.querySelector("#prompt-cta");
+      cta.href = ctaHref;
+      cta.textContent = ctaLabel;
+      document.querySelector("#prompt-card").hidden = false;
+      document.querySelector("#stats-area").hidden = true;
     }
 
-    async function loadStudentProfile() {
+    async function renderRecentActivity() {
+      const container = document.querySelector("#recent-activity");
       try {
-        currentStudent = await api.get("/students/me");
+        const notifications = await api.get("/notifications/me");
+        if (notifications.length === 0) return;
+        container.innerHTML = notifications
+          .slice(0, 5)
+          .map(
+            (n) => `<div class="activity-row">
+              <span class="activity-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/></svg></span>
+              <div><p>${n.message}</p><time>${formatDate(n.created_at)}</time></div>
+            </div>`
+          )
+          .join("");
       } catch {
-        currentStudent = null;
+        /* leave the default empty-state message in place */
       }
     }
 
-    async function loadSchoolsInto(select) {
-      const schools = await api.get("/schools");
-      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
-    }
-
-    function renderResults(results) {
-      const card = document.querySelector("#results-card");
-      card.innerHTML = results
-        .map(
-          (r) => `
-          <div class="talent-result">
-            <span class="talent-result__rank">#${r.rank}</span>
-            <span class="talent-result__icon">${talentAreaIcon(r.talent_area)}</span>
-            <div>
-              <strong>${talentAreaLabel(r.talent_area)}</strong>
-              <p class="text-secondary">${r.explanation}</p>
-            </div>
-          </div>`
-        )
-        .join("");
-    }
-
-    async function renderMatchSection() {
-      const matches = await listMyMatches();
-      const content = document.querySelector("#match-content");
-      if (matches.length === 0) {
-        content.innerHTML = `<div class="card"><p>Ready to connect with a mentor in your top talent area?</p>
-          <button type="button" class="btn btn-primary" id="find-mentor-btn">Find a mentor</button></div>`;
-        document.querySelector("#find-mentor-btn").addEventListener("click", async (e) => {
-          e.target.disabled = true;
-          try {
-            await findAMentor();
-            await renderMatchSection();
-          } catch (err) {
-            content.innerHTML = `<div class="card"><p class="form-error">${err.message}</p></div>`;
-          }
-        });
-      } else {
-        content.innerHTML = matches.map((m) => renderMatchCard(m, "student")).join("");
-      }
-      section("#match-section").hidden = false;
-    }
-
-    function startAssessment() {
-      currentQuestionIndex = 0;
-      answers = {};
-      hideAllSections();
-      section("#assessment-section").hidden = false;
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const q = questions[currentQuestionIndex];
-      document.querySelector("#question-progress-label").textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
-      document.querySelector("#progress-fill").style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
-      document.querySelector("#question-text").textContent = q.text;
-      document.querySelector("#prev-question-btn").disabled = currentQuestionIndex === 0;
-      document.querySelector("#next-question-btn").textContent =
-        currentQuestionIndex === questions.length - 1 ? "Submit" : "Next";
-
-      const list = document.querySelector("#choice-list");
-      list.innerHTML = q.choices
-        .map(
-          (c) => `<button type="button" class="choice-btn" data-choice-id="${c.id}" aria-pressed="${answers[q.id] === c.id}">
-            <span class="choice-btn__dot"></span>${c.text}
-          </button>`
-        )
-        .join("");
-      list.querySelectorAll(".choice-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          answers[q.id] = btn.dataset.choiceId;
-          list.querySelectorAll(".choice-btn").forEach((b) => b.setAttribute("aria-pressed", "false"));
-          btn.setAttribute("aria-pressed", "true");
-        });
-      });
-    }
-
-    document.querySelector("#prev-question-btn").addEventListener("click", () => {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex -= 1;
-        renderQuestion();
-      }
-    });
-
-    document.querySelector("#next-question-btn").addEventListener("click", async () => {
-      const q = questions[currentQuestionIndex];
-      const errorEl = document.querySelector("#assessment-error");
-      errorEl.hidden = true;
-
-      if (!answers[q.id]) {
-        errorEl.textContent = "Please choose an answer before continuing.";
-        errorEl.hidden = false;
-        return;
-      }
-
-      if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex += 1;
-        renderQuestion();
-        return;
-      }
-
-      const payload = {
-        language: document.documentElement.getAttribute("lang") || "rw",
-        answers: Object.entries(answers).map(([question_id, choice_id]) => ({ question_id, choice_id })),
-      };
-
+    async function render() {
+      let student;
       try {
-        const { queued } = await submitAssessment(payload);
-        if (queued) {
-          hideAllSections();
-          section("#assessment-intro-section").hidden = false;
-          section("#assessment-intro-section").querySelector("h3").textContent = "Saved on this device";
-          section("#assessment-intro-section").querySelector("p").textContent =
-            "You're offline. Your answers will be sent automatically once you're back online.";
-          section("#assessment-intro-section").querySelector("button").hidden = true;
-          await checkSyncQueue();
-        } else {
-          await render();
-        }
-      } catch (err) {
-        errorEl.textContent = err.message || "Couldn't submit your assessment. Please try again.";
-        errorEl.hidden = false;
-      }
-    });
-
-    document.querySelector("#start-assessment-btn").addEventListener("click", async () => {
-      questions = await loadQuestions();
-      startAssessment();
-    });
-
-    document.querySelector("#retake-assessment-btn").addEventListener("click", async () => {
-      questions = await loadQuestions();
-      startAssessment();
-    });
-
-    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
-      event.preventDefault();
-      const form = event.target;
-      const errorEl = document.querySelector("#form-error");
-      errorEl.hidden = true;
-      try {
-        await api.post("/students/me", {
-          full_name: form.full_name.value.trim(),
-          school_id: form.school_id.value,
-          age_range: form.age_range.value,
-        });
-        await render();
-      } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong.";
-        errorEl.hidden = false;
-      }
-    });
-
-    document.querySelector("#sync-now-btn").addEventListener("click", trySync);
-    window.addEventListener("online", trySync);
-
-    let renderPromise = null;
-
-    function render() {
-      if (renderPromise) return renderPromise;
-      renderPromise = doRender()
-        .catch((err) => {
-          console.error("Dashboard render failed:", err);
-        })
-        .finally(() => {
-          renderPromise = null;
-        });
-      return renderPromise;
-    }
-
-    async function doRender() {
-      hideAllSections();
-      await loadStudentProfile();
-
-      if (!currentStudent) {
-        document.querySelector("#full_name").value = currentUser.full_name;
-        await loadSchoolsInto(document.querySelector("#school_id"));
-        section("#profile-section").hidden = false;
+        student = await api.get("/students/me");
+      } catch {
+        showPrompt(
+          "../assets/illustrations/characters/student.png",
+          "Complete your profile",
+          "Tell us your school so we can get you started.",
+          "profile.html",
+          "Complete profile"
+        );
         return;
       }
 
       const assessments = await api.get("/assessments");
       if (assessments.length === 0) {
-        section("#assessment-intro-section").hidden = false;
+        showPrompt(
+          "../assets/illustrations/supporting/talent-discovery.png",
+          "Discover your talent",
+          "Answer a few questions and we'll show you your top strengths.",
+          "assessment.html",
+          "Start assessment"
+        );
         return;
       }
 
-      renderResults(assessments[0].results);
-      section("#results-section").hidden = false;
-      await renderMatchSection();
+      document.querySelector("#prompt-card").hidden = true;
+      document.querySelector("#stats-area").hidden = false;
+
+      const results = assessments[0].results;
+      const top = results[0];
+      document.querySelector("#stat-top-talent").textContent = `${talentAreaIcon(top.talent_area)} ${talentAreaLabel(top.talent_area)}`;
+      document.querySelector("#stat-assessments").textContent = assessments.length;
+
+      const maxScore = Math.max(...results.map((r) => r.score));
+      document.querySelector("#talent-chart").innerHTML = results
+        .map((r) => barRow(talentAreaLabel(r.talent_area), talentAreaIcon(r.talent_area), r.score, maxScore))
+        .join("");
+
+      try {
+        const matches = await api.get("/matches/me");
+        const statusEl = document.querySelector("#stat-mentor-status");
+        if (matches.length === 0) {
+          statusEl.textContent = "Not requested";
+        } else {
+          statusEl.textContent = MATCH_STATUS_LABELS[matches[0].status] || matches[0].status;
+        }
+      } catch {
+        document.querySelector("#stat-mentor-status").textContent = "-";
+      }
+
+      await renderRecentActivity();
     }
 
     requireRole("student").then(async (user) => {
       if (!user) return;
-      currentUser = user;
-      document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
-      window.addEventListener("amahirwe:translationsapplied", () => {
-        document.querySelector("#welcome-heading").textContent = `${greetingWord()}, ${user.full_name.split(" ")[0]}!`;
-      });
-      await loadNotifications(document.querySelector("#notifications-list"));
+      initDashShell(user, "home");
       await checkSyncQueue();
       await render();
       showContent(loadingEl, contentEl);
-      if (navigator.onLine) trySync();
+      if (navigator.onLine) {
+        syncQueuedAssessments((payload) => api.post("/assessments", payload)).then(() => {
+          checkSyncQueue();
+        });
+      }
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");

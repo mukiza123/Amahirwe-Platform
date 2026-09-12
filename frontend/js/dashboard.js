@@ -87,6 +87,69 @@ async function loadNotifications(container) {
   }
 }
 
+function initials(fullName) {
+  return fullName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+}
+
+const ROLE_LABELS = {
+  student: "Student",
+  teacher: "Teacher",
+  mentor: "Mentor",
+  provider: "Provider",
+  admin: "Administrator",
+  parent: "Parent",
+};
+
+/** Wires up the parts every dashboard page's sidebar shell shares: user
+ * avatar/name/role in the topbar, active nav highlighting, the mobile
+ * sidebar drawer, and the notification-bell unread indicator. Call once
+ * per page, after requireRole() resolves. `pageKey` matches the
+ * data-page attribute on that page's own sidebar link. */
+function initDashShell(user, pageKey) {
+  const nameEl = document.querySelector("#dash-user-name");
+  const roleEl = document.querySelector("#dash-user-role");
+  const avatarEl = document.querySelector("#dash-user-avatar");
+  if (nameEl) nameEl.textContent = user.full_name;
+  if (roleEl) roleEl.textContent = ROLE_LABELS[user.role] || user.role;
+  if (avatarEl) avatarEl.textContent = initials(user.full_name);
+
+  document.querySelectorAll(".dash-sidebar__link[data-page]").forEach((link) => {
+    link.classList.toggle("is-active", link.dataset.page === pageKey);
+  });
+
+  const sidebar = document.querySelector(".dash-sidebar");
+  const toggle = document.querySelector(".dash-sidebar-toggle");
+  const closeBtn = document.querySelector(".dash-sidebar__close");
+  const backdrop = document.querySelector(".dash-sidebar-backdrop");
+  const closeSidebar = () => {
+    sidebar?.classList.remove("is-open");
+    backdrop?.classList.remove("is-open");
+  };
+  toggle?.addEventListener("click", () => {
+    sidebar?.classList.add("is-open");
+    backdrop?.classList.add("is-open");
+  });
+  closeBtn?.addEventListener("click", closeSidebar);
+  backdrop?.addEventListener("click", closeSidebar);
+
+  const bellDot = document.querySelector("#dash-notif-dot");
+  if (bellDot) {
+    api
+      .get("/notifications/me")
+      .then((notifications) => {
+        bellDot.hidden = !notifications.some((n) => !n.is_read);
+      })
+      .catch(() => {
+        bellDot.hidden = true;
+      });
+  }
+}
+
 export {
   talentAreaLabel,
   talentAreaIcon,
@@ -95,5 +158,6 @@ export {
   showContent,
   showError,
   loadNotifications,
+  initDashShell,
   TALENT_AREA_LABELS,
 };

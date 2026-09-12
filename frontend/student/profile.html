@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile - Amahirwe</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
+  <div class="dash-shell">
+  <div class="dash-sidebar-backdrop"></div>
+  <aside class="dash-sidebar">
+    <button type="button" class="dash-sidebar__close" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <a href="../index.html" class="dash-sidebar__brand">
+      <img src="../assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+      <span>Amahirwe</span>
+    </a>
+    <nav class="dash-sidebar__nav">
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="profile.html" class="dash-sidebar__link is-active" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
+      <a href="assessment.html" class="dash-sidebar__link" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
+      <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+    </nav>
+    <div class="dash-sidebar__footer">
+      <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
+    </div>
+  </aside>
+    <div class="dash-body">
+    <header class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div class="dash-topbar__title">
+          <h1 data-i18n="nav_my_profile">My Profile</h1>
+          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+        </div>
+      </div>
+      <div class="dash-topbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="notifications.html" class="dash-notif-bell" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg>
+          <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
+        </a>
+        <div class="dash-user">
+          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <div>
+            <div class="dash-user__name" id="dash-user-name"></div>
+            <div class="dash-user__role" id="dash-user-role"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+      <main id="main-content" class="dash-main">
+        <div id="state-loading" class="state-message" role="status" aria-live="polite">
+          <span class="spinner" aria-hidden="true"></span>
+          <p data-i18n="dash_loading">Loading&hellip;</p>
+        </div>
+        <div id="dashboard-content" hidden>
+          <div class="card" style="max-width:480px;">
+            <form id="profile-form" novalidate>
+              <div class="form-field">
+                <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
+                <input class="form-input" type="text" id="full_name" name="full_name" required />
+                <p class="form-error" id="full_name-error" hidden></p>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
+                <select class="form-select" id="school_id" name="school_id" required></select>
+                <p class="form-error" id="school_id-error" hidden></p>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
+                <select class="form-select" id="age_range" name="age_range" required>
+                  <option value="12-14">12-14</option>
+                  <option value="15-16">15-16</option>
+                  <option value="17-19">17-19</option>
+                </select>
+              </div>
+              <p class="form-error" id="form-error" hidden></p>
+              <p class="form-success" id="form-success" hidden data-i18n="dash_profile_saved">Profile saved.</p>
+              <button type="submit" class="btn btn-primary btn-block" id="submit-btn" data-i18n="dash_save_profile">Save profile</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { requireRole } from "../js/auth.js";
+    import { api } from "../js/api.js";
+    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+
+    const loadingEl = document.querySelector("#state-loading");
+    const contentEl = document.querySelector("#dashboard-content");
+    let hasProfile = false;
+
+    async function loadSchoolsInto(select, selectedId) {
+      const schools = await api.get("/schools");
+      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
+      if (selectedId) select.value = selectedId;
+    }
+
+    async function render(currentUser) {
+      const form = document.querySelector("#profile-form");
+      let student = null;
+      try {
+        student = await api.get("/students/me");
+        hasProfile = true;
+      } catch {
+        hasProfile = false;
+      }
+
+      await loadSchoolsInto(document.querySelector("#school_id"), student?.school_id);
+      form.full_name.value = student ? student.full_name : currentUser.full_name;
+      if (student) form.age_range.value = student.age_range;
+      document.querySelector("#submit-btn").textContent = hasProfile ? "Update profile" : "Save profile";
+    }
+
+    document.querySelector("#profile-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const form = event.target;
+      const errorEl = document.querySelector("#form-error");
+      const successEl = document.querySelector("#form-success");
+      errorEl.hidden = true;
+      successEl.hidden = true;
+
+      const payload = {
+        full_name: form.full_name.value.trim(),
+        age_range: form.age_range.value,
+      };
+
+      try {
+        if (hasProfile) {
+          await api.patch("/students/me", payload);
+        } else {
+          await api.post("/students/me", { ...payload, school_id: form.school_id.value });
+          hasProfile = true;
+        }
+        successEl.hidden = false;
+        document.querySelector("#submit-btn").textContent = "Update profile";
+      } catch (err) {
+        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.hidden = false;
+      }
+    });
+
+    requireRole("student").then(async (user) => {
+      if (!user) return;
+      initDashShell(user, "profile");
+      await render(user);
+      showContent(loadingEl, contentEl);
+    }).catch((err) => {
+      console.error("Failed to load profile:", err);
+      showError(loadingEl, "Couldn't load your profile. Please check your connection and refresh the page.");
+    });
+  </script>
+</body>
+</html>

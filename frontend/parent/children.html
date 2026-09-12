@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - Amahirwe</title>
+  <title>My Children - Amahirwe</title>
   <link rel="manifest" href="../manifest.json" />
   <meta name="theme-color" content="#0F6B52" />
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
@@ -14,8 +14,8 @@
   <style>
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
     .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
-    .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
-    .status-banner--pending { color: #8A5B00; }
+    .child-card { margin-bottom: var(--space-4); }
+    .child-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
   </style>
 </head>
 <body>
@@ -29,8 +29,9 @@
       <span>Amahirwe</span>
     </a>
     <nav class="dash-sidebar__nav">
-      <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
-      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_my_opportunities">My Opportunities</span></a>
+      <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
+      <a href="children.html" class="dash-sidebar__link is-active" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
       <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
@@ -43,8 +44,8 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_provider_subtitle">Opportunity provider dashboard</p>
+          <h1 data-i18n="nav_my_children">My Children</h1>
+          <p class="text-secondary" data-i18n="dash_parent_subtitle">Parent dashboard</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -71,37 +72,8 @@
           <span class="spinner" aria-hidden="true"></span>
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
-
         <div id="dashboard-content" hidden>
-          <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
-            <span aria-hidden="true">&#9203;</span>
-            <p data-i18n="dash_provider_pending_verification">Your account is awaiting verification by an administrator. You'll be able to post opportunities once verified.</p>
-          </div>
-
-          <div class="stat-grid">
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
-              <span class="stat-card__value" id="stat-total">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_total_opportunities">Total opportunities</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span>
-              <span class="stat-card__value" id="stat-active">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_active_opportunities">Active now</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-              <span class="stat-card__value" id="stat-areas">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_talent_areas_covered">Talent areas covered</span>
-            </div>
-          </div>
-
-          <div class="dash-panel">
-            <div class="dash-panel__header">
-              <h2 data-i18n="dash_opportunities_by_area">Opportunities by talent area</h2>
-            </div>
-            <div id="area-chart"><p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p></div>
-          </div>
+          <div id="children-list"></div>
         </div>
       </main>
     </div>
@@ -112,36 +84,62 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
-    import { barRow } from "../js/charts.js";
+
+    const MATCH_STATUS_LABELS = { pending: "Mentor request pending", approved: "Matched with a mentor", rejected: "Mentor request not approved" };
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
-    async function render(user) {
-      document.querySelector("#verification-banner").hidden = user.is_verified;
+    async function render() {
+      const children = await api.get("/parents/me/children");
+      const list = document.querySelector("#children-list");
 
-      const overview = await api.get("/opportunities/mine/overview");
-      document.querySelector("#stat-total").textContent = overview.total_count;
-      document.querySelector("#stat-active").textContent = overview.active_count;
-      document.querySelector("#stat-areas").textContent = Object.keys(overview.by_talent_area).length;
-
-      const entries = Object.entries(overview.by_talent_area);
-      if (entries.length > 0) {
-        const max = Math.max(...entries.map(([, count]) => count));
-        document.querySelector("#area-chart").innerHTML = entries
-          .map(([area, count]) => barRow(talentAreaLabel(area), talentAreaIcon(area), count, max))
-          .join("");
+      if (children.length === 0) {
+        list.innerHTML = `<div class="card dash-placeholder">
+          <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
+          <h3 data-i18n="dash_no_children_title">No children linked yet</h3>
+          <p class="text-secondary" data-i18n="dash_no_children_body">Ask your child's teacher to link your account so you can follow their progress.</p>
+        </div>`;
+        return;
       }
+
+      list.innerHTML = children
+        .map((c) => {
+          const talents = c.top_talents.length
+            ? c.top_talents
+                .map(
+                  (t) => `<div class="simple-row">
+                    <span>${talentAreaIcon(t.talent_area)} ${talentAreaLabel(t.talent_area)}</span>
+                    <span class="text-secondary">#${t.rank}</span>
+                  </div>`
+                )
+                .join("")
+            : `<p class="text-secondary">Hasn't completed the talent assessment yet.</p>`;
+
+          const matchBadge = c.mentor_match_status
+            ? `<span class="badge ${c.mentor_match_status === "approved" ? "badge-success" : "badge-mint"}">${MATCH_STATUS_LABELS[c.mentor_match_status]}</span>`
+            : "";
+
+          return `<div class="card child-card">
+            <div class="child-card__header">
+              <h2>${c.full_name}</h2>
+              ${matchBadge}
+            </div>
+            <p class="text-secondary">${c.school_name} &middot; ${c.age_range}</p>
+            <div style="margin-top:var(--space-3);">${talents}</div>
+          </div>`;
+        })
+        .join("");
     }
 
-    requireRole("provider").then(async (user) => {
+    requireRole("parent").then(async (user) => {
       if (!user) return;
-      initDashShell(user, "home");
-      await render(user);
+      initDashShell(user, "children");
+      await render();
       showContent(loadingEl, contentEl);
     }).catch((err) => {
-      console.error("Dashboard failed to load:", err);
-      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
+      console.error("Failed to load children:", err);
+      showError(loadingEl, "Couldn't load your children. Please check your connection and refresh the page.");
     });
   </script>
 </body>

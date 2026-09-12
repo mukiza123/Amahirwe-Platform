@@ -8,6 +8,7 @@ from app.api.matches import router as matches_router
 from app.api.mentors import router as mentors_router
 from app.api.notifications import router as notifications_router
 from app.api.opportunities import router as opportunities_router
+from app.api.parents import router as parents_router
 from app.api.schools import router as schools_router
 from app.api.students import router as students_router
 from app.api.teachers import router as teachers_router
@@ -49,3 +50,4 @@ app.include_router(matches_router)
 app.include_router(opportunities_router)
 app.include_router(admin_router)
 app.include_router(notifications_router)
+app.include_router(parents_router)
