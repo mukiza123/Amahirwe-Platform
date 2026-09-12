@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **All 10 phases complete.** Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. See [Development Plan](#development-plan) below for the remaining known gap (JS-rendered dynamic dashboard content is not yet translated).
+> Project status: **All 10 phases complete**, plus a full dashboard redesign. Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard and a real parent/guardian link), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. Every role's dashboard is a real, data-focused multi-page app (sidebar navigation, stat cards, charts) built entirely from live API data, never placeholder numbers. See [Development Plan](#development-plan) below for the one remaining known gap (JS-computed dynamic content, like chart labels and notification text, is not yet translated).
 
 ## Live demo
 
@@ -24,13 +24,13 @@ Run `database/seed.py` (see setup steps below) to create these. Password for all
 | Role | Email | What's seeded for them |
 |---|---|---|
 | Student | `student@amahirwe.demo` | Profile at Nyagatare Secondary School, a completed talent assessment, and a pending mentor match awaiting the teacher's review |
-| Teacher | `teacher@amahirwe.demo` | Profile at the same school, so they see the student above and can approve/reject their pending match |
+| Teacher | `teacher@amahirwe.demo` | Profile at the same school, so they see the student above, can add students, link guardians, and approve/reject the pending match |
 | Mentor | `mentor@amahirwe.demo` | Verified profile with technology/leadership expertise, matched to the student above |
 | Opportunity provider | `provider@amahirwe.demo` | Verified account with one posted opportunity |
 | Administrator | `admin@amahirwe.demo` | Can list/verify/deactivate users and view the audit log |
-| Parent / guardian | `parent@amahirwe.demo` | Account only; parent dashboard is not yet built |
+| Parent / guardian | `parent@amahirwe.demo` | Linked by the teacher above as the student's guardian, so their dashboard shows that student's real progress |
 
-All five built-out roles (student, teacher, mentor, provider, admin) have working dashboards wired to the real API.
+All six roles (student, teacher, parent, mentor, provider, admin) have real, working multi-page dashboards wired to the API: a sidebar with Home plus each role's own sections (profile, assessment, students, mentees, children, opportunities, users, audit log, notifications, settings), stat cards and charts built from live data, and no placeholder numbers anywhere.
 
 ## Project structure
 
@@ -49,9 +49,13 @@ Amahirwe-Platform/
 │   └── .env.example
 ├── frontend/                 Static HTML/CSS/JS site
 │   ├── index.html, login.html, register.html
-│   ├── student/ teacher/ mentor/ provider/ admin/   Role dashboards
+│   ├── student/ teacher/ parent/ mentor/ provider/ admin/
+│   │       Each is a multi-page dashboard: dashboard.html (Home) plus
+│   │       role-specific pages, sharing one sidebar/topbar shell defined
+│   │       in css/components.css and js/dashboard.js's initDashShell()
 │   ├── css/                  style.css, components.css, responsive.css
-│   ├── js/                   api.js, auth.js, main.js, ...
+│   ├── js/                   api.js, auth.js, main.js, dashboard.js,
+│   │                          charts.js, matching.js, opportunities.js, ...
 │   ├── locales/               en.json, rw.json, fr.json
 │   └── assets/                illustrations, icons, images
 ├── database/seed.py          Demo data seed script
@@ -179,10 +183,13 @@ Built in phases, per the project's development rule of not building everything a
 8. **Admin**: list/filter users, verify mentors and providers, activate/deactivate accounts, audit log viewer ✅
 9. **Multilingual**: Kinyarwanda, English, French. Done for the marketing site, login/register, and the static chrome (headings, labels, buttons, forms) of every dashboard. JS-rendered dynamic content on dashboards (match cards, notifications, admin table rows, form validation messages) is still English-only; translating those would mean threading the translation dictionary through every render function, which is a larger follow-up, not a quick addition ✅ (dashboard chrome) / ⏳ (dynamic content)
 10. **Polish**: mobile QA (390/768/1024px sweep across every dashboard, no overflow, verified visually), accessibility (skip-to-content link and `role="status"` loading state on every dashboard, matching the marketing site's existing focus-visible and semantic-landmark conventions), loading/empty/error states (every dashboard shows a loading spinner, a real error message on failure, and an illustrated empty state rather than nothing), and illustrations (the provided character/object/system artwork is now used in the student assessment intro, the offline sync banner, and the teacher/mentor/provider empty states, instead of generic icons) ✅
+11. **Dashboard redesign**: every role's dashboard rebuilt as a real multi-page app (sidebar navigation, stat cards, charts, recent activity) instead of one long scrolling page. Includes a new backend feature this required honestly: a parent/guardian can only see a student's data once a teacher explicitly links them (`student_guardians` table, `POST /api/teachers/students/{id}/guardians`, `GET /api/parents/me/children`), with no self-service linking, since that would let any adult claim to be a child's parent ✅
 
 ## Design system
 
 Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Manrope throughout) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+
+Every dashboard page shares one shell (`.dash-shell` in `frontend/css/components.css`, wired up per-page by `initDashShell()` in `frontend/js/dashboard.js`): a fixed dark-green sidebar with the role's nav items, a light topbar with page title, language switch, notification bell, and user avatar, and a light content area for stat cards (`.stat-card`), chart panels (`.dash-panel`), and dependency-free inline-SVG charts (`frontend/js/charts.js`: a progress ring, horizontal bar rows, and a mini bar-over-time chart). On screens under 900px the sidebar collapses into a slide-in drawer behind a hamburger toggle. Every number shown, on every dashboard, comes from a real API response; there are no mocked or hardcoded statistics anywhere in the app.
 
 ## Security notes
 
