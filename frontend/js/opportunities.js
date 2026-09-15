@@ -28,48 +28,55 @@ function deleteOpportunity(id) {
 }
 
 function renderOpportunityCard(opportunity) {
+  const area = opportunity.talent_area || "";
   const areaTag = opportunity.talent_area
-    ? `<span class="badge badge-mint">${talentAreaIcon(opportunity.talent_area)} ${talentAreaLabel(opportunity.talent_area)}</span>`
-    : `<span class="badge badge-neutral">Open to all talents</span>`;
+    ? `<span class="chip">${talentAreaIcon(opportunity.talent_area)} ${talentAreaLabel(opportunity.talent_area)}</span>`
+    : `<span class="chip chip--muted">Open to all</span>`;
   const statusTag = opportunity.is_active
     ? `<span class="badge badge-success">Active</span>`
     : `<span class="badge badge-neutral">Inactive</span>`;
-  const deadline = opportunity.deadline ? `<p class="text-secondary">Deadline: ${formatDate(opportunity.deadline)}</p>` : "";
+  const deadline = opportunity.deadline ? `<span class="text-secondary">Due ${formatDate(opportunity.deadline)}</span>` : "";
 
   return `
-    <div class="card opportunity-card" data-id="${opportunity.id}">
-      <div class="card__actions" style="justify-content: space-between;">
-        ${areaTag}${statusTag}
+    <article class="opp-card" data-id="${opportunity.id}">
+      <div class="opp-card__cover" data-area="${area}"></div>
+      <div class="opp-card__body">
+        <div class="opp-card__meta">${areaTag}${statusTag}</div>
+        <h3>${opportunity.title}</h3>
+        <p>${opportunity.description}</p>
+        <p>${opportunity.location || ""}</p>
+        <div class="opp-card__meta">
+          ${deadline}
+          <div class="card__actions">
+            <button type="button" class="btn btn-secondary btn-sm" data-action="toggle-opportunity" data-id="${opportunity.id}" data-active="${opportunity.is_active}">
+              ${opportunity.is_active ? "Deactivate" : "Reactivate"}
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" data-action="delete-opportunity" data-id="${opportunity.id}">Delete</button>
+          </div>
+        </div>
       </div>
-      <h3>${opportunity.title}</h3>
-      <p>${opportunity.description}</p>
-      <p class="text-secondary">${opportunity.location}</p>
-      ${deadline}
-      <div class="card__actions">
-        <button type="button" class="btn btn-secondary btn-sm" data-action="toggle-opportunity" data-id="${opportunity.id}" data-active="${opportunity.is_active}">
-          ${opportunity.is_active ? "Deactivate" : "Reactivate"}
-        </button>
-        <button type="button" class="btn btn-danger btn-sm" data-action="delete-opportunity" data-id="${opportunity.id}">Delete</button>
-      </div>
-    </div>`;
+    </article>`;
 }
 
 /** A read-only opportunity card for students/teachers/parents/mentors
  * browsing what's available, no management actions. */
 function renderPublicOpportunityCard(opportunity) {
-  const areaTag = opportunity.talent_area
-    ? `<span class="badge badge-mint">${talentAreaIcon(opportunity.talent_area)} ${talentAreaLabel(opportunity.talent_area)}</span>`
-    : `<span class="badge badge-neutral">Open to all talents</span>`;
-  const deadline = opportunity.deadline ? `<p class="text-secondary">Deadline: ${formatDate(opportunity.deadline)}</p>` : "";
+  const area = opportunity.talent_area || "";
+  const kind = opportunity.talent_area === "leadership" ? "Leadership" : opportunity.talent_area ? talentAreaLabel(opportunity.talent_area) : "Opportunity";
+  const deadline = opportunity.deadline ? `Deadline ${formatDate(opportunity.deadline)}` : opportunity.location || "";
 
   return `
-    <div class="card opportunity-card" data-id="${opportunity.id}">
-      ${areaTag}
-      <h3>${opportunity.title}</h3>
-      <p>${opportunity.description}</p>
-      <p class="text-secondary">${opportunity.location} &middot; ${opportunity.provider_name || ""}</p>
-      ${deadline}
-    </div>`;
+    <article class="opp-card" data-id="${opportunity.id}">
+      <div class="opp-card__cover" data-area="${area}"></div>
+      <div class="opp-card__body">
+        <h3>${opportunity.title}</h3>
+        <p>${opportunity.description}</p>
+        <div class="opp-card__meta">
+          <span class="chip">${kind}</span>
+          <span class="text-secondary">${deadline}</span>
+        </div>
+      </div>
+    </article>`;
 }
 
 export {

@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
 </head>
 <body>
@@ -28,9 +29,10 @@
       <a href="assessment.html" class="dash-sidebar__link" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
       <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Your talent matters.<br>Your future is possible.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -41,8 +43,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="nav_my_profile">My Profile</h1>
-          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+          <h1>My Profile</h1>
+          <p class="text-secondary">Your information, strengths, and goals.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -70,30 +72,90 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
-          <div class="card" style="max-width:480px;">
-            <form id="profile-form" novalidate>
-              <div class="form-field">
-                <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
-                <input class="form-input" type="text" id="full_name" name="full_name" required />
-                <p class="form-error" id="full_name-error" hidden></p>
+          <div class="page-split page-split--profile">
+            <div>
+              <section class="page-card" style="margin-bottom:var(--space-3)">
+                <div class="profile-hero">
+                  <span class="profile-photo" id="profile-photo">AN</span>
+                  <div style="flex:1">
+                    <h2 id="profile-display-name">Your profile</h2>
+                    <p id="profile-display-meta">Complete your school details to get started.</p>
+                  </div>
+                  <button type="submit" form="profile-form" class="btn btn-primary btn-sm" id="submit-btn">Save profile</button>
+                </div>
+                <div class="chip-row" id="interest-chips" style="margin-top:var(--space-3)">
+                  <span class="chip">Science</span>
+                  <span class="chip">Technology</span>
+                  <span class="chip">Design</span>
+                  <span class="chip">Leadership</span>
+                </div>
+              </section>
+              <div class="profile-grid">
+                <section class="page-card profile-block">
+                  <h3>About Me</h3>
+                  <p id="about-text">I am a curious and motivated student who cares about technology, innovation and creating solutions for my community.</p>
+                </section>
+                <section class="page-card profile-block">
+                  <h3>Education</h3>
+                  <div class="timeline-item">
+                    <div>
+                      <strong id="school-display">Your school</strong>
+                      <p>Secondary school · Age range <span id="age-display">—</span></p>
+                    </div>
+                  </div>
+                </section>
               </div>
-              <div class="form-field">
-                <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
-                <select class="form-select" id="school_id" name="school_id" required></select>
-                <p class="form-error" id="school_id-error" hidden></p>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
-                <select class="form-select" id="age_range" name="age_range" required>
-                  <option value="12-14">12-14</option>
-                  <option value="15-16">15-16</option>
-                  <option value="17-19">17-19</option>
-                </select>
-              </div>
-              <p class="form-error" id="form-error" hidden></p>
-              <p class="form-success" id="form-success" hidden data-i18n="dash_profile_saved">Profile saved.</p>
-              <button type="submit" class="btn btn-primary btn-block" id="submit-btn" data-i18n="dash_save_profile">Save profile</button>
-            </form>
+              <section class="page-card" style="margin-top:var(--space-3)">
+                <h3 class="page-card__title">Edit profile</h3>
+                <form id="profile-form" novalidate>
+                  <div class="form-field">
+                    <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
+                    <input class="form-input" type="text" id="full_name" name="full_name" required />
+                    <p class="form-error" id="full_name-error" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
+                    <select class="form-select" id="school_id" name="school_id" required></select>
+                    <p class="form-error" id="school_id-error" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
+                    <select class="form-select" id="age_range" name="age_range" required>
+                      <option value="12-14">12-14</option>
+                      <option value="15-16">15-16</option>
+                      <option value="17-19">17-19</option>
+                    </select>
+                  </div>
+                  <p class="form-error" id="form-error" hidden></p>
+                  <p class="form-success" id="form-success" hidden data-i18n="dash_profile_saved">Profile saved.</p>
+                </form>
+              </section>
+            </div>
+            <aside>
+              <section class="page-card profile-block" style="margin-bottom:var(--space-3)">
+                <h3>My Strengths</h3>
+                <div class="chip-row" id="strength-chips">
+                  <span class="chip chip--muted">Complete an assessment</span>
+                </div>
+              </section>
+              <section class="page-card profile-block" style="margin-bottom:var(--space-3)">
+                <h3>My Languages</h3>
+                <div class="chip-row">
+                  <span class="chip">Kinyarwanda</span>
+                  <span class="chip">English</span>
+                  <span class="chip">French</span>
+                </div>
+              </section>
+              <section class="page-card profile-block">
+                <h3>Hobbies &amp; Activities</h3>
+                <div class="chip-row">
+                  <span class="chip">Reading</span>
+                  <span class="chip">Coding</span>
+                  <span class="chip">Football</span>
+                  <span class="chip">Community Service</span>
+                </div>
+              </section>
+            </aside>
           </div>
         </div>
       </main>
@@ -104,7 +166,7 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, talentAreaLabel } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -129,7 +191,28 @@
       await loadSchoolsInto(document.querySelector("#school_id"), student?.school_id);
       form.full_name.value = student ? student.full_name : currentUser.full_name;
       if (student) form.age_range.value = student.age_range;
-      document.querySelector("#submit-btn").textContent = hasProfile ? "Update profile" : "Save profile";
+      document.querySelector("#submit-btn").textContent = hasProfile ? "Edit Profile" : "Save profile";
+      const initials = (student?.full_name || currentUser.full_name)
+        .split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+      document.querySelector("#profile-photo").textContent = initials || "AN";
+      document.querySelector("#profile-display-name").textContent = student?.full_name || currentUser.full_name;
+      const schoolName = document.querySelector("#school_id").selectedOptions[0]?.textContent || "School not set";
+      document.querySelector("#profile-display-meta").textContent = student
+        ? `${schoolName} · Age ${student.age_range}`
+        : "Complete your school details to get started.";
+      document.querySelector("#school-display").textContent = student ? schoolName : "Your school";
+      document.querySelector("#age-display").textContent = student?.age_range || "—";
+      try {
+        const assessments = await api.get("/assessments");
+        const strengths = assessments[0]?.results?.slice(0, 4) || [];
+        if (strengths.length) {
+          document.querySelector("#strength-chips").innerHTML = strengths
+            .map((r) => `<span class="chip">${talentAreaLabel(r.talent_area)}</span>`)
+            .join("");
+        }
+      } catch {
+        /* strengths stay as the empty-state chips */
+      }
     }
 
     document.querySelector("#profile-form").addEventListener("submit", async (event) => {

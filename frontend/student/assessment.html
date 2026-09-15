@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
     .talent-result { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
@@ -22,9 +23,6 @@
     .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
     .sync-banner__icon { width: 32px; height: 32px; flex-shrink: 0; }
     .sync-banner p { flex: 1; margin: 0; }
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
-    .card-narrow { max-width: 640px; }
   </style>
 </head>
 <body>
@@ -43,9 +41,10 @@
       <a href="assessment.html" class="dash-sidebar__link is-active" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
       <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Your talent matters.<br>Your future is possible.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -56,8 +55,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="nav_assessment">Assessment</h1>
-          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+          <h1>Assessments</h1>
+          <p class="text-secondary">Discover your strengths, and grow with purpose.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -86,27 +85,93 @@
         </div>
 
         <div id="dashboard-content" hidden>
-          <div id="sync-banner" class="card sync-banner" hidden>
+          <div id="sync-banner" class="page-card sync-banner" hidden>
             <img class="sync-banner__icon" src="../assets/illustrations/system/offline.png" alt="" />
             <p data-i18n="dash_sync_pending">Some assessment answers are saved on this device and haven't synced yet.</p>
             <button type="button" class="btn btn-secondary btn-sm" id="sync-now-btn" data-i18n="dash_sync_now">Sync now</button>
           </div>
 
-          <section id="no-profile-section" class="card-narrow dash-placeholder card" hidden>
+          <section id="no-profile-section" class="page-card dash-placeholder" hidden>
             <h3 data-i18n="dash_need_profile_title">Complete your profile first</h3>
             <p class="text-secondary" data-i18n="dash_need_profile_body">We need your school on file before you can take the assessment.</p>
             <a class="btn btn-primary" href="profile.html" data-i18n="nav_my_profile">My Profile</a>
           </section>
 
-          <section id="assessment-intro-section" class="card-narrow dash-placeholder card" hidden>
-            <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
-            <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
-            <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
-            <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>
+          <section id="assessment-intro-section" hidden>
+            <div class="page-head">
+              <h1>Assessments</h1>
+              <p>Discover your strengths, and grow with purpose.</p>
+            </div>
+            <div class="page-tabs" role="tablist">
+              <button type="button" class="page-tab is-active">All Assessments</button>
+              <button type="button" class="page-tab">Completed</button>
+              <button type="button" class="page-tab">In Progress</button>
+            </div>
+            <div class="page-split page-split--assess">
+              <div class="page-card">
+                <article class="assess-item">
+                  <span class="assess-item__icon">🧩</span>
+                  <div>
+                    <p class="assess-item__title">Problem Solving</p>
+                    <p class="assess-item__meta">Measure how you approach challenges</p>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm" id="start-assessment-btn">Start</button>
+                </article>
+                <article class="assess-item">
+                  <span class="assess-item__icon">💬</span>
+                  <div>
+                    <p class="assess-item__title">Communication</p>
+                    <p class="assess-item__meta">See how clearly you express ideas</p>
+                  </div>
+                  <span class="assess-item__status">Locked</span>
+                </article>
+                <article class="assess-item">
+                  <span class="assess-item__icon">🎨</span>
+                  <div>
+                    <p class="assess-item__title">Creativity</p>
+                    <p class="assess-item__meta">Explore your creative thinking style</p>
+                  </div>
+                  <span class="assess-item__status">Locked</span>
+                </article>
+                <article class="assess-item">
+                  <span class="assess-item__icon">🛠️</span>
+                  <div>
+                    <p class="assess-item__title">Technical Skills</p>
+                    <p class="assess-item__meta">Assess your digital and technical skills</p>
+                  </div>
+                  <span class="assess-item__status">Locked</span>
+                </article>
+                <article class="assess-item">
+                  <span class="assess-item__icon">👥</span>
+                  <div>
+                    <p class="assess-item__title">Leadership</p>
+                    <p class="assess-item__meta">Understand your leadership potential</p>
+                  </div>
+                  <span class="assess-item__status">Locked</span>
+                </article>
+              </div>
+              <aside>
+                <div class="page-card" style="margin-bottom:var(--space-3)">
+                  <h2 class="page-card__title">Your Assessment Summary</h2>
+                  <div class="ring-wrap">
+                    <svg viewBox="0 0 120 120" aria-hidden="true">
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="#E8EEF2" stroke-width="12"/>
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="#1A9B8A" stroke-width="12" stroke-linecap="round" stroke-dasharray="72 217" transform="rotate(-90 60 60)"/>
+                      <text x="60" y="66" text-anchor="middle" font-size="18" font-weight="800" fill="#0F6B52">0%</text>
+                    </svg>
+                    <p class="ring-caption">Start your first assessment to unlock your strengths profile.</p>
+                  </div>
+                </div>
+                <div class="page-card page-card--mint">
+                  <h3 style="margin:0 0 6px">Keep going!</h3>
+                  <p style="margin:0 0 12px;font-size:0.85rem">Every completed assessment opens new opportunities.</p>
+                </div>
+              </aside>
+            </div>
           </section>
 
-          <section id="assessment-section" class="card-narrow" hidden>
-            <div class="card">
+          <section id="assessment-section" hidden>
+            <div class="page-card" style="max-width:720px">
               <div class="question-meta">
                 <span id="question-progress-label">Question 1 of 12</span>
               </div>
@@ -121,11 +186,20 @@
             </div>
           </section>
 
-          <section id="results-section" class="card-narrow" hidden>
-            <h2 data-i18n="dash_top_strengths">Your top strengths</h2>
-            <div class="card" id="results-card"></div>
-            <div class="card__actions">
-              <button type="button" class="btn btn-secondary btn-sm" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
+          <section id="results-section" hidden>
+            <div class="page-head">
+              <h1>Your top strengths</h1>
+              <p>Based on your latest talent assessment.</p>
+            </div>
+            <div class="page-split page-split--assess">
+              <div class="page-card" id="results-card"></div>
+              <aside>
+                <div class="page-card" style="margin-bottom:var(--space-3)">
+                  <h2 class="page-card__title">Assessment complete</h2>
+                  <p class="text-secondary">Use these results to find mentors and opportunities that fit you.</p>
+                </div>
+                <button type="button" class="btn btn-secondary" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
+              </aside>
             </div>
           </section>
         </div>
@@ -254,10 +328,14 @@
         if (queued) {
           hideAllSections();
           section("#assessment-intro-section").hidden = false;
-          section("#assessment-intro-section").querySelector("h3").textContent = "Saved on this device";
-          section("#assessment-intro-section").querySelector("p").textContent =
-            "You're offline. Your answers will be sent automatically once you're back online.";
-          section("#assessment-intro-section").querySelector("button").hidden = true;
+          const note = section("#assessment-intro-section").querySelector(".page-card--mint");
+          if (note) {
+            note.querySelector("h3").textContent = "Saved on this device";
+            note.querySelector("p").textContent =
+              "You're offline. Your answers will be sent automatically once you're back online.";
+          }
+          const startBtn = document.querySelector("#start-assessment-btn");
+          if (startBtn) startBtn.hidden = true;
           await checkSyncQueue();
         } else {
           await render();

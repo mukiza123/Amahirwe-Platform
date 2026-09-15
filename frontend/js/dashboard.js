@@ -158,6 +158,45 @@ function initDashShell(user, pageKey) {
   }
 }
 
+function initSettingsNav() {
+  const nav = document.querySelector("[data-settings-nav]");
+  if (!nav) return;
+  nav.querySelectorAll("[data-settings-target]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.settingsTarget;
+      nav.querySelectorAll("[data-settings-target]").forEach((el) => el.classList.toggle("is-active", el === btn));
+      document.querySelectorAll("[data-settings-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.settingsPanel !== id;
+      });
+    });
+  });
+}
+
+function initInbox() {
+  const list = document.querySelector("#inbox-list");
+  const thread = document.querySelector("#inbox-thread");
+  if (!list || !thread) return;
+  list.querySelectorAll(".inbox-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      list.querySelectorAll(".inbox-item").forEach((el) => el.classList.remove("is-active"));
+      item.classList.add("is-active");
+      const title = item.querySelector(".inbox-item__title")?.textContent || "Message";
+      const body = item.dataset.body || item.querySelector(".inbox-item__preview")?.textContent || "";
+      const time = item.querySelector(".inbox-item__time")?.textContent || "";
+      thread.innerHTML = `
+        <div>
+          <h2 style="margin:0 0 4px;font-size:1.05rem">${title}</h2>
+          <p class="text-secondary" style="margin:0 0 16px;font-size:0.8rem">${time}</p>
+          <div class="thread-bubble">${body}</div>
+        </div>
+        <form class="thread-composer" onsubmit="return false">
+          <input class="form-input" type="text" placeholder="Write a reply..." disabled />
+          <button type="button" class="btn btn-primary btn-sm" disabled>Send</button>
+        </form>`;
+    });
+  });
+}
+
 export {
   talentAreaLabel,
   talentAreaIcon,
@@ -167,5 +206,7 @@ export {
   showError,
   loadNotifications,
   initDashShell,
+  initSettingsNav,
+  initInbox,
   TALENT_AREA_LABELS,
 };

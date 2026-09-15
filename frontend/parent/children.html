@@ -10,13 +10,8 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
-  <style>
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
-    .child-card { margin-bottom: var(--space-4); }
-    .child-card__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-2); }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
@@ -32,9 +27,10 @@
       <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="children.html" class="dash-sidebar__link is-active" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Together for a<br>brighter future.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -46,7 +42,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_children">My Children</h1>
-          <p class="text-secondary" data-i18n="dash_parent_subtitle">Parent dashboard</p>
+          <p class="text-secondary">Follow your children's assessments, talents and mentor matches.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -74,6 +70,10 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
+          <div class="page-head">
+            <h1 data-i18n="nav_my_children">My Children</h1>
+            <p>Follow your children's assessments, talents and mentor matches.</p>
+          </div>
           <div id="children-list"></div>
         </div>
       </main>
@@ -91,12 +91,21 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
+    function initials(fullName) {
+      return fullName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join("");
+    }
+
     async function render() {
       const children = await api.get("/parents/me/children");
       const list = document.querySelector("#children-list");
 
       if (children.length === 0) {
-        list.innerHTML = `<div class="card dash-placeholder">
+        list.innerHTML = `<div class="page-card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
           <h3 data-i18n="dash_no_children_title">No children linked yet</h3>
           <p class="text-secondary" data-i18n="dash_no_children_body">Ask your child's teacher to link your account so you can follow their progress.</p>
@@ -104,33 +113,32 @@
         return;
       }
 
-      list.innerHTML = children
-        .map((c) => {
-          const talents = c.top_talents.length
-            ? c.top_talents
-                .map(
-                  (t) => `<div class="simple-row">
-                    <span>${talentAreaIcon(t.talent_area)} ${talentAreaLabel(t.talent_area)}</span>
-                    <span class="text-secondary">#${t.rank}</span>
-                  </div>`
-                )
-                .join("")
-            : `<p class="text-secondary">Hasn't completed the talent assessment yet.</p>`;
+      list.innerHTML = `<div class="page-card">
+        <h2 class="page-card__title">Linked Children</h2>
+        ${children
+          .map((c) => {
+            const talents = c.top_talents.length
+              ? `<div class="chip-row" style="margin-top:8px">${c.top_talents
+                  .map((t) => `<span class="chip">${talentAreaIcon(t.talent_area)} ${talentAreaLabel(t.talent_area)} &middot; #${t.rank}</span>`)
+                  .join("")}</div>`
+              : `<p class="text-secondary" style="margin:6px 0 0;font-size:0.82rem">Hasn't completed the talent assessment yet.</p>`;
 
-          const matchBadge = c.mentor_match_status
-            ? `<span class="badge ${c.mentor_match_status === "approved" ? "badge-success" : "badge-mint"}">${MATCH_STATUS_LABELS[c.mentor_match_status]}</span>`
-            : "";
+            const matchBadge = c.mentor_match_status
+              ? `<span class="badge ${c.mentor_match_status === "approved" ? "badge-success" : "badge-mint"}">${MATCH_STATUS_LABELS[c.mentor_match_status]}</span>`
+              : "";
 
-          return `<div class="card child-card">
-            <div class="child-card__header">
-              <h2>${c.full_name}</h2>
-              ${matchBadge}
-            </div>
-            <p class="text-secondary">${c.school_name} &middot; ${c.age_range}</p>
-            <div style="margin-top:var(--space-3);">${talents}</div>
-          </div>`;
-        })
-        .join("");
+            return `<div class="student-row">
+              <span class="home-avatar">${initials(c.full_name)}</span>
+              <div>
+                <p class="assess-item__title">${c.full_name}</p>
+                <p class="assess-item__meta">${c.school_name} &middot; ${c.age_range}</p>
+                ${talents}
+              </div>
+              <div class="student-row__actions">${matchBadge}</div>
+            </div>`;
+          })
+          .join("")}
+      </div>`;
     }
 
     requireRole("parent").then(async (user) => {

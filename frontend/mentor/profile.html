@@ -10,16 +10,16 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
+    .status-banner { display: flex; align-items: center; gap: var(--space-2); }
     .status-banner--pending { color: #8A5B00; }
     .expertise-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-2); margin: var(--space-2) 0 var(--space-4); }
     .expertise-option { position: relative; }
     .expertise-option input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
     .expertise-option label { display: block; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--color-bg); box-shadow: var(--shadow-raised-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; }
     .expertise-option input:checked + label { box-shadow: var(--shadow-pressed); color: var(--color-primary-dark); }
-    .card-narrow { max-width: 560px; }
   </style>
 </head>
 <body>
@@ -37,9 +37,10 @@
       <a href="mentees.html" class="dash-sidebar__link" data-page="mentees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_my_mentees">My Mentees</span></a>
       <a href="profile.html" class="dash-sidebar__link is-active" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Share your experience.<br>Create future leaders.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -51,7 +52,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_profile">My Profile</h1>
-          <p class="text-secondary" data-i18n="dash_mentor_subtitle">Mentor dashboard</p>
+          <p class="text-secondary">Your bio, district, and mentoring expertise.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -78,29 +79,65 @@
           <span class="spinner" aria-hidden="true"></span>
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
-        <div id="dashboard-content" class="card-narrow" hidden>
-          <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
-            <span aria-hidden="true">&#9203;</span>
-            <p data-i18n="dash_mentor_pending_verification">Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
-          </div>
-          <div class="card">
-            <h2 id="profile-heading" data-i18n="dash_mentor_profile_title">Complete your mentor profile</h2>
-            <form id="profile-form" novalidate>
-              <div class="form-field">
-                <label class="form-label" for="district" data-i18n="dash_district">District</label>
-                <input class="form-input" type="text" id="district" name="district" required />
+        <div id="dashboard-content" hidden>
+          <div class="page-split page-split--profile">
+            <div>
+              <section class="page-card" style="margin-bottom:var(--space-3)">
+                <div class="profile-hero">
+                  <span class="profile-photo" id="profile-photo">MN</span>
+                  <div style="flex:1">
+                    <h2 id="profile-display-name">Your profile</h2>
+                    <p id="profile-display-meta">Complete your mentor profile to get started.</p>
+                  </div>
+                  <button type="submit" form="profile-form" class="btn btn-primary btn-sm" id="profile-submit-btn" data-i18n="dash_save_profile">Save profile</button>
+                </div>
+              </section>
+              <div class="profile-grid">
+                <section class="page-card profile-block">
+                  <h3 data-i18n="dash_bio">Short bio (optional)</h3>
+                  <p id="bio-display">You haven't added a bio yet.</p>
+                </section>
+                <section class="page-card profile-block">
+                  <h3 data-i18n="dash_district">District</h3>
+                  <div class="timeline-item">
+                    <div>
+                      <strong id="district-display">Not set</strong>
+                      <p>Verification status: <span id="verify-status-text">—</span></p>
+                    </div>
+                  </div>
+                </section>
               </div>
-              <div class="form-field">
-                <span class="form-label" data-i18n="dash_expertise_areas">Areas you can mentor in</span>
-                <div class="expertise-grid" id="expertise-grid"></div>
+              <section class="page-card" style="margin-top:var(--space-3)">
+                <h3 class="page-card__title" id="profile-heading" data-i18n="dash_mentor_profile_title">Complete your mentor profile</h3>
+                <form id="profile-form" novalidate>
+                  <div class="form-field">
+                    <label class="form-label" for="district" data-i18n="dash_district">District</label>
+                    <input class="form-input" type="text" id="district" name="district" required />
+                  </div>
+                  <div class="form-field">
+                    <span class="form-label" data-i18n="dash_expertise_areas">Areas you can mentor in</span>
+                    <div class="expertise-grid" id="expertise-grid"></div>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="bio" data-i18n="dash_bio">Short bio (optional)</label>
+                    <textarea class="form-textarea" id="bio" name="bio"></textarea>
+                  </div>
+                  <p class="form-error" id="form-error" hidden></p>
+                </form>
+              </section>
+            </div>
+            <aside>
+              <div id="verification-banner" class="page-card profile-block status-banner status-banner--pending" style="margin-bottom:var(--space-3)" hidden>
+                <span aria-hidden="true">&#9203;</span>
+                <p data-i18n="dash_mentor_pending_verification">Your account is awaiting verification by an administrator. You'll appear in mentor matches once verified.</p>
               </div>
-              <div class="form-field">
-                <label class="form-label" for="bio" data-i18n="dash_bio">Short bio (optional)</label>
-                <textarea class="form-textarea" id="bio" name="bio"></textarea>
-              </div>
-              <p class="form-error" id="form-error" hidden></p>
-              <button type="submit" class="btn btn-primary btn-block" id="profile-submit-btn" data-i18n="dash_save_profile">Save profile</button>
-            </form>
+              <section class="page-card profile-block">
+                <h3 data-i18n="dash_expertise_areas">Areas you can mentor in</h3>
+                <div class="chip-row" id="aside-expertise-chips">
+                  <span class="chip chip--muted">Complete your profile</span>
+                </div>
+              </section>
+            </aside>
           </div>
         </div>
       </main>
@@ -116,6 +153,7 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
     let currentMentor = null;
+    let authedUser = null;
 
     function buildExpertiseGrid(selected = []) {
       const grid = document.querySelector("#expertise-grid");
@@ -150,14 +188,14 @@
         } else {
           currentMentor = await api.post("/mentors/me", payload);
         }
-        await render();
+        await render(authedUser);
       } catch (err) {
         errorEl.textContent = err.message || "Something went wrong.";
         errorEl.hidden = false;
       }
     });
 
-    async function render() {
+    async function render(currentUser) {
       try {
         currentMentor = await api.get("/mentors/me");
       } catch {
@@ -166,21 +204,44 @@
 
       buildExpertiseGrid(currentMentor ? currentMentor.expertise_areas : []);
 
+      const initials = currentUser.full_name
+        .split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+      document.querySelector("#profile-photo").textContent = initials || "MN";
+      document.querySelector("#profile-display-name").textContent = currentUser.full_name;
+
+      const asideChips = document.querySelector("#aside-expertise-chips");
+
       if (currentMentor) {
         document.querySelector("#profile-heading").textContent = "Your mentor profile";
         document.querySelector("#district").value = currentMentor.district;
         document.querySelector("#bio").value = currentMentor.bio || "";
         document.querySelector("#profile-submit-btn").textContent = "Update profile";
         document.querySelector("#verification-banner").hidden = currentMentor.is_verified;
+
+        document.querySelector("#profile-display-meta").textContent =
+          `${currentMentor.district} · ${currentMentor.is_verified ? "Verified mentor" : "Pending verification"}`;
+        document.querySelector("#bio-display").textContent = currentMentor.bio || "You haven't added a bio yet.";
+        document.querySelector("#district-display").textContent = currentMentor.district;
+        document.querySelector("#verify-status-text").textContent = currentMentor.is_verified ? "Verified" : "Pending verification";
+
+        if (currentMentor.expertise_areas && currentMentor.expertise_areas.length) {
+          asideChips.innerHTML = currentMentor.expertise_areas
+            .map((area) => `<span class="chip">${talentAreaLabel(area)}</span>`)
+            .join("");
+        } else {
+          asideChips.innerHTML = `<span class="chip chip--muted">No areas selected yet</span>`;
+        }
       } else {
         document.querySelector("#verification-banner").hidden = true;
+        document.querySelector("#profile-display-meta").textContent = "Complete your mentor profile to get started.";
       }
     }
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
+      authedUser = user;
       initDashShell(user, "profile");
-      await render();
+      await render(user);
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load profile:", err);

@@ -58,13 +58,30 @@ function renderMatchCard(match, perspective, { showActions = false } = {}) {
         </div>`
       : "";
 
+  const name =
+    perspective === "student"
+      ? match.mentor_name || "Mentor"
+      : perspective === "mentor"
+        ? match.student_name || "Student"
+        : `${match.student_name || "Student"} · ${match.mentor_name || "Mentor"}`;
+  const initials = name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+
   return `
-    <div class="card match-card" data-match-id="${match.id}">
-      <div class="match-card__header">${statusBadge}<span class="text-secondary" style="font-size:0.85em">${formatDate(match.created_at)}</span></div>
-      ${areaLine}
-      ${contactLine}
-      ${actions}
-    </div>`;
+    <article class="page-card match-card people-row" data-match-id="${match.id}" style="grid-template-columns:40px 1fr auto;align-items:start">
+      <span class="home-avatar">${initials || "AM"}</span>
+      <div>
+        <div class="match-card__header">${statusBadge}<span class="text-secondary" style="font-size:0.8rem">${formatDate(match.created_at)}</span></div>
+        <p class="assess-item__title">${name}</p>
+        ${areaLine}
+        ${contactLine}
+      </div>
+      <div class="people-row__actions">${actions}</div>
+    </article>`;
 }
 
 export { findAMentor, listMyMatches, listSchoolMatches, approveMatch, rejectMatch, renderMatchCard };

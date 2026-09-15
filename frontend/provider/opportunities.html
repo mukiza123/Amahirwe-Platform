@@ -10,14 +10,11 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
     .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
     .status-banner--pending { color: #8A5B00; }
-    .opportunity-list { display: flex; flex-direction: column; gap: var(--space-3); }
-    .card-narrow { max-width: 560px; }
   </style>
 </head>
 <body>
@@ -33,9 +30,10 @@
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="opportunities.html" class="dash-sidebar__link is-active" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_my_opportunities">My Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">More opportunities.<br>Greater impact.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -75,45 +73,49 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
-          <div id="verification-banner" class="card status-banner status-banner--pending" hidden>
+          <div id="verification-banner" class="page-card status-banner status-banner--pending" hidden>
             <span aria-hidden="true">&#9203;</span>
             <p data-i18n="dash_provider_pending_verification">Your account is awaiting verification by an administrator. You'll be able to post opportunities once verified.</p>
           </div>
 
-          <div class="dash-grid dash-grid--2">
-            <div class="card card-narrow">
-              <h2 data-i18n="dash_post_opportunity">Post a new opportunity</h2>
-              <form id="opportunity-form" novalidate>
-                <div class="form-field">
-                  <label class="form-label" for="title" data-i18n="dash_opp_title">Title</label>
-                  <input class="form-input" type="text" id="title" name="title" required />
-                </div>
-                <div class="form-field">
-                  <label class="form-label" for="description" data-i18n="dash_opp_description">Description</label>
-                  <textarea class="form-textarea" id="description" name="description" required></textarea>
-                </div>
-                <div class="form-field">
-                  <label class="form-label" for="talent_area" data-i18n="dash_opp_talent_area">Talent area</label>
-                  <select class="form-select" id="talent_area" name="talent_area">
-                    <option value="" data-i18n="dash_opp_open_to_all">Open to all talents</option>
-                  </select>
-                </div>
-                <div class="form-field">
-                  <label class="form-label" for="location" data-i18n="dash_opp_location">Location</label>
-                  <input class="form-input" type="text" id="location" name="location" required />
-                </div>
-                <div class="form-field">
-                  <label class="form-label" for="deadline" data-i18n="dash_opp_deadline">Deadline (optional)</label>
-                  <input class="form-input" type="date" id="deadline" name="deadline" />
-                </div>
-                <p class="form-error" id="form-error" hidden></p>
-                <button type="submit" class="btn btn-primary btn-block" id="submit-btn" data-i18n="dash_opp_post">Post opportunity</button>
-              </form>
-            </div>
+          <div class="page-head">
+            <h1 data-i18n="nav_my_opportunities">My Opportunities</h1>
+            <p>Post new opportunities and manage the ones you've already shared with students.</p>
+          </div>
 
-            <div>
-              <div class="opportunity-list" id="opportunity-list"></div>
-            </div>
+          <div class="opp-layout">
+            <div class="opp-grid" id="opportunity-list"></div>
+            <aside>
+              <section class="page-card">
+                <h2 class="page-card__title" data-i18n="dash_post_opportunity">Post a new opportunity</h2>
+                <form id="opportunity-form" novalidate>
+                  <div class="form-field">
+                    <label class="form-label" for="title" data-i18n="dash_opp_title">Title</label>
+                    <input class="form-input" type="text" id="title" name="title" required />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="description" data-i18n="dash_opp_description">Description</label>
+                    <textarea class="form-textarea" id="description" name="description" required></textarea>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="talent_area" data-i18n="dash_opp_talent_area">Talent area</label>
+                    <select class="form-select" id="talent_area" name="talent_area">
+                      <option value="" data-i18n="dash_opp_open_to_all">Open to all talents</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="location" data-i18n="dash_opp_location">Location</label>
+                    <input class="form-input" type="text" id="location" name="location" required />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="deadline" data-i18n="dash_opp_deadline">Deadline (optional)</label>
+                    <input class="form-input" type="date" id="deadline" name="deadline" />
+                  </div>
+                  <p class="form-error" id="form-error" hidden></p>
+                  <button type="submit" class="btn btn-primary btn-block" id="submit-btn" data-i18n="dash_opp_post">Post opportunity</button>
+                </form>
+              </section>
+            </aside>
           </div>
         </div>
       </main>
@@ -141,7 +143,7 @@
       const opportunities = await listMyOpportunities();
       const list = document.querySelector("#opportunity-list");
       if (opportunities.length === 0) {
-        list.innerHTML = `<div class="card dash-placeholder">
+        list.innerHTML = `<div class="page-card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
           <p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p>
         </div>`;

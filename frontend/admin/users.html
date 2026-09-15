@@ -10,15 +10,8 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
-  <style>
-    .filter-row { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-3); }
-    .filter-row select { width: auto; min-height: 40px; padding: 8px 14px; }
-    .user-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
-    .user-row:last-child { border-bottom: none; }
-    .user-row__meta { display: flex; flex-direction: column; }
-    .user-row__actions { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
@@ -71,19 +64,23 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
-          <div class="card">
-            <div class="filter-row">
-              <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
-              <select id="role-filter" class="form-select">
-                <option value="" data-i18n="dash_all_roles">All roles</option>
-                <option value="student" data-i18n="role_student">Student</option>
-                <option value="teacher" data-i18n="role_teacher">Teacher</option>
-                <option value="mentor" data-i18n="role_mentor">Mentor</option>
-                <option value="provider" data-i18n="role_provider">Provider</option>
-                <option value="parent" data-i18n="role_parent">Parent</option>
-                <option value="admin" data-i18n="role_admin">Admin</option>
-              </select>
-            </div>
+          <div class="page-head">
+            <h1 data-i18n="nav_users">Users</h1>
+            <p>Manage platform accounts, verification and access.</p>
+          </div>
+          <div class="filter-bar">
+            <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
+            <select id="role-filter" class="form-select">
+              <option value="" data-i18n="dash_all_roles">All roles</option>
+              <option value="student" data-i18n="role_student">Student</option>
+              <option value="teacher" data-i18n="role_teacher">Teacher</option>
+              <option value="mentor" data-i18n="role_mentor">Mentor</option>
+              <option value="provider" data-i18n="role_provider">Provider</option>
+              <option value="parent" data-i18n="role_parent">Parent</option>
+              <option value="admin" data-i18n="role_admin">Admin</option>
+            </select>
+          </div>
+          <div class="page-card">
             <div id="users-list"></div>
           </div>
         </div>
@@ -100,6 +97,15 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
     let currentAdminId = null;
+
+    function initials(fullName) {
+      return fullName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join("");
+    }
 
     async function renderUsers() {
       const role = document.querySelector("#role-filter").value;
@@ -122,6 +128,7 @@
               : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">Reactivate</button>`;
 
           return `<div class="user-row">
+            <span class="home-avatar">${initials(u.full_name)}</span>
             <div class="user-row__meta">
               <strong>${u.full_name}</strong>
               <span class="text-secondary">${u.email}</span>

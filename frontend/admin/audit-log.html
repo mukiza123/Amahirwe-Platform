@@ -10,12 +10,8 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
-  <style>
-    .audit-row { padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); font-size: 0.9rem; }
-    .audit-row:last-child { border-bottom: none; }
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
@@ -68,7 +64,13 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
-          <div class="card" id="audit-log"></div>
+          <div class="page-head">
+            <h1 data-i18n="nav_audit_log">Audit Log</h1>
+            <p>Track security-relevant actions taken across the platform.</p>
+          </div>
+          <div class="page-card">
+            <div id="audit-log"></div>
+          </div>
         </div>
       </main>
     </div>
@@ -90,14 +92,31 @@
         container.innerHTML = `<div class="dash-placeholder"><p data-i18n="dash_no_audit_entries">No actions recorded yet.</p></div>`;
         return;
       }
-      container.innerHTML = entries
-        .map(
-          (e) => `<div class="audit-row">
-            <strong>${e.action.replace(/_/g, " ")}</strong> &mdash; ${e.target_type} ${e.detail ? `(${e.detail})` : ""}
-            <span class="text-secondary"> &middot; ${formatDate(e.created_at)}</span>
-          </div>`
-        )
-        .join("");
+      container.innerHTML = `
+        <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-i18n="dash_audit_action">Action</th>
+              <th data-i18n="dash_audit_target">Target</th>
+              <th data-i18n="dash_audit_detail">Detail</th>
+              <th data-i18n="dash_audit_date">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${entries
+              .map(
+                (e) => `<tr>
+              <td>${e.action.replace(/_/g, " ")}</td>
+              <td>${e.target_type}</td>
+              <td>${e.detail || ""}</td>
+              <td>${formatDate(e.created_at)}</td>
+            </tr>`
+              )
+              .join("")}
+          </tbody>
+        </table>
+        </div>`;
     }
 
     requireRole("admin").then(async (user) => {

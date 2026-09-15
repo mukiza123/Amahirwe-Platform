@@ -10,14 +10,8 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-pages.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
-  <style>
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
-    .opportunity-list { display: flex; flex-direction: column; gap: var(--space-3); }
-    .filter-row { display: flex; gap: var(--space-2); align-items: center; margin-bottom: var(--space-4); }
-    .filter-row select { width: auto; min-height: 40px; padding: 8px 14px; }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
@@ -34,9 +28,10 @@
       <a href="mentees.html" class="dash-sidebar__link" data-page="mentees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_my_mentees">My Mentees</span></a>
       <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
       <a href="opportunities.html" class="dash-sidebar__link is-active" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Share your experience.<br>Create future leaders.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -48,7 +43,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_opportunities">Opportunities</h1>
-          <p class="text-secondary" data-i18n="dash_mentor_subtitle">Mentor dashboard</p>
+          <p class="text-secondary">Programs and scholarships you can share with your mentees.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -76,7 +71,11 @@
           <p data-i18n="dash_loading">Loading&hellip;</p>
         </div>
         <div id="dashboard-content" hidden>
-          <div class="filter-row">
+          <div class="page-head">
+            <h1 data-i18n="nav_opportunities">Opportunities</h1>
+            <p>Programs and scholarships you can share with your mentees.</p>
+          </div>
+          <div class="filter-bar">
             <label class="form-label" for="area-filter" style="margin:0;" data-i18n="dash_filter_by_talent">Filter by talent area</label>
             <select id="area-filter" class="form-select">
               <option value="" data-i18n="dash_all_areas">All areas</option>
@@ -89,7 +88,17 @@
               <option value="agriculture" data-i18n="talent_agriculture">Agriculture</option>
             </select>
           </div>
-          <div class="opportunity-list" id="opportunity-list"></div>
+          <div class="opp-layout">
+            <div class="opp-grid" id="opportunity-list"></div>
+            <aside>
+              <section class="page-card">
+                <h2 class="page-card__title">Upcoming Deadlines</h2>
+                <div id="deadline-list">
+                  <p class="text-secondary">Deadlines will appear here as opportunities are posted.</p>
+                </div>
+              </section>
+            </aside>
+          </div>
         </div>
       </main>
     </div>
@@ -104,6 +113,31 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
+    function renderDeadlines(opportunities) {
+      const container = document.querySelector("#deadline-list");
+      const now = Date.now();
+      const upcoming = opportunities
+        .filter((o) => o.deadline)
+        .map((o) => ({ ...o, daysLeft: Math.ceil((new Date(o.deadline) - now) / 86400000) }))
+        .filter((o) => o.daysLeft >= 0)
+        .sort((a, b) => a.daysLeft - b.daysLeft)
+        .slice(0, 4);
+
+      if (upcoming.length === 0) {
+        container.innerHTML = `<p class="text-secondary">No upcoming deadlines right now.</p>`;
+        return;
+      }
+      container.innerHTML = upcoming
+        .map(
+          (o) => `
+          <div class="deadline-row">
+            <span>${o.title}</span>
+            <span class="text-secondary">${o.daysLeft === 0 ? "Due today" : `In ${o.daysLeft} day${o.daysLeft === 1 ? "" : "s"}`}</span>
+          </div>`
+        )
+        .join("");
+    }
+
     async function render() {
       const opportunities = await listOpportunities(document.querySelector("#area-filter").value);
       const list = document.querySelector("#opportunity-list");
@@ -112,9 +146,11 @@
           <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
           <p class="text-secondary" data-i18n="dash_no_opportunities_found">No opportunities match right now. Check back soon.</p>
         </div>`;
+        renderDeadlines([]);
         return;
       }
       list.innerHTML = opportunities.map(renderPublicOpportunityCard).join("");
+      renderDeadlines(opportunities);
     }
 
     document.querySelector("#area-filter").addEventListener("change", render);
