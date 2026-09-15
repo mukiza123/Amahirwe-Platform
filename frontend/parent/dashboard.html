@@ -84,59 +84,18 @@
 
           <div id="stats-area">
             <section class="home-card" style="margin-bottom:var(--space-3)">
-              <div class="home-child">
-                <span class="home-avatar home-avatar--lg">AN</span>
-                <div>
-                  <p class="home-row__title">Aline Niyonsiza</p>
-                  <p class="home-row__meta">Grade 11</p>
-                </div>
-                <div class="home-child__score">
-                  <strong>78%</strong>
-                  <span>Overall Score</span>
-                </div>
-              </div>
+              <div id="child-summary-list"></div>
+            </section>
+
+            <section class="home-card" style="margin-bottom:var(--space-3)">
+              <h2 class="home-card__title">Skills Overview<span id="skills-overview-name"></span></h2>
+              <div id="skills-overview-body"></div>
             </section>
 
             <div class="home-layout home-layout--2">
               <section class="home-card">
-                <h2 class="home-card__title">Skills Overview</h2>
-                <div class="home-progress">
-                  <div class="home-progress__row"><span class="home-progress__label">Problem Solving</span><span class="home-progress__pct">85%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:85%"></span></span></div>
-                  <div class="home-progress__row"><span class="home-progress__label">Communication</span><span class="home-progress__pct">72%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:72%"></span></span></div>
-                  <div class="home-progress__row"><span class="home-progress__label">Creativity</span><span class="home-progress__pct">91%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:91%"></span></span></div>
-                  <div class="home-progress__row"><span class="home-progress__label">Technical Skills</span><span class="home-progress__pct">68%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:68%"></span></span></div>
-                  <div class="home-progress__row"><span class="home-progress__label">Leadership</span><span class="home-progress__pct">58%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:58%"></span></span></div>
-                </div>
-              </section>
-              <section class="home-card">
-                <h2 class="home-card__title">Recent Assessments</h2>
-                <div class="home-assessments">
-                  <div class="home-assessment"><span>Career Interest Assessment</span><span class="text-secondary">Jul 28, 2026 · 81%</span></div>
-                  <div class="home-assessment"><span>Digital Skills Assessment</span><span class="text-secondary">Jul 20, 2026 · 74%</span></div>
-                  <div class="home-assessment"><span>Learning Style Assessment</span><span class="text-secondary">Jul 12, 2026 · 88%</span></div>
-                </div>
-              </section>
-            </div>
-
-            <div class="home-layout home-layout--2">
-              <section class="home-card">
                 <h2 class="home-card__title">Upcoming Opportunities</h2>
-                <div class="home-list">
-                  <div class="home-row">
-                    <div class="home-row__body">
-                      <p class="home-row__title">Women in Tech Scholarship</p>
-                      <p class="home-row__meta">Apply by 17 Aug</p>
-                    </div>
-                    <span class="home-pill">Scholarship</span>
-                  </div>
-                  <div class="home-row">
-                    <div class="home-row__body">
-                      <p class="home-row__title">Youth Innovation Challenge</p>
-                      <p class="home-row__meta">Apply by 29 Aug</p>
-                    </div>
-                    <span class="home-pill home-pill--orange">Competition</span>
-                  </div>
-                </div>
+                <div id="upcoming-opportunities-list" class="home-list"></div>
               </section>
               <section class="home-cta">
                 <h3>Want to support your child's journey?</h3>
@@ -154,23 +113,119 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, talentAreaLabel, talentAreaIcon, formatDate } from "../js/dashboard.js";
+    import { barRow } from "../js/charts.js";
+    import { listOpportunities } from "../js/opportunities.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
+    function initials(fullName) {
+      return fullName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join("");
+    }
+
+    const CHILD_SUMMARY_CAP = 3;
+
+    function renderChildSummary(children) {
+      const list = document.querySelector("#child-summary-list");
+      const shown = children.slice(0, CHILD_SUMMARY_CAP);
+      const rows = shown
+        .map((child) => {
+          const topTalent = child.top_talents && child.top_talents.length > 0 ? child.top_talents[0] : null;
+          const strengthHtml =
+            child.has_completed_assessment && topTalent
+              ? `<strong>${Math.round((topTalent.score / 12) * 100)}%</strong><span>Top strength: ${talentAreaLabel(topTalent.talent_area)}</span>`
+              : `<strong>&mdash;</strong><span>Assessment not completed yet</span>`;
+          return `
+            <div class="home-child">
+              <span class="home-avatar home-avatar--lg">${initials(child.full_name)}</span>
+              <div>
+                <p class="home-row__title">${child.full_name}</p>
+                <p class="home-row__meta">Age ${child.age_range}</p>
+              </div>
+              <div class="home-child__score">${strengthHtml}</div>
+            </div>`;
+        })
+        .join("");
+      const moreLink =
+        children.length > CHILD_SUMMARY_CAP
+          ? `<a class="home-card__link" href="children.html">+${children.length - CHILD_SUMMARY_CAP} more &rarr;</a>`
+          : "";
+      list.innerHTML = rows + moreLink;
+    }
+
+    function renderSkillsOverview(child) {
+      const nameEl = document.querySelector("#skills-overview-name");
+      const body = document.querySelector("#skills-overview-body");
+      nameEl.textContent = ` — ${child.full_name}`;
+      if (!child.has_completed_assessment || !child.top_talents || child.top_talents.length === 0) {
+        body.innerHTML = `<p class="text-secondary">No assessment results yet.</p>`;
+        return;
+      }
+      body.innerHTML = child.top_talents
+        .map((t) => barRow(talentAreaLabel(t.talent_area), talentAreaIcon(t.talent_area), t.score, 12))
+        .join("");
+    }
+
+    function renderOpportunities(opportunities) {
+      const container = document.querySelector("#upcoming-opportunities-list");
+      const now = Date.now();
+      const upcoming = opportunities
+        .filter((o) => o.deadline && new Date(o.deadline).getTime() >= now)
+        .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
+        .slice(0, 3);
+
+      if (upcoming.length === 0) {
+        container.innerHTML = `<p class="text-secondary">No upcoming opportunities right now. <a href="opportunities.html">Browse all opportunities</a>.</p>`;
+        return;
+      }
+      container.innerHTML = upcoming
+        .map((o) => {
+          const pill = o.talent_area
+            ? `<span class="home-pill">${talentAreaIcon(o.talent_area)} ${talentAreaLabel(o.talent_area)}</span>`
+            : "";
+          return `
+            <div class="home-row">
+              <div class="home-row__body">
+                <p class="home-row__title">${o.title}</p>
+                <p class="home-row__meta">Apply by ${formatDate(o.deadline)}</p>
+              </div>
+              ${pill}
+            </div>`;
+        })
+        .join("");
+    }
+
     async function render() {
-      const children = await api.get("/parents/me/children");
+      const [children, opportunities] = await Promise.all([
+        api.get("/parents/me/children"),
+        listOpportunities().catch(() => []),
+      ]);
+
       if (children.length === 0) {
         document.querySelector("#empty-card").hidden = false;
+        document.querySelector("#stats-area").hidden = true;
+        return;
       }
+
+      renderChildSummary(children);
+      renderSkillsOverview(children[0]);
+      renderOpportunities(opportunities);
     }
 
     requireRole("parent").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render();
+      // The empty-state card defaults to hidden, so show the page
+      // right away and let render() reveal it a moment later if this
+      // parent actually has no linked children yet.
       showContent(loadingEl, contentEl);
+      render().catch((err) => console.error("Failed to load children summary:", err));
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");

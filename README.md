@@ -149,8 +149,10 @@ The frontend is plain HTML/CSS/JS, so it just needs to be served as static files
 
 ```bash
 # from the project root, in a new terminal
-python3 -m http.server 5500
+python3 dev-server.py 5500
 ```
+
+(`dev-server.py` is a thin wrapper around Python's built-in file server that also sends `Cache-Control: no-store` on every response — plain `python3 -m http.server` sends no caching headers at all, which lets browsers guess and keep serving stale CSS/JS after an edit. Use `python3 -m http.server 5500` instead only if you specifically want default caching behavior.)
 
 Then open:
 

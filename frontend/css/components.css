@@ -1142,6 +1142,10 @@
 .dash-sidebar__brand img {
   width: 26px;
   height: 26px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
 .dash-sidebar__nav {

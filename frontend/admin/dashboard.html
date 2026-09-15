@@ -76,65 +76,37 @@
           <div class="home-kpis home-kpis--4">
             <article class="home-kpi home-kpi--mint">
               <span class="home-kpi__label">Total Users</span>
-              <span class="home-kpi__value">248</span>
+              <span class="home-kpi__value" id="kpi-total-users">&mdash;</span>
             </article>
             <article class="home-kpi">
               <span class="home-kpi__label">Active Students</span>
-              <span class="home-kpi__value">214</span>
+              <span class="home-kpi__value" id="kpi-active-students">&mdash;</span>
             </article>
             <article class="home-kpi">
               <span class="home-kpi__label">Mentors</span>
-              <span class="home-kpi__value">16</span>
+              <span class="home-kpi__value" id="kpi-active-mentors">&mdash;</span>
             </article>
             <article class="home-kpi">
               <span class="home-kpi__label">Opportunities</span>
-              <span class="home-kpi__value">32</span>
+              <span class="home-kpi__value" id="kpi-active-opportunities">&mdash;</span>
             </article>
           </div>
 
           <div class="home-layout home-layout--2">
             <section class="home-card">
-              <h2 class="home-card__title">Platform Activity</h2>
-              <div class="home-chart" style="height:180px" aria-label="Platform activity">
-                <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar home-chart__bar--mint" style="height:40%"></span></div><span class="home-chart__label">Jul</span></div>
-                <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar" style="height:55%"></span></div><span class="home-chart__label">Aug 12</span></div>
-                <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar home-chart__bar--mint" style="height:48%"></span></div><span class="home-chart__label">Aug 21</span></div>
-                <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar" style="height:70%"></span></div><span class="home-chart__label">Aug 29</span></div>
-                <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar home-chart__bar--mint" style="height:62%"></span></div><span class="home-chart__label">Sep 7</span></div>
-              </div>
-              <div class="home-legend" style="flex-direction:row;margin-top:12px">
-                <span><i style="background:var(--color-mint)"></i> Students</span>
-                <span><i style="background:var(--color-primary-teal)"></i> Mentors</span>
-                <span><i style="background:var(--color-orange)"></i> Organizations</span>
-              </div>
+              <h2 class="home-card__title">Signups (last 14 days)</h2>
+              <div id="signups-chart" aria-label="Signups over the last 14 days"></div>
             </section>
             <section class="home-card">
               <h2 class="home-card__title">Recent Signups</h2>
-              <div class="home-list">
-                <div class="home-row"><span class="home-avatar">AN</span><div class="home-row__body"><p class="home-row__title">Aline Niyonsiza</p><p class="home-row__meta">Student · Aug 9, 2026</p></div></div>
-                <div class="home-row"><span class="home-avatar">JB</span><div class="home-row__body"><p class="home-row__title">Jean Bosco</p><p class="home-row__meta">Student · Aug 8, 2026</p></div></div>
-                <div class="home-row"><span class="home-avatar">GU</span><div class="home-row__body"><p class="home-row__title">Grace Uwimana</p><p class="home-row__meta">Mentor · Aug 7, 2026</p></div></div>
-              </div>
+              <div class="home-list" id="recent-signups-list"></div>
             </section>
           </div>
 
-          <div class="home-layout home-layout--2">
+          <div class="home-layout">
             <section class="home-card">
-              <h2 class="home-card__title">Assessment Overview</h2>
-              <div class="home-progress">
-                <div class="home-progress__row"><span class="home-progress__label">Students taking tests</span><span class="home-progress__pct">68%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:68%"></span></span></div>
-                <div class="home-progress__row"><span class="home-progress__label">Students completed assessment</span><span class="home-progress__pct">54%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:54%"></span></span></div>
-                <div class="home-progress__row"><span class="home-progress__label">Creativity</span><span class="home-progress__pct">42%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:42%"></span></span></div>
-                <div class="home-progress__row"><span class="home-progress__label">Technical Skills</span><span class="home-progress__pct">36%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:36%"></span></span></div>
-              </div>
-            </section>
-            <section class="home-card">
-              <h2 class="home-card__title">System Status</h2>
-              <div class="home-status">
-                <div class="home-status__row"><span>Database Online</span><span class="home-status__ok">Online</span></div>
-                <div class="home-status__row"><span>Mobile App Online</span><span class="home-status__ok">Online</span></div>
-                <div class="home-status__row"><span>Last Backup</span><span>2 hrs ago</span></div>
-              </div>
+              <h2 class="home-card__title">Talent Area Distribution</h2>
+              <div id="talent-area-distribution"></div>
             </section>
           </div>
         </div>
@@ -146,19 +118,69 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, talentAreaLabel, talentAreaIcon, formatDate } from "../js/dashboard.js";
+    import { barRow, miniBarChart } from "../js/charts.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
+    function initials(fullName) {
+      return fullName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join("");
+    }
+
+    const ROLE_LABELS = {
+      student: "Student",
+      teacher: "Teacher",
+      mentor: "Mentor",
+      provider: "Provider",
+      admin: "Administrator",
+      parent: "Parent",
+    };
+
     async function render() {
       try {
-        const overview = await api.get("/admin/overview");
+        const [overview, users] = await Promise.all([
+          api.get("/admin/overview"),
+          api.get("/admin/users"),
+        ]);
+
         if (overview.pending_verification_count > 0) {
           document.querySelector("#pending-banner").hidden = false;
           document.querySelector("#pending-text").textContent =
             `${overview.pending_verification_count} mentor/provider account(s) awaiting verification.`;
         }
+
+        document.querySelector("#kpi-total-users").textContent = overview.total_users;
+        document.querySelector("#kpi-active-students").textContent = overview.active_student_count;
+        document.querySelector("#kpi-active-mentors").textContent = overview.active_mentor_count;
+        document.querySelector("#kpi-active-opportunities").textContent = overview.active_opportunity_count;
+
+        document.querySelector("#signups-chart").innerHTML = miniBarChart(overview.signups_last_14_days);
+
+        const recentSignups = users.slice(0, 4);
+        document.querySelector("#recent-signups-list").innerHTML = recentSignups
+          .map(
+            (u) => `
+            <div class="home-row">
+              <span class="home-avatar">${initials(u.full_name)}</span>
+              <div class="home-row__body">
+                <p class="home-row__title">${u.full_name}</p>
+                <p class="home-row__meta">${ROLE_LABELS[u.role] || u.role} &middot; ${formatDate(u.created_at)}</p>
+              </div>
+            </div>`
+          )
+          .join("");
+
+        const areaEntries = Object.entries(overview.talent_area_distribution);
+        const maxCount = Math.max(1, ...areaEntries.map(([, count]) => count));
+        document.querySelector("#talent-area-distribution").innerHTML = areaEntries
+          .map(([area, count]) => barRow(talentAreaLabel(area), talentAreaIcon(area), count, maxCount))
+          .join("");
       } catch {
         /* designed dashboard remains visible */
       }
@@ -167,8 +189,11 @@
     requireRole("admin").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render();
+      // The pending-verification banner defaults to hidden, so it's
+      // safe to show the page first and let render() reveal it a
+      // moment later if there's actually something pending.
       showContent(loadingEl, contentEl);
+      render();
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");

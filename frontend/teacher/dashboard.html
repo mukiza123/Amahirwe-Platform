@@ -86,59 +86,36 @@
             <div class="home-kpis">
               <article class="home-kpi home-kpi--mint">
                 <span class="home-kpi__label">Total Students</span>
-                <span class="home-kpi__value">43</span>
+                <span class="home-kpi__value" id="kpi-total-students">0</span>
               </article>
               <article class="home-kpi">
                 <span class="home-kpi__label">Mentor Requests</span>
-                <span class="home-kpi__value">12</span>
+                <span class="home-kpi__value" id="kpi-mentor-requests">0</span>
               </article>
               <article class="home-kpi">
-                <span class="home-kpi__label">Opportunities Shared</span>
-                <span class="home-kpi__value">8</span>
+                <span class="home-kpi__label">Assessed</span>
+                <span class="home-kpi__value" id="kpi-assessed">0</span>
               </article>
             </div>
 
-            <div class="home-layout home-layout--2">
+            <div class="home-layout" id="progress-layout">
               <section class="home-card">
                 <div class="home-card__head">
                   <h2 class="home-card__title">Student Progress</h2>
                   <a class="home-card__link" href="students.html">View all</a>
                 </div>
-                <div class="home-list">
-                  <div class="home-row"><span class="home-avatar">AN</span><div class="home-row__body"><p class="home-row__title">Aline Niyonsiza</p><p class="home-row__meta">Grade 11</p></div><span class="home-row__value">88%</span></div>
-                  <div class="home-row"><span class="home-avatar">JB</span><div class="home-row__body"><p class="home-row__title">Jean Bosco</p><p class="home-row__meta">Grade 10</p></div><span class="home-row__value">76%</span></div>
-                  <div class="home-row"><span class="home-avatar">CM</span><div class="home-row__body"><p class="home-row__title">Christine Mutamana</p><p class="home-row__meta">Grade 11</p></div><span class="home-row__value">91%</span></div>
-                  <div class="home-row"><span class="home-avatar">EH</span><div class="home-row__body"><p class="home-row__title">Emmanuel Hatega</p><p class="home-row__meta">Grade 12</p></div><span class="home-row__value">69%</span></div>
-                  <div class="home-row"><span class="home-avatar">KU</span><div class="home-row__body"><p class="home-row__title">Keza Uwase</p><p class="home-row__meta">Grade 10</p></div><span class="home-row__value">82%</span></div>
-                </div>
-              </section>
-              <section class="home-card">
-                <h2 class="home-card__title">Recent Activity</h2>
-                <div class="home-list">
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">A mentor request was approved</p><p class="home-row__meta">2 hrs ago</p></div></div>
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">New opportunity posted</p><p class="home-row__meta">5 hrs ago</p></div></div>
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">A student updated their profile</p><p class="home-row__meta">Yesterday</p></div></div>
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Message from mentor</p><p class="home-row__meta">Yesterday</p></div></div>
-                </div>
+                <div class="home-list" id="student-progress-list"></div>
               </section>
             </div>
 
-            <div class="home-layout home-layout--2">
+            <div class="home-layout home-layout--2" id="secondary-layout">
               <section class="home-card">
-                <h2 class="home-card__title">Class Overview</h2>
-                <div class="home-chart" aria-label="Class overview by grade">
-                  <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar" style="height:55%"></span></div><span class="home-chart__label">Grade 10</span></div>
-                  <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar" style="height:80%"></span></div><span class="home-chart__label">Grade 11</span></div>
-                  <div class="home-chart__col"><div class="home-chart__stack"><span class="home-chart__bar" style="height:62%"></span></div><span class="home-chart__label">Grade 12</span></div>
-                </div>
+                <h2 class="home-card__title">Students by Age Range</h2>
+                <div class="home-chart" id="age-range-chart" aria-label="Students by age range"></div>
               </section>
-              <section class="home-card">
+              <section class="home-card" id="top-performers-card">
                 <h2 class="home-card__title">Top Performing Students</h2>
-                <div class="home-list">
-                  <div class="home-row"><span class="home-avatar">AN</span><div class="home-row__body"><p class="home-row__title">Aline</p></div><span class="home-row__value">92%</span></div>
-                  <div class="home-row"><span class="home-avatar">JB</span><div class="home-row__body"><p class="home-row__title">Jean</p></div><span class="home-row__value">86%</span></div>
-                  <div class="home-row"><span class="home-avatar">CM</span><div class="home-row__body"><p class="home-row__title">Christine</p></div><span class="home-row__value">84%</span></div>
-                </div>
+                <div class="home-list" id="top-performers-list"></div>
               </section>
             </div>
           </div>
@@ -155,20 +132,116 @@
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+    const AGE_RANGES = ["12-14", "15-16", "17-19"];
+
+    // Matches the initials() helper in ../js/dashboard.js (not exported,
+    // so mirrored here rather than reinvented).
+    function initials(fullName) {
+      return fullName
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join("");
+    }
+
+    function scorePercent(topScore) {
+      return Math.round((topScore / 12) * 100);
+    }
+
+    function renderStudentProgress(students) {
+      const list = document.querySelector("#student-progress-list");
+      if (!list) return;
+      if (students.length === 0) {
+        list.innerHTML = `<p class="text-secondary">No students added yet.</p>`;
+        return;
+      }
+      list.innerHTML = students
+        .slice(0, 5)
+        .map(
+          (s) => `
+          <div class="home-row">
+            <span class="home-avatar">${initials(s.full_name)}</span>
+            <div class="home-row__body">
+              <p class="home-row__title">${s.full_name}</p>
+              <p class="home-row__meta">Age ${s.age_range}</p>
+            </div>
+            <span class="home-row__value">${s.top_score != null ? scorePercent(s.top_score) + "%" : "Not assessed"}</span>
+          </div>`
+        )
+        .join("");
+    }
+
+    function renderAgeRangeChart(students) {
+      const chart = document.querySelector("#age-range-chart");
+      if (!chart) return;
+      const counts = AGE_RANGES.map((range) => students.filter((s) => s.age_range === range).length);
+      const max = Math.max(1, ...counts);
+      chart.innerHTML = AGE_RANGES.map((range, i) => {
+        const height = counts[i] > 0 ? Math.max(4, Math.round((counts[i] / max) * 100)) : 0;
+        return `
+          <div class="home-chart__col">
+            <div class="home-chart__stack"><span class="home-chart__bar" style="height:${height}%"></span></div>
+            <span class="home-chart__label">${range} (${counts[i]})</span>
+          </div>`;
+      }).join("");
+    }
+
+    function renderTopPerformers(students) {
+      const card = document.querySelector("#top-performers-card");
+      const list = document.querySelector("#top-performers-list");
+      const secondaryLayout = document.querySelector("#secondary-layout");
+      const scored = students
+        .filter((s) => s.top_score != null)
+        .sort((a, b) => b.top_score - a.top_score)
+        .slice(0, 3);
+      if (scored.length === 0) {
+        card?.remove();
+        secondaryLayout?.classList.remove("home-layout--2");
+        return;
+      }
+      list.innerHTML = scored
+        .map(
+          (s) => `
+          <div class="home-row">
+            <span class="home-avatar">${initials(s.full_name)}</span>
+            <div class="home-row__body"><p class="home-row__title">${s.full_name}</p></div>
+            <span class="home-row__value">${scorePercent(s.top_score)}%</span>
+          </div>`
+        )
+        .join("");
+    }
+
+    function populateOverview(overview) {
+      document.querySelector("#kpi-total-students").textContent = overview.student_count;
+      document.querySelector("#kpi-mentor-requests").textContent = overview.pending_match_count;
+      document.querySelector("#kpi-assessed").textContent = overview.students_with_assessment_count;
+      const students = overview.students || [];
+      renderStudentProgress(students);
+      renderAgeRangeChart(students);
+      renderTopPerformers(students);
+    }
 
     async function render() {
       try {
-        await api.get("/teachers/me/overview");
+        const overview = await api.get("/teachers/me/overview");
+        populateOverview(overview);
       } catch {
         document.querySelector("#prompt-card").hidden = false;
+        document.querySelector("#stats-area").hidden = true;
       }
     }
 
     requireRole("teacher").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render();
+      // Show the dashboard immediately instead of blocking behind a
+      // spinner for a network round trip whose only real job is
+      // catching the "no school set up yet" edge case — that case
+      // defaults to hidden already, so it's safe to reveal first and
+      // let this correct itself a moment later if needed.
       showContent(loadingEl, contentEl);
+      render();
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");

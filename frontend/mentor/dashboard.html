@@ -94,90 +94,29 @@
             <div class="home-kpis">
               <article class="home-kpi home-kpi--mint">
                 <span class="home-kpi__label">My Mentees</span>
-                <span class="home-kpi__value">5</span>
+                <span class="home-kpi__value" id="kpi-mentees">&ndash;</span>
               </article>
               <article class="home-kpi">
-                <span class="home-kpi__label">Active Sessions</span>
-                <span class="home-kpi__value">3</span>
+                <span class="home-kpi__label">Expertise Areas</span>
+                <span class="home-kpi__value" id="kpi-expertise">&ndash;</span>
               </article>
               <article class="home-kpi">
                 <span class="home-kpi__label">Pending Requests</span>
-                <span class="home-kpi__value">2</span>
+                <span class="home-kpi__value" id="kpi-pending">&ndash;</span>
               </article>
             </div>
 
             <div class="home-layout home-layout--2">
               <section class="home-card">
                 <div class="home-card__head">
-                  <h2 class="home-card__title">Upcoming Sessions</h2>
+                  <h2 class="home-card__title">My Mentees</h2>
                   <a class="home-card__link" href="mentees.html">View all</a>
                 </div>
-                <div class="home-list">
-                  <div class="home-row">
-                    <span class="home-avatar">AN</span>
-                    <div class="home-row__body">
-                      <p class="home-row__title">Aline Niyonsiza</p>
-                      <p class="home-row__meta">Career guidance · Aug 14, 2026</p>
-                    </div>
-                    <a class="home-btn home-btn--primary" href="mentees.html">Join</a>
-                  </div>
-                  <div class="home-row">
-                    <span class="home-avatar">JB</span>
-                    <div class="home-row__body">
-                      <p class="home-row__title">Jean Bosco</p>
-                      <p class="home-row__meta">Interview preparation · Aug 16, 2026</p>
-                    </div>
-                    <a class="home-btn" href="mentees.html">Join</a>
-                  </div>
-                </div>
-              </section>
-              <section class="home-card">
-                <h2 class="home-card__title">My Mentorship Impact</h2>
-                <div class="home-ring-stat">
-                  <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="92 percent">
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--color-bg-secondary)" stroke-width="12"/>
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--color-primary-teal)" stroke-width="12" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="24.1" transform="rotate(-90 60 60)"/>
-                    <text x="60" y="64" text-anchor="middle" class="chart-donut__value">92%</text>
-                  </svg>
-                  <strong>Impact score</strong>
-                </div>
-                <div class="home-list" style="margin-top:12px">
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Sessions completed</p></div><span class="home-row__value">12</span></div>
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Students counselled</p></div><span class="home-row__value">8</span></div>
-                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Students progressing</p></div><span class="home-row__value">5</span></div>
-                </div>
-              </section>
-            </div>
-
-            <div class="home-layout home-layout--2">
-              <section class="home-card">
-                <div class="home-card__head">
-                  <h2 class="home-card__title">Suggested Mentees</h2>
-                  <a class="home-card__link" href="mentees.html">View all</a>
-                </div>
-                <div class="home-list">
-                  <div class="home-row">
-                    <span class="home-avatar">CM</span>
-                    <div class="home-row__body">
-                      <p class="home-row__title">Christine Mutamana</p>
-                      <p class="home-row__meta">Grade 11 · Interested in leadership</p>
-                    </div>
-                    <a class="home-btn" href="mentees.html">Request</a>
-                  </div>
-                  <div class="home-row">
-                    <span class="home-avatar">EH</span>
-                    <div class="home-row__body">
-                      <p class="home-row__title">Emmanuel Hatega</p>
-                      <p class="home-row__meta">Grade 12 · Interested in technology</p>
-                    </div>
-                    <a class="home-btn" href="mentees.html">Request</a>
-                  </div>
-                </div>
+                <div class="home-list" id="mentees-preview"></div>
               </section>
               <section class="home-card">
                 <h2 class="home-card__title">Quick Actions</h2>
                 <div class="home-list">
-                  <a class="home-row" href="mentees.html"><div class="home-row__body"><p class="home-row__title">Create a session</p></div></a>
                   <a class="home-row" href="profile.html"><div class="home-row__body"><p class="home-row__title">Update profile</p></div></a>
                 </div>
                 <p class="home-quote">To grow others, you must first grow yourself.</p>
@@ -194,6 +133,7 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { listMyMatches, renderMatchCard } from "../js/matching.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -205,16 +145,41 @@
       } catch {
         document.querySelector("#prompt-card").hidden = false;
         document.querySelector("#verification-banner").hidden = true;
+        document.querySelector("#stats-area").hidden = true;
         return;
       }
       document.querySelector("#verification-banner").hidden = mentor.is_verified;
     }
 
+    async function loadStats() {
+      const [overview, matches] = await Promise.all([
+        api.get("/mentors/me/overview"),
+        listMyMatches(),
+      ]);
+
+      document.querySelector("#kpi-mentees").textContent = overview.approved_mentee_count;
+      document.querySelector("#kpi-expertise").textContent = overview.expertise_count;
+      document.querySelector("#kpi-pending").textContent = overview.pending_request_count;
+
+      const preview = document.querySelector("#mentees-preview");
+      const approved = matches.filter((m) => m.status === "approved").slice(0, 3);
+      if (approved.length === 0) {
+        preview.innerHTML = `<div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title text-secondary">No approved mentees yet.</p></div></div>`;
+        return;
+      }
+      preview.innerHTML = approved.map((m) => renderMatchCard(m, "mentor")).join("");
+    }
+
     requireRole("mentor").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render();
+      // Show the dashboard immediately instead of blocking behind a
+      // spinner for the verification check — it defaults to hidden
+      // already, so it's safe to reveal first and let it correct
+      // itself a moment later if the account is actually unverified.
       showContent(loadingEl, contentEl);
+      render();
+      loadStats();
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");

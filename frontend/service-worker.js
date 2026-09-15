@@ -6,7 +6,7 @@
  * this file. Registration happens from js/offline.js.
  */
 
-const CACHE_NAME = "amahirwe-v3";
+const CACHE_NAME = "amahirwe-v4";
 
 const PRECACHE_URLS = [
   "css/style.css",

@@ -84,85 +84,23 @@
           <div class="home-kpis">
             <article class="home-kpi home-kpi--mint">
               <span class="home-kpi__label">Total Opportunities</span>
-              <span class="home-kpi__value">12</span>
+              <span class="home-kpi__value" id="kpi-total-opportunities">&ndash;</span>
             </article>
             <article class="home-kpi">
-              <span class="home-kpi__label">Active Programs</span>
-              <span class="home-kpi__value">5</span>
+              <span class="home-kpi__label">Active Opportunities</span>
+              <span class="home-kpi__value" id="kpi-active-opportunities">&ndash;</span>
             </article>
             <article class="home-kpi">
-              <span class="home-kpi__label">Total Applications</span>
-              <span class="home-kpi__value">48</span>
+              <span class="home-kpi__label">Talent Areas Covered</span>
+              <span class="home-kpi__value" id="kpi-talent-areas">&ndash;</span>
             </article>
-          </div>
-
-          <div class="home-layout home-layout--2">
-            <section class="home-card">
-              <div class="home-card__head">
-                <h2 class="home-card__title">Recent Applications</h2>
-                <a class="home-card__link" href="opportunities.html">View all</a>
-              </div>
-              <div class="home-list">
-                <div class="home-row">
-                  <span class="home-avatar">AN</span>
-                  <div class="home-row__body">
-                    <p class="home-row__title">Aline Niyonsiza</p>
-                    <p class="home-row__meta">Women in Tech Scholarship · 92% match</p>
-                  </div>
-                  <a class="home-btn" href="opportunities.html">Review</a>
-                </div>
-                <div class="home-row">
-                  <span class="home-avatar">JB</span>
-                  <div class="home-row__body">
-                    <p class="home-row__title">Jean Bosco</p>
-                    <p class="home-row__meta">Software Engineering Internship · 78% match</p>
-                  </div>
-                  <a class="home-btn" href="opportunities.html">Review</a>
-                </div>
-                <div class="home-row">
-                  <span class="home-avatar">CM</span>
-                  <div class="home-row__body">
-                    <p class="home-row__title">Christine Mutamana</p>
-                    <p class="home-row__meta">Leadership Fellowship · 88% match</p>
-                  </div>
-                  <a class="home-btn" href="opportunities.html">Review</a>
-                </div>
-              </div>
-            </section>
-            <section class="home-card">
-              <h2 class="home-card__title">Opportunity Performance</h2>
-              <div class="home-donut">
-                <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="124 applications">
-                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-bg-secondary)" stroke-width="16"/>
-                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-primary-teal)" stroke-width="16" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="80" transform="rotate(-90 70 70)"/>
-                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-mint)" stroke-width="16" stroke-dasharray="326.7" stroke-dashoffset="220" transform="rotate(40 70 70)"/>
-                  <text x="70" y="74" text-anchor="middle" class="chart-donut__value">124</text>
-                </svg>
-                <div class="home-legend">
-                  <span><i style="background:var(--color-primary-teal)"></i> Reviewed</span>
-                  <span><i style="background:var(--color-mint)"></i> Selected</span>
-                  <span><i style="background:var(--color-peach)"></i> Not selected</span>
-                </div>
-              </div>
-            </section>
           </div>
 
           <div class="home-layout home-layout--2">
             <section class="home-card">
               <h2 class="home-card__title">Posted Opportunities</h2>
-              <div class="home-list">
-                <div class="home-row">
-                  <div class="home-row__body">
-                    <p class="home-row__title">Software Engineering Internship</p>
-                  </div>
-                  <span class="home-pill">Active</span>
-                </div>
-                <div class="home-row">
-                  <div class="home-row__body">
-                    <p class="home-row__title">Digital Marketing Fellowship</p>
-                  </div>
-                  <span class="home-pill">Active</span>
-                </div>
+              <div class="home-list" id="posted-opportunities-list">
+                <p class="text-secondary">Loading&hellip;</p>
               </div>
             </section>
             <section class="home-cta">
@@ -181,24 +119,50 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { listMyOpportunities } from "../js/opportunities.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
+    function renderPostedOpportunities(opportunities) {
+      const list = document.querySelector("#posted-opportunities-list");
+      if (!opportunities || opportunities.length === 0) {
+        list.innerHTML = `<p class="text-secondary">You haven't posted anything yet. <a href="opportunities.html">Post an opportunity</a>.</p>`;
+        return;
+      }
+      list.innerHTML = opportunities.slice(0, 4).map((opportunity) => `
+        <div class="home-row">
+          <div class="home-row__body">
+            <p class="home-row__title">${opportunity.title}</p>
+          </div>
+          <span class="home-pill">${opportunity.is_active ? "Active" : "Inactive"}</span>
+        </div>
+      `).join("");
+    }
+
     async function render(user) {
       document.querySelector("#verification-banner").hidden = user.is_verified;
       try {
-        await api.get("/opportunities/mine/overview");
-      } catch {
-        /* keep designed dashboard even if overview is empty */
+        const [overview, opportunities] = await Promise.all([
+          api.get("/opportunities/mine/overview"),
+          listMyOpportunities(),
+        ]);
+        document.querySelector("#kpi-total-opportunities").textContent = overview.total_count;
+        document.querySelector("#kpi-active-opportunities").textContent = overview.active_count;
+        document.querySelector("#kpi-talent-areas").textContent = Object.keys(overview.by_talent_area || {}).length;
+        renderPostedOpportunities(opportunities);
+      } catch (err) {
+        console.error("Failed to load dashboard data:", err);
       }
     }
 
     requireRole("provider").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render(user);
+      // Show the shell immediately and fill in the KPIs / opportunity list
+      // in the background rather than blocking the page behind a spinner.
       showContent(loadingEl, contentEl);
+      render(user);
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
       showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
