@@ -218,6 +218,50 @@ function initRegisterForm() {
   });
 }
 
+/** Wires up the "Change password" form on the settings page (present
+ * for every role, same markup each time), including it here rather
+ * than duplicating this in six settings.html files. */
+function initPasswordForm() {
+  const form = document.querySelector("#password-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    clearErrors(form);
+    document.querySelector("#password-form-success")?.setAttribute("hidden", "");
+
+    const current_password = form.current_password.value;
+    const new_password = form.new_password.value;
+    const confirm_password = form.confirm_password.value;
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    if (new_password.length < 8) {
+      setFieldError(form, "new_password", "Password must be at least 8 characters.");
+      return;
+    }
+    if (new_password !== confirm_password) {
+      setFieldError(form, "confirm_password", "Passwords don't match.");
+      return;
+    }
+
+    setLoading(submitBtn, true);
+    try {
+      await api.post("/auth/me/password", { current_password, new_password });
+      form.reset();
+      const success = document.querySelector("#password-form-success");
+      if (success) success.hidden = false;
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 401) {
+        setFieldError(form, "current_password", "Current password is incorrect.");
+      } else {
+        setFormError(form, err.message || "Something went wrong. Please try again.");
+      }
+    } finally {
+      setLoading(submitBtn, false);
+    }
+  });
+}
+
 function initLogoutButtons() {
   document.querySelectorAll("[data-action='logout']").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -230,6 +274,7 @@ function initLogoutButtons() {
 document.addEventListener("DOMContentLoaded", () => {
   initLoginForm();
   initRegisterForm();
+  initPasswordForm();
   initLogoutButtons();
 });
 

@@ -1220,6 +1220,20 @@
   flex: 1;
 }
 
+/* Hidden on desktop (the sidebar already shows the logo there); shown
+ * below 900px, where the sidebar itself sits off-screen until opened
+ * and the logo would otherwise not appear anywhere on the page. */
+.dash-topbar__brand {
+  display: none;
+  flex-shrink: 0;
+}
+
+.dash-topbar__brand img {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
 .dash-topbar__title {
   min-width: 0;
 }
@@ -1579,6 +1593,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .dash-topbar__brand {
+    display: inline-flex;
   }
 
   .dash-topbar {

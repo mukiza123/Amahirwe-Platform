@@ -69,3 +69,44 @@ def test_me_returns_current_user_with_valid_token(client):
 def test_me_rejects_a_garbage_token(client):
     response = client.get("/api/auth/me", headers={"Authorization": "Bearer not-a-real-token"})
     assert response.status_code == 401
+
+
+def test_change_password_with_correct_current_password_succeeds(client):
+    token = register(client).json()["access_token"]
+    response = client.post(
+        "/api/auth/me/password",
+        json={"current_password": "password123", "new_password": "newpassword456"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 204
+
+    # The old password no longer works, the new one does.
+    assert client.post(
+        "/api/auth/login", json={"email": "student@example.com", "password": "password123"}
+    ).status_code == 401
+    assert client.post(
+        "/api/auth/login", json={"email": "student@example.com", "password": "newpassword456"}
+    ).status_code == 200
+
+
+def test_change_password_with_wrong_current_password_fails(client):
+    token = register(client).json()["access_token"]
+    response = client.post(
+        "/api/auth/me/password",
+        json={"current_password": "wrong-password", "new_password": "newpassword456"},
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 401
+
+    # The password was not changed.
+    assert client.post(
+        "/api/auth/login", json={"email": "student@example.com", "password": "password123"}
+    ).status_code == 200
+
+
+def test_change_password_requires_authentication(client):
+    response = client.post(
+        "/api/auth/me/password",
+        json={"current_password": "password123", "new_password": "newpassword456"},
+    )
+    assert response.status_code == 401
