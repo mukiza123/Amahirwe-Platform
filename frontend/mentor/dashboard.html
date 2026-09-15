@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-home.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
@@ -31,11 +32,12 @@
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="mentees.html" class="dash-sidebar__link" data-page="mentees"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_my_mentees">My Mentees</span></a>
-      <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">Profile</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Share your experience.<br>Create future leaders.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -45,8 +47,8 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_mentor_subtitle">Mentor dashboard</p>
+          <h1>Welcome, <span data-dash-first-name>Grace</span></h1>
+          <p class="text-secondary">You're making a difference.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -60,10 +62,10 @@
           <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
         </a>
         <div class="dash-user">
-          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <span class="dash-user__avatar" id="dash-user-avatar">GU</span>
           <div>
-            <div class="dash-user__name" id="dash-user-name"></div>
-            <div class="dash-user__role" id="dash-user-role"></div>
+            <div class="dash-user__name" id="dash-user-name">Grace Uwimana</div>
+            <div class="dash-user__role" id="dash-user-role">Mentor</div>
           </div>
         </div>
       </div>
@@ -87,31 +89,98 @@
             <a class="btn btn-primary" href="profile.html" data-i18n="dash_mentor_profile_title">Complete your mentor profile</a>
           </div>
 
-          <div id="stats-area" hidden>
-            <div class="stat-grid">
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/></svg></span>
-                <span class="stat-card__value" id="stat-mentees">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_mentees">Active mentees</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
-                <span class="stat-card__value" id="stat-pending">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_pending_requests">Pending requests</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-                <span class="stat-card__value" id="stat-areas">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_expertise_areas">Areas of expertise</span>
-              </div>
+          <div id="stats-area">
+            <div class="home-kpis">
+              <article class="home-kpi home-kpi--mint">
+                <span class="home-kpi__label">My Mentees</span>
+                <span class="home-kpi__value">5</span>
+              </article>
+              <article class="home-kpi">
+                <span class="home-kpi__label">Active Sessions</span>
+                <span class="home-kpi__value">3</span>
+              </article>
+              <article class="home-kpi">
+                <span class="home-kpi__label">Pending Requests</span>
+                <span class="home-kpi__value">2</span>
+              </article>
             </div>
 
-            <div class="dash-panel">
-              <div class="dash-panel__header">
-                <h2 data-i18n="dash_your_mentor_matches">Your mentor matches</h2>
-                <a href="mentees.html" data-i18n="dash_view_all">View all</a>
-              </div>
-              <div id="matches-preview"><p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p></div>
+            <div class="home-layout home-layout--2">
+              <section class="home-card">
+                <div class="home-card__head">
+                  <h2 class="home-card__title">Upcoming Sessions</h2>
+                  <a class="home-card__link" href="mentees.html">View all</a>
+                </div>
+                <div class="home-list">
+                  <div class="home-row">
+                    <span class="home-avatar">AN</span>
+                    <div class="home-row__body">
+                      <p class="home-row__title">Aline Niyonsiza</p>
+                      <p class="home-row__meta">Career guidance · Aug 14, 2026</p>
+                    </div>
+                    <a class="home-btn home-btn--primary" href="mentees.html">Join</a>
+                  </div>
+                  <div class="home-row">
+                    <span class="home-avatar">JB</span>
+                    <div class="home-row__body">
+                      <p class="home-row__title">Jean Bosco</p>
+                      <p class="home-row__meta">Interview preparation · Aug 16, 2026</p>
+                    </div>
+                    <a class="home-btn" href="mentees.html">Join</a>
+                  </div>
+                </div>
+              </section>
+              <section class="home-card">
+                <h2 class="home-card__title">My Mentorship Impact</h2>
+                <div class="home-ring-stat">
+                  <svg width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="92 percent">
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--color-bg-secondary)" stroke-width="12"/>
+                    <circle cx="60" cy="60" r="48" fill="none" stroke="var(--color-primary-teal)" stroke-width="12" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="24.1" transform="rotate(-90 60 60)"/>
+                    <text x="60" y="64" text-anchor="middle" class="chart-donut__value">92%</text>
+                  </svg>
+                  <strong>Impact score</strong>
+                </div>
+                <div class="home-list" style="margin-top:12px">
+                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Sessions completed</p></div><span class="home-row__value">12</span></div>
+                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Students counselled</p></div><span class="home-row__value">8</span></div>
+                  <div class="home-row home-row--inset"><div class="home-row__body"><p class="home-row__title">Students progressing</p></div><span class="home-row__value">5</span></div>
+                </div>
+              </section>
+            </div>
+
+            <div class="home-layout home-layout--2">
+              <section class="home-card">
+                <div class="home-card__head">
+                  <h2 class="home-card__title">Suggested Mentees</h2>
+                  <a class="home-card__link" href="mentees.html">View all</a>
+                </div>
+                <div class="home-list">
+                  <div class="home-row">
+                    <span class="home-avatar">CM</span>
+                    <div class="home-row__body">
+                      <p class="home-row__title">Christine Mutamana</p>
+                      <p class="home-row__meta">Grade 11 · Interested in leadership</p>
+                    </div>
+                    <a class="home-btn" href="mentees.html">Request</a>
+                  </div>
+                  <div class="home-row">
+                    <span class="home-avatar">EH</span>
+                    <div class="home-row__body">
+                      <p class="home-row__title">Emmanuel Hatega</p>
+                      <p class="home-row__meta">Grade 12 · Interested in technology</p>
+                    </div>
+                    <a class="home-btn" href="mentees.html">Request</a>
+                  </div>
+                </div>
+              </section>
+              <section class="home-card">
+                <h2 class="home-card__title">Quick Actions</h2>
+                <div class="home-list">
+                  <a class="home-row" href="mentees.html"><div class="home-row__body"><p class="home-row__title">Create a session</p></div></a>
+                  <a class="home-row" href="profile.html"><div class="home-row__body"><p class="home-row__title">Update profile</p></div></a>
+                </div>
+                <p class="home-quote">To grow others, you must first grow yourself.</p>
+              </section>
             </div>
           </div>
         </div>
@@ -124,44 +193,26 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
-    import { listMyMatches, renderMatchCard } from "../js/matching.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
-    async function render(user) {
+    async function render() {
       let mentor;
       try {
         mentor = await api.get("/mentors/me");
       } catch {
         document.querySelector("#prompt-card").hidden = false;
-        document.querySelector("#stats-area").hidden = true;
         document.querySelector("#verification-banner").hidden = true;
         return;
       }
-
-      document.querySelector("#prompt-card").hidden = true;
-      document.querySelector("#stats-area").hidden = false;
       document.querySelector("#verification-banner").hidden = mentor.is_verified;
-
-      const overview = await api.get("/mentors/me/overview");
-      document.querySelector("#stat-mentees").textContent = overview.approved_mentee_count;
-      document.querySelector("#stat-pending").textContent = overview.pending_request_count;
-      document.querySelector("#stat-areas").textContent = overview.expertise_count;
-
-      const matches = await listMyMatches();
-      const preview = document.querySelector("#matches-preview");
-      if (matches.length === 0) {
-        preview.innerHTML = `<p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p>`;
-      } else {
-        preview.innerHTML = matches.slice(0, 3).map((m) => renderMatchCard(m, "mentor")).join("");
-      }
     }
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
-      await render(user);
+      await render();
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);

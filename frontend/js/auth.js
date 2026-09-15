@@ -63,6 +63,20 @@ async function requireRole(expectedRole) {
     return null;
   }
 
+  // Login already gave us the user object; if it matches the role this
+  // page expects, use it immediately instead of spending a whole
+  // network round trip re-asking the server who we are before the page
+  // can even start rendering. refreshCurrentUser() still checks in the
+  // background (without making the page wait) so a revoked session or
+  // an actual role change still gets caught — this is a UX shortcut
+  // only, the backend enforces the real access control on every data
+  // call regardless of what this cache says.
+  const cachedUser = getCurrentUser();
+  if (cachedUser && cachedUser.role === expectedRole) {
+    refreshCurrentUser(expectedRole);
+    return cachedUser;
+  }
+
   try {
     const user = await api.get("/auth/me");
     localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -74,9 +88,35 @@ async function requireRole(expectedRole) {
 
     return user;
   } catch (err) {
-    logout();
-    return null;
+    // Only a real "you're not authenticated" response should sign the
+    // user out. A network hiccup or a slow/cold backend (status 0 or a
+    // 5xx) is not proof the session is invalid, so let the caller's own
+    // error handling show a retry-able message instead of discarding a
+    // perfectly good token.
+    if (err instanceof ApiError && err.status === 401) {
+      logout();
+      return null;
+    }
+    throw err;
   }
+}
+
+/** Fire-and-forget: reconciles the cached user with the server after
+ * the page has already rendered from cache. Never blocks the caller. */
+function refreshCurrentUser(expectedRole) {
+  api
+    .get("/auth/me")
+    .then((user) => {
+      localStorage.setItem(USER_KEY, JSON.stringify(user));
+      if (user.role !== expectedRole) {
+        window.location.href = dashboardUrlFor(user.role);
+      }
+    })
+    .catch((err) => {
+      if (err instanceof ApiError && err.status === 401) {
+        logout();
+      }
+    });
 }
 
 function setFormError(form, message) {

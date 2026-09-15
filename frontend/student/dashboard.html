@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-home.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
     .sync-banner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-bottom: var(--space-4); }
@@ -35,9 +36,10 @@
       <a href="assessment.html" class="dash-sidebar__link" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
       <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Your talent matters.<br>Your future is possible.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -47,8 +49,8 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_student_subtitle">Student dashboard</p>
+          <h1><span data-dash-greeting-word>Hello</span>, <span data-dash-first-name>Aline</span></h1>
+          <p class="text-secondary">Keep going! Every step brings you closer to your goals.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -62,10 +64,10 @@
           <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
         </a>
         <div class="dash-user">
-          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <span class="dash-user__avatar" id="dash-user-avatar">AN</span>
           <div>
-            <div class="dash-user__name" id="dash-user-name"></div>
-            <div class="dash-user__role" id="dash-user-role"></div>
+            <div class="dash-user__name" id="dash-user-name">Aline N.</div>
+            <div class="dash-user__role" id="dash-user-role">Student</div>
           </div>
         </div>
       </div>
@@ -90,39 +92,141 @@
             <a class="btn btn-primary" id="prompt-cta" href="#"></a>
           </div>
 
-          <div id="stats-area" hidden>
-            <div class="stat-grid">
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-                <span class="stat-card__value" id="stat-top-talent">-</span>
-                <span class="stat-card__label" data-i18n="dash_stat_top_talent">Top strength</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l2 2 4-4"/></svg></span>
-                <span class="stat-card__value" id="stat-assessments">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_assessments">Assessments completed</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
-                <span class="stat-card__value" id="stat-mentor-status">-</span>
-                <span class="stat-card__label" data-i18n="dash_stat_mentor_status">Mentor status</span>
-              </div>
+          <div id="stats-area">
+            <div class="home-kpis home-kpis--4">
+              <article class="home-kpi home-kpi--mint">
+                <span class="home-kpi__label">Your Overall Score</span>
+                <span class="home-kpi__value">78%</span>
+              </article>
+              <article class="home-kpi">
+                <span class="home-kpi__label">Top Strengths</span>
+                <div class="home-tags">
+                  <span class="home-tag">Creativity</span>
+                  <span class="home-tag">Problem Solving</span>
+                </div>
+              </article>
+              <article class="home-kpi">
+                <span class="home-kpi__label">Areas to Grow</span>
+                <div class="home-tags">
+                  <span class="home-tag home-tag--grow">Leadership</span>
+                  <span class="home-tag home-tag--grow">Communication</span>
+                </div>
+              </article>
+              <article class="home-kpi">
+                <span class="home-kpi__label">Completed Assessments</span>
+                <span class="home-kpi__value">3 / 4</span>
+                <span class="home-kpi__hint">View more</span>
+              </article>
             </div>
 
-            <div class="dash-grid dash-grid--2">
-              <div class="dash-panel">
-                <div class="dash-panel__header">
-                  <h2 data-i18n="dash_your_strengths_chart">Your strengths</h2>
-                  <a href="assessment.html" data-i18n="dash_view_details">View details</a>
+            <div class="home-layout home-layout--3">
+              <section class="home-card">
+                <h2 class="home-card__title">Your Skills Profile</h2>
+                <svg class="skill-radar" viewBox="0 0 220 220" role="img" aria-label="Skills radar">
+                  <polygon points="110,30 186,85 157,175 63,175 34,85" fill="none" stroke="#E5E7EB" stroke-width="1"/>
+                  <polygon points="110,50 166,90 145,160 75,160 54,90" fill="none" stroke="#E5E7EB" stroke-width="1"/>
+                  <polygon points="110,70 146,95 133,145 87,145 74,95" fill="none" stroke="#E5E7EB" stroke-width="1"/>
+                  <line x1="110" y1="110" x2="110" y2="30" stroke="#E5E7EB"/>
+                  <line x1="110" y1="110" x2="186" y2="85" stroke="#E5E7EB"/>
+                  <line x1="110" y1="110" x2="157" y2="175" stroke="#E5E7EB"/>
+                  <line x1="110" y1="110" x2="63" y2="175" stroke="#E5E7EB"/>
+                  <line x1="110" y1="110" x2="34" y2="85" stroke="#E5E7EB"/>
+                  <polygon points="110,42 162,98 140,168 78,160 48,98" fill="rgba(26,155,138,0.28)" stroke="#1A9B8A" stroke-width="2"/>
+                </svg>
+                <div class="home-progress" style="margin-top:12px">
+                  <div class="home-progress__row"><span class="home-progress__label">Problem Solving</span><span class="home-progress__pct">85%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:85%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Data Analysis</span><span class="home-progress__pct">72%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:72%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Communication</span><span class="home-progress__pct">68%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:68%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Creativity</span><span class="home-progress__pct">91%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:91%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Leadership</span><span class="home-progress__pct">58%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:58%"></span></span></div>
                 </div>
-                <div id="talent-chart"></div>
-              </div>
-              <div class="dash-panel">
-                <div class="dash-panel__header">
-                  <h2 data-i18n="dash_recent_activity">Recent activity</h2>
+              </section>
+
+              <section class="home-card">
+                <h2 class="home-card__title">Recommended Opportunities</h2>
+                <p class="home-row__meta" style="margin-bottom:12px">Based on your profile and strengths</p>
+                <div class="home-list">
+                  <div class="home-row">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Women in Tech Scholarship</p>
+                      <p class="home-row__meta">Scholarship</p>
+                    </div>
+                    <span class="home-pill">Scholarship</span>
+                  </div>
+                  <div class="home-row">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Youth Innovation Challenge</p>
+                      <p class="home-row__meta">Competition</p>
+                    </div>
+                    <span class="home-pill home-pill--orange">Competition</span>
+                  </div>
                 </div>
-                <div id="recent-activity"><p class="text-secondary" data-i18n="dash_no_activity">No recent activity yet.</p></div>
-              </div>
+              </section>
+
+              <section class="home-card">
+                <h2 class="home-card__title">Your Learning Journey</h2>
+                <div class="home-journey">
+                  <div class="home-journey__step">
+                    <span class="home-journey__dot"></span>
+                    <div>
+                      <p class="home-journey__label">Take your career assessment</p>
+                      <p class="home-journey__meta">Completed</p>
+                    </div>
+                  </div>
+                  <div class="home-journey__step">
+                    <span class="home-journey__dot"></span>
+                    <div>
+                      <p class="home-journey__label">Complete skills assessment</p>
+                      <p class="home-journey__meta">In progress</p>
+                    </div>
+                  </div>
+                  <div class="home-journey__step">
+                    <span class="home-journey__dot"></span>
+                    <div>
+                      <p class="home-journey__label">Apply for a mentor</p>
+                      <p class="home-journey__meta">Next</p>
+                    </div>
+                  </div>
+                  <div class="home-journey__step is-todo">
+                    <span class="home-journey__dot"></span>
+                    <div>
+                      <p class="home-journey__label">Apply for opportunities</p>
+                      <p class="home-journey__meta">Upcoming</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div class="home-layout home-layout--2">
+              <section class="home-card">
+                <h2 class="home-card__title">Your Mentor</h2>
+                <div class="home-mentor">
+                  <span class="home-avatar home-avatar--lg">GU</span>
+                  <div class="home-row__body">
+                    <p class="home-row__title">Grace Uwimana</p>
+                    <p class="home-row__meta">Software Engineer · 3 years experience</p>
+                  </div>
+                  <a class="home-btn home-btn--primary" href="mentors.html">Message</a>
+                </div>
+              </section>
+              <section class="home-card">
+                <h2 class="home-card__title">Upcoming Activities</h2>
+                <div class="home-list">
+                  <div class="home-row home-row--inset">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Mentor Meet</p>
+                      <p class="home-row__meta">Aug 12, 2026</p>
+                    </div>
+                  </div>
+                  <div class="home-row home-row--inset">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Career Fair</p>
+                      <p class="home-row__meta">Sep 3, 2026</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -134,14 +238,11 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel, formatDate } from "../js/dashboard.js";
-    import { barRow } from "../js/charts.js";
+    import { showContent, showError, initDashShell } from "../js/dashboard.js";
     import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
-
-    const MATCH_STATUS_LABELS = { pending: "Pending", approved: "Approved", rejected: "Not approved" };
 
     async function checkSyncQueue() {
       const queued = await listQueuedAssessments();
@@ -151,7 +252,6 @@
     document.querySelector("#sync-now-btn").addEventListener("click", async () => {
       await syncQueuedAssessments((payload) => api.post("/assessments", payload));
       await checkSyncQueue();
-      await render();
     });
 
     function showPrompt(illustration, title, body, ctaHref, ctaLabel) {
@@ -162,33 +262,18 @@
       cta.href = ctaHref;
       cta.textContent = ctaLabel;
       document.querySelector("#prompt-card").hidden = false;
-      document.querySelector("#stats-area").hidden = true;
-    }
-
-    async function renderRecentActivity() {
-      const container = document.querySelector("#recent-activity");
-      try {
-        const notifications = await api.get("/notifications/me");
-        if (notifications.length === 0) return;
-        container.innerHTML = notifications
-          .slice(0, 5)
-          .map(
-            (n) => `<div class="activity-row">
-              <span class="activity-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/></svg></span>
-              <div><p>${n.message}</p><time>${formatDate(n.created_at)}</time></div>
-            </div>`
-          )
-          .join("");
-      } catch {
-        /* leave the default empty-state message in place */
-      }
     }
 
     async function render() {
-      let student;
-      try {
-        student = await api.get("/students/me");
-      } catch {
+      // Fetch both in parallel: they don't depend on each other, they
+      // were just being awaited one after another, which on a slow
+      // connection doubles the wait for no reason.
+      const [studentResult, assessmentsResult] = await Promise.allSettled([
+        api.get("/students/me"),
+        api.get("/assessments"),
+      ]);
+
+      if (studentResult.status === "rejected") {
         showPrompt(
           "../assets/illustrations/characters/student.png",
           "Complete your profile",
@@ -199,7 +284,11 @@
         return;
       }
 
-      const assessments = await api.get("/assessments");
+      if (assessmentsResult.status === "rejected") {
+        throw assessmentsResult.reason;
+      }
+
+      const assessments = assessmentsResult.value;
       if (assessments.length === 0) {
         showPrompt(
           "../assets/illustrations/supporting/talent-discovery.png",
@@ -208,35 +297,7 @@
           "assessment.html",
           "Start assessment"
         );
-        return;
       }
-
-      document.querySelector("#prompt-card").hidden = true;
-      document.querySelector("#stats-area").hidden = false;
-
-      const results = assessments[0].results;
-      const top = results[0];
-      document.querySelector("#stat-top-talent").textContent = `${talentAreaIcon(top.talent_area)} ${talentAreaLabel(top.talent_area)}`;
-      document.querySelector("#stat-assessments").textContent = assessments.length;
-
-      const maxScore = Math.max(...results.map((r) => r.score));
-      document.querySelector("#talent-chart").innerHTML = results
-        .map((r) => barRow(talentAreaLabel(r.talent_area), talentAreaIcon(r.talent_area), r.score, maxScore))
-        .join("");
-
-      try {
-        const matches = await api.get("/matches/me");
-        const statusEl = document.querySelector("#stat-mentor-status");
-        if (matches.length === 0) {
-          statusEl.textContent = "Not requested";
-        } else {
-          statusEl.textContent = MATCH_STATUS_LABELS[matches[0].status] || matches[0].status;
-        }
-      } catch {
-        document.querySelector("#stat-mentor-status").textContent = "-";
-      }
-
-      await renderRecentActivity();
     }
 
     requireRole("student").then(async (user) => {

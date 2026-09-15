@@ -121,20 +121,40 @@ def list_matches_for_my_school(
     return query.order_by(MentorMatch.created_at.desc()).all()
 
 
-def _top_result(db: Session, student_id: str):
-    latest = (
+def _top_results_by_student(db: Session, student_ids: List[str]) -> dict:
+    """Top (rank 1) talent result for each student's latest assessment, in
+    2 queries total regardless of student count (rather than 2 per
+    student) — this used to be the slow part of the teacher overview
+    page when a school had more than a handful of students."""
+    if not student_ids:
+        return {}
+
+    assessments = (
         db.query(TalentAssessment)
-        .filter(TalentAssessment.student_id == student_id)
+        .filter(TalentAssessment.student_id.in_(student_ids))
         .order_by(TalentAssessment.completed_at.desc())
-        .first()
+        .all()
     )
-    if latest is None:
-        return None
-    return (
+    latest_assessment_id_by_student = {}
+    for assessment in assessments:
+        latest_assessment_id_by_student.setdefault(assessment.student_id, assessment.id)
+
+    assessment_ids = list(latest_assessment_id_by_student.values())
+    if not assessment_ids:
+        return {}
+
+    results = (
         db.query(TalentResult)
-        .filter(TalentResult.assessment_id == latest.id, TalentResult.rank == 1)
-        .first()
+        .filter(TalentResult.assessment_id.in_(assessment_ids), TalentResult.rank == 1)
+        .all()
     )
+    result_by_assessment_id = {result.assessment_id: result for result in results}
+
+    return {
+        student_id: result_by_assessment_id[assessment_id]
+        for student_id, assessment_id in latest_assessment_id_by_student.items()
+        if assessment_id in result_by_assessment_id
+    }
 
 
 @router.get("/me/overview", response_model=TeacherOverview)
@@ -147,11 +167,12 @@ def read_my_overview(
 
     profile = _get_own_profile(db, current_user)
     students = db.query(Student).filter(Student.school_id == profile.school_id).order_by(Student.full_name).all()
+    top_result_by_student = _top_results_by_student(db, [s.id for s in students])
 
     summaries = []
     with_assessment = 0
     for student in students:
-        top = _top_result(db, student.id)
+        top = top_result_by_student.get(student.id)
         if top is not None:
             with_assessment += 1
         summaries.append(

@@ -280,14 +280,23 @@
     async function render() {
       hideAllSections();
 
-      try {
-        await api.get("/students/me");
-      } catch {
+      // Fetch both in parallel rather than one after another; they
+      // don't depend on each other.
+      const [studentResult, assessmentsResult] = await Promise.allSettled([
+        api.get("/students/me"),
+        api.get("/assessments"),
+      ]);
+
+      if (studentResult.status === "rejected") {
         section("#no-profile-section").hidden = false;
         return;
       }
 
-      const assessments = await api.get("/assessments");
+      if (assessmentsResult.status === "rejected") {
+        throw assessmentsResult.reason;
+      }
+
+      const assessments = assessmentsResult.value;
       if (assessments.length === 0) {
         section("#assessment-intro-section").hidden = false;
         return;

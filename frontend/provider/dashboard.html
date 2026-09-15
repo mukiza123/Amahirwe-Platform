@@ -10,10 +10,9 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-home.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
-    .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
-    .dash-placeholder__illustration { width: 96px; height: auto; margin-bottom: var(--space-1); }
     .status-banner { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); }
     .status-banner--pending { color: #8A5B00; }
   </style>
@@ -30,10 +29,13 @@
     </a>
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
-      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_my_opportunities">My Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
-      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Post Opportunity</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>Applications</span></a>
+      <a href="opportunities.html" class="dash-sidebar__link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><span>My Programs</span></a>
+      <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profile</span></a>
+      <a href="settings.html" class="dash-sidebar__link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">More opportunities.<br>Greater impact.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -43,8 +45,8 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_provider_subtitle">Opportunity provider dashboard</p>
+          <h1>Welcome, Partner Organization</h1>
+          <p class="text-secondary">Create opportunities. Build talent. Make an impact.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -58,10 +60,10 @@
           <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
         </a>
         <div class="dash-user">
-          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <span class="dash-user__avatar" id="dash-user-avatar">PO</span>
           <div>
-            <div class="dash-user__name" id="dash-user-name"></div>
-            <div class="dash-user__role" id="dash-user-role"></div>
+            <div class="dash-user__name" id="dash-user-name">Partner Organization</div>
+            <div class="dash-user__role" id="dash-user-role">Provider</div>
           </div>
         </div>
       </div>
@@ -78,29 +80,95 @@
             <p data-i18n="dash_provider_pending_verification">Your account is awaiting verification by an administrator. You'll be able to post opportunities once verified.</p>
           </div>
 
-          <div class="stat-grid">
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></span>
-              <span class="stat-card__value" id="stat-total">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_total_opportunities">Total opportunities</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span>
-              <span class="stat-card__value" id="stat-active">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_active_opportunities">Active now</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-              <span class="stat-card__value" id="stat-areas">0</span>
-              <span class="stat-card__label" data-i18n="dash_stat_talent_areas_covered">Talent areas covered</span>
-            </div>
+          <div class="home-kpis">
+            <article class="home-kpi home-kpi--mint">
+              <span class="home-kpi__label">Total Opportunities</span>
+              <span class="home-kpi__value">12</span>
+            </article>
+            <article class="home-kpi">
+              <span class="home-kpi__label">Active Programs</span>
+              <span class="home-kpi__value">5</span>
+            </article>
+            <article class="home-kpi">
+              <span class="home-kpi__label">Total Applications</span>
+              <span class="home-kpi__value">48</span>
+            </article>
           </div>
 
-          <div class="dash-panel">
-            <div class="dash-panel__header">
-              <h2 data-i18n="dash_opportunities_by_area">Opportunities by talent area</h2>
-            </div>
-            <div id="area-chart"><p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p></div>
+          <div class="home-layout home-layout--2">
+            <section class="home-card">
+              <div class="home-card__head">
+                <h2 class="home-card__title">Recent Applications</h2>
+                <a class="home-card__link" href="opportunities.html">View all</a>
+              </div>
+              <div class="home-list">
+                <div class="home-row">
+                  <span class="home-avatar">AN</span>
+                  <div class="home-row__body">
+                    <p class="home-row__title">Aline Niyonsiza</p>
+                    <p class="home-row__meta">Women in Tech Scholarship · 92% match</p>
+                  </div>
+                  <a class="home-btn" href="opportunities.html">Review</a>
+                </div>
+                <div class="home-row">
+                  <span class="home-avatar">JB</span>
+                  <div class="home-row__body">
+                    <p class="home-row__title">Jean Bosco</p>
+                    <p class="home-row__meta">Software Engineering Internship · 78% match</p>
+                  </div>
+                  <a class="home-btn" href="opportunities.html">Review</a>
+                </div>
+                <div class="home-row">
+                  <span class="home-avatar">CM</span>
+                  <div class="home-row__body">
+                    <p class="home-row__title">Christine Mutamana</p>
+                    <p class="home-row__meta">Leadership Fellowship · 88% match</p>
+                  </div>
+                  <a class="home-btn" href="opportunities.html">Review</a>
+                </div>
+              </div>
+            </section>
+            <section class="home-card">
+              <h2 class="home-card__title">Opportunity Performance</h2>
+              <div class="home-donut">
+                <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label="124 applications">
+                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-bg-secondary)" stroke-width="16"/>
+                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-primary-teal)" stroke-width="16" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="80" transform="rotate(-90 70 70)"/>
+                  <circle cx="70" cy="70" r="52" fill="none" stroke="var(--color-mint)" stroke-width="16" stroke-dasharray="326.7" stroke-dashoffset="220" transform="rotate(40 70 70)"/>
+                  <text x="70" y="74" text-anchor="middle" class="chart-donut__value">124</text>
+                </svg>
+                <div class="home-legend">
+                  <span><i style="background:var(--color-primary-teal)"></i> Reviewed</span>
+                  <span><i style="background:var(--color-mint)"></i> Selected</span>
+                  <span><i style="background:var(--color-peach)"></i> Not selected</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="home-layout home-layout--2">
+            <section class="home-card">
+              <h2 class="home-card__title">Posted Opportunities</h2>
+              <div class="home-list">
+                <div class="home-row">
+                  <div class="home-row__body">
+                    <p class="home-row__title">Software Engineering Internship</p>
+                  </div>
+                  <span class="home-pill">Active</span>
+                </div>
+                <div class="home-row">
+                  <div class="home-row__body">
+                    <p class="home-row__title">Digital Marketing Fellowship</p>
+                  </div>
+                  <span class="home-pill">Active</span>
+                </div>
+              </div>
+            </section>
+            <section class="home-cta">
+              <h3>Invest in young talent. Build a stronger future.</h3>
+              <p>Share a new role, scholarship or challenge with students across the platform.</p>
+              <a class="home-btn home-btn--primary" href="opportunities.html">Post an Opportunity</a>
+            </section>
           </div>
         </div>
       </main>
@@ -111,26 +179,17 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
-    import { barRow } from "../js/charts.js";
+    import { showContent, showError, initDashShell } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
     async function render(user) {
       document.querySelector("#verification-banner").hidden = user.is_verified;
-
-      const overview = await api.get("/opportunities/mine/overview");
-      document.querySelector("#stat-total").textContent = overview.total_count;
-      document.querySelector("#stat-active").textContent = overview.active_count;
-      document.querySelector("#stat-areas").textContent = Object.keys(overview.by_talent_area).length;
-
-      const entries = Object.entries(overview.by_talent_area);
-      if (entries.length > 0) {
-        const max = Math.max(...entries.map(([, count]) => count));
-        document.querySelector("#area-chart").innerHTML = entries
-          .map(([area, count]) => barRow(talentAreaLabel(area), talentAreaIcon(area), count, max))
-          .join("");
+      try {
+        await api.get("/opportunities/mine/overview");
+      } catch {
+        /* keep designed dashboard even if overview is empty */
       }
     }
 

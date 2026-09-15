@@ -118,6 +118,14 @@ function initDashShell(user, pageKey) {
   if (roleEl) roleEl.textContent = ROLE_LABELS[user.role] || user.role;
   if (avatarEl) avatarEl.textContent = initials(user.full_name);
 
+  const firstName = user.full_name.split(" ").filter(Boolean)[0] || user.full_name;
+  document.querySelectorAll("[data-dash-first-name]").forEach((el) => {
+    el.textContent = firstName;
+  });
+  document.querySelectorAll("[data-dash-full-name]").forEach((el) => {
+    el.textContent = user.full_name;
+  });
+
   document.querySelectorAll(".dash-sidebar__link[data-page]").forEach((link) => {
     link.classList.toggle("is-active", link.dataset.page === pageKey);
   });

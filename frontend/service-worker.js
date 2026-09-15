@@ -6,7 +6,7 @@
  * this file. Registration happens from js/offline.js.
  */
 
-const CACHE_NAME = "amahirwe-v2";
+const CACHE_NAME = "amahirwe-v3";
 
 const PRECACHE_URLS = [
   "css/style.css",
@@ -55,18 +55,21 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Network-first: the actual requirement here is "keep working if the
+  // connection drops mid-session", not "load faster than the network".
+  // A cache-first strategy would silently keep serving an old CSS/JS
+  // build indefinitely, since the cache only updates in the background
+  // after already answering from the stale copy. Only fall back to the
+  // cache when the network genuinely fails.
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const network = fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || network;
-    })
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });

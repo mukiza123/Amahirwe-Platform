@@ -10,6 +10,7 @@
   <link rel="apple-touch-icon" href="../assets/icons/icon-192.png" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard-home.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
   <style>
     .dash-placeholder { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-2); padding: var(--space-6); color: var(--color-text-secondary); }
@@ -29,10 +30,12 @@
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="children.html" class="dash-sidebar__link" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
+      <a href="children.html" class="dash-sidebar__link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5h16v14"/><path d="M8 9h8M8 13h5"/></svg><span>Progress &amp; Reports</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0112 0c0 4 1.5 6 1.5 6H4.5S6 13 6 9z"/><path d="M10 20a2 2 0 004 0"/></svg><span data-i18n="nav_notifications">Notifications</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
+    <p class="dash-sidebar__tagline">Together for a<br>brighter future.</p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -42,8 +45,8 @@
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="dash_home">Home</h1>
-          <p class="text-secondary" data-i18n="dash_parent_subtitle">Parent dashboard</p>
+          <h1>Hello, Mr. <span data-dash-first-name>Niyomugabo</span></h1>
+          <p class="text-secondary">Here's how your child is progressing.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -57,10 +60,10 @@
           <span id="dash-notif-dot" class="dash-notif-bell__dot" hidden></span>
         </a>
         <div class="dash-user">
-          <span class="dash-user__avatar" id="dash-user-avatar"></span>
+          <span class="dash-user__avatar" id="dash-user-avatar">PN</span>
           <div>
-            <div class="dash-user__name" id="dash-user-name"></div>
-            <div class="dash-user__role" id="dash-user-role"></div>
+            <div class="dash-user__name" id="dash-user-name">Parent</div>
+            <div class="dash-user__role" id="dash-user-role">Parent</div>
           </div>
         </div>
       </div>
@@ -78,31 +81,67 @@
             <p class="text-secondary" data-i18n="dash_no_children_body">Ask your child's teacher to link your account so you can follow their progress.</p>
           </div>
 
-          <div id="stats-area" hidden>
-            <div class="stat-grid">
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg></span>
-                <span class="stat-card__value" id="stat-children">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_children">Children</span>
+          <div id="stats-area">
+            <section class="home-card" style="margin-bottom:var(--space-3)">
+              <div class="home-child">
+                <span class="home-avatar home-avatar--lg">AN</span>
+                <div>
+                  <p class="home-row__title">Aline Niyonsiza</p>
+                  <p class="home-row__meta">Grade 11</p>
+                </div>
+                <div class="home-child__score">
+                  <strong>78%</strong>
+                  <span>Overall Score</span>
+                </div>
               </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 11l2 2 4-4"/></svg></span>
-                <span class="stat-card__value" id="stat-assessed">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_children_assessed">Completed assessment</span>
-              </div>
-              <div class="stat-card">
-                <span class="stat-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/></svg></span>
-                <span class="stat-card__value" id="stat-matched">0</span>
-                <span class="stat-card__label" data-i18n="dash_stat_children_matched">With a mentor</span>
-              </div>
+            </section>
+
+            <div class="home-layout home-layout--2">
+              <section class="home-card">
+                <h2 class="home-card__title">Skills Overview</h2>
+                <div class="home-progress">
+                  <div class="home-progress__row"><span class="home-progress__label">Problem Solving</span><span class="home-progress__pct">85%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:85%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Communication</span><span class="home-progress__pct">72%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:72%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Creativity</span><span class="home-progress__pct">91%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:91%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Technical Skills</span><span class="home-progress__pct">68%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:68%"></span></span></div>
+                  <div class="home-progress__row"><span class="home-progress__label">Leadership</span><span class="home-progress__pct">58%</span><span class="home-progress__track"><span class="home-progress__fill" style="width:58%"></span></span></div>
+                </div>
+              </section>
+              <section class="home-card">
+                <h2 class="home-card__title">Recent Assessments</h2>
+                <div class="home-assessments">
+                  <div class="home-assessment"><span>Career Interest Assessment</span><span class="text-secondary">Jul 28, 2026 · 81%</span></div>
+                  <div class="home-assessment"><span>Digital Skills Assessment</span><span class="text-secondary">Jul 20, 2026 · 74%</span></div>
+                  <div class="home-assessment"><span>Learning Style Assessment</span><span class="text-secondary">Jul 12, 2026 · 88%</span></div>
+                </div>
+              </section>
             </div>
 
-            <div class="dash-panel">
-              <div class="dash-panel__header">
-                <h2 data-i18n="dash_my_children">My children</h2>
-                <a href="children.html" data-i18n="dash_view_all">View all</a>
-              </div>
-              <div id="children-preview"></div>
+            <div class="home-layout home-layout--2">
+              <section class="home-card">
+                <h2 class="home-card__title">Upcoming Opportunities</h2>
+                <div class="home-list">
+                  <div class="home-row">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Women in Tech Scholarship</p>
+                      <p class="home-row__meta">Apply by 17 Aug</p>
+                    </div>
+                    <span class="home-pill">Scholarship</span>
+                  </div>
+                  <div class="home-row">
+                    <div class="home-row__body">
+                      <p class="home-row__title">Youth Innovation Challenge</p>
+                      <p class="home-row__meta">Apply by 29 Aug</p>
+                    </div>
+                    <span class="home-pill home-pill--orange">Competition</span>
+                  </div>
+                </div>
+              </section>
+              <section class="home-cta">
+                <h3>Want to support your child's journey?</h3>
+                <p>Stay involved with mentoring, resources and upcoming opportunities.</p>
+                <a class="home-btn home-btn--primary" href="opportunities.html">View Opportunities</a>
+              </section>
             </div>
           </div>
         </div>
@@ -114,38 +153,16 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell } from "../js/dashboard.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
 
     async function render() {
       const children = await api.get("/parents/me/children");
-
       if (children.length === 0) {
         document.querySelector("#empty-card").hidden = false;
-        document.querySelector("#stats-area").hidden = true;
-        return;
       }
-
-      document.querySelector("#empty-card").hidden = true;
-      document.querySelector("#stats-area").hidden = false;
-      document.querySelector("#stat-children").textContent = children.length;
-      document.querySelector("#stat-assessed").textContent = children.filter((c) => c.has_completed_assessment).length;
-      document.querySelector("#stat-matched").textContent = children.filter((c) => c.mentor_match_status === "approved").length;
-
-      document.querySelector("#children-preview").innerHTML = children
-        .map(
-          (c) => `<div class="simple-row">
-            <span>${c.full_name} <span class="text-secondary">(${c.school_name})</span></span>
-            <span>${
-              c.top_talents.length > 0
-                ? `${talentAreaIcon(c.top_talents[0].talent_area)} ${talentAreaLabel(c.top_talents[0].talent_area)}`
-                : '<span class="text-secondary">No assessment yet</span>'
-            }</span>
-          </div>`
-        )
-        .join("");
     }
 
     requireRole("parent").then(async (user) => {

@@ -26,44 +26,67 @@ def list_my_children(
     to by a teacher (SRS: parents can follow their child's progress)."""
 
     links = db.query(StudentGuardian).filter(StudentGuardian.guardian_user_id == current_user.id).all()
+    student_ids = [link.student_id for link in links]
+    if not student_ids:
+        return []
+
+    # Batch every lookup by student id up front (a handful of queries
+    # total) instead of re-querying per child, which used to mean 4
+    # separate round trips for every single linked child.
+    students_by_id = {s.id: s for s in db.query(Student).filter(Student.id.in_(student_ids)).all()}
+    school_ids = {s.school_id for s in students_by_id.values()}
+    schools_by_id = {sc.id: sc for sc in db.query(School).filter(School.id.in_(school_ids)).all()}
+
+    assessments = (
+        db.query(TalentAssessment)
+        .filter(TalentAssessment.student_id.in_(student_ids))
+        .order_by(TalentAssessment.completed_at.desc())
+        .all()
+    )
+    latest_assessment_by_student = {}
+    for assessment in assessments:
+        latest_assessment_by_student.setdefault(assessment.student_id, assessment)
+
+    assessment_ids = [a.id for a in latest_assessment_by_student.values()]
+    results = (
+        db.query(TalentResult)
+        .filter(TalentResult.assessment_id.in_(assessment_ids))
+        .order_by(TalentResult.rank)
+        .all()
+        if assessment_ids
+        else []
+    )
+    results_by_assessment_id: dict = {}
+    for result in results:
+        results_by_assessment_id.setdefault(result.assessment_id, []).append(result)
+
+    latest_matches = (
+        db.query(MentorMatch)
+        .filter(MentorMatch.student_id.in_(student_ids))
+        .order_by(MentorMatch.created_at.desc())
+        .all()
+    )
+    latest_match_by_student = {}
+    for match in latest_matches:
+        latest_match_by_student.setdefault(match.student_id, match)
 
     children = []
     for link in links:
-        student = db.get(Student, link.student_id)
+        student = students_by_id.get(link.student_id)
         if student is None:
             continue
-        school = db.get(School, student.school_id)
-
-        latest = (
-            db.query(TalentAssessment)
-            .filter(TalentAssessment.student_id == student.id)
-            .order_by(TalentAssessment.completed_at.desc())
-            .first()
-        )
-        top_talents = []
-        if latest is not None:
-            results = (
-                db.query(TalentResult)
-                .filter(TalentResult.assessment_id == latest.id)
-                .order_by(TalentResult.rank)
-                .all()
+        school = schools_by_id.get(student.school_id)
+        latest = latest_assessment_by_student.get(student.id)
+        top_talents = [
+            ChildTalentSummary(
+                talent_area=r.talent_area,
+                score=r.score,
+                rank=r.rank,
+                explanation=explanation_for(r.talent_area),
             )
-            top_talents = [
-                ChildTalentSummary(
-                    talent_area=r.talent_area,
-                    score=r.score,
-                    rank=r.rank,
-                    explanation=explanation_for(r.talent_area),
-                )
-                for r in results
-            ]
-
-        match = (
-            db.query(MentorMatch)
-            .filter(MentorMatch.student_id == student.id)
-            .order_by(MentorMatch.created_at.desc())
-            .first()
-        )
+            for r in results_by_assessment_id.get(latest.id, [])
+        ] if latest is not None else []
+        match = latest_match_by_student.get(student.id)
 
         children.append(
             ChildRead(
