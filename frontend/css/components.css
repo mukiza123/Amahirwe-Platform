@@ -551,11 +551,9 @@
 
 /* --- Marketing page building blocks --- */
 
-/* Homepage hero: plain left/right layout, no decorative shapes.
-   Text on the left, a framed illustration + value badges on the
-   right — the same text+art split every other marketing section
-   uses (see .split-block), just with a bigger headline and two
-   feature rows instead of one image. */
+/* Homepage hero: a single centred column — headline/copy/actions on
+   top, illustration + value badges below — same composition as
+   before, just with no blob/circle decoration behind it. */
 .hero {
   padding: var(--space-6) 0 var(--space-7);
 }
@@ -563,15 +561,13 @@
 .hero__grid {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: center;
+  justify-items: center;
+  text-align: center;
   gap: var(--space-6);
 }
 
-@media (min-width: 900px) {
-  .hero__grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: var(--space-7);
-  }
+.hero__copy {
+  max-width: 62ch;
 }
 
 .hero__eyebrow {
@@ -590,6 +586,8 @@
 
 .hero__subtitle {
   max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
   font-size: 1.05rem;
 }
 
@@ -598,12 +596,30 @@
   gap: var(--space-2);
   margin-top: var(--space-4);
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero__art {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* The illustration with four feature callouts scattered around it —
+   two staggered on each side, at different heights, some overlapping
+   the frame's edge slightly, the way the reference composition reads
+   — but every card is a plain, solid, opaque neumorphic surface (no
+   blur, no translucency, no gradient, no rotation). Below the 720px
+   breakpoint this drops out of the scattered layout entirely and
+   becomes a plain centred stack, so nothing overlaps or overflows on
+   a narrow screen. */
+.hero__scene {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 640px;
 }
 
 /* Flat neumorphic frame around the illustration: a raised surface,
@@ -616,19 +632,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 280px;
 }
 
 .hero__art-frame img {
   width: 100%;
-  max-width: 280px;
+  max-width: 200px;
   height: auto;
   display: block;
 }
 
 .hero__badges {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
+  width: 100%;
+  max-width: 280px;
 }
 
 .hero__badge {
@@ -639,6 +659,7 @@
   box-shadow: var(--shadow-raised-sm);
   border-radius: var(--radius-md);
   padding: 10px 12px;
+  text-align: left;
 }
 
 .hero__badge-icon {
@@ -661,10 +682,39 @@
   line-height: 1.25;
 }
 
-@media (max-width: 480px) {
-  .hero__badges {
-    grid-template-columns: 1fr;
+@media (min-width: 720px) {
+  .hero__scene {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    aspect-ratio: 4 / 3;
   }
+
+  .hero__art-frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 220px;
+  }
+
+  /* The grouping wrapper drops out of the box model so each badge
+     inside it positions directly against .hero__scene rather than
+     against the (now removed) flex column. */
+  .hero__badges {
+    display: contents;
+  }
+
+  .hero__badge {
+    position: absolute;
+    width: 190px;
+  }
+
+  .hero__badges--left .hero__badge:nth-child(1) { top: 6%; left: 0; }
+  .hero__badges--left .hero__badge:nth-child(2) { top: 62%; left: 2%; }
+  .hero__badges--right .hero__badge:nth-child(1) { top: 16%; right: 0; }
+  .hero__badges--right .hero__badge:nth-child(2) { top: 60%; right: 2%; }
 }
 
 /* Shorter hero used on interior marketing pages (About, Mission, etc.) */
@@ -850,11 +900,21 @@
   justify-content: center;
 }
 
-/* Impact area cards */
+/* Impact area cards. auto-fit (not a fixed column count) so a group
+   with fewer cards than a full row just uses fewer, evenly-sized
+   columns instead of leaving a dead empty gap where the missing
+   cards would have been. */
 .impact-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+@media (min-width: 560px) {
+  .impact-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
 }
 
 .impact-card__icon {
@@ -868,6 +928,60 @@
   align-items: center;
   justify-content: center;
   margin-bottom: var(--space-2);
+}
+
+/* Student journey strip (Impact page): a labelled step-by-step path,
+   not just floating icons — the heading above it in the page gives it
+   context, and each node carries its own short label. */
+.journey {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.journey__node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 120px;
+  text-align: center;
+}
+
+.journey__node .icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-raised-sm);
+  color: var(--color-primary-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.journey__node span:not(.icon) {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.journey__arrow {
+  flex-shrink: 0;
+  align-self: center;
+  margin-top: 28px;
+  color: var(--color-border);
+}
+
+@media (max-width: 640px) {
+  .journey__arrow {
+    display: none;
+  }
 }
 
 /* Safety / trust notice box */
@@ -956,25 +1070,16 @@
   margin-top: 3px;
 }
 
+/* auto-fit rather than a fixed column count: a page with 3 or 5
+   audience cards (not every multiple of 4) still fills each row
+   evenly instead of leaving a dead trailing gap. */
 @media (min-width: 640px) {
   .audience-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .impact-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (min-width: 861px) {
-  .audience-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .impact-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
   .process-steps--horizontal {
     flex-direction: row;
     align-items: stretch;

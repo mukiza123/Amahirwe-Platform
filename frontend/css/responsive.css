@@ -38,12 +38,12 @@
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
-
+  /* auto-fit rather than a fixed column count: a row with fewer cards
+     than a full row just uses fewer, evenly-sized columns instead of
+     leaving a dead empty gap where the missing cards would have been. */
+  .stats-grid,
   .cards-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   }
 }
 
@@ -81,6 +81,6 @@
 /* --- Desktop --- */
 @media (min-width: 1120px) {
   .cards-grid--opportunities {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
