@@ -14,6 +14,7 @@
   --color-yellow: #F7B731;         /* achievements, talent highlights */
   --color-orange: #FF8A3D;         /* opportunities, secondary attention */
   --color-peach: #FFD9B3;          /* very light accent */
+  --color-rust: #B04E0E;           /* deeper orange accent, used sparingly for icon variety */
 
   --color-bg: #FFFFFF;
   --color-bg-secondary: #F8FAFC;
@@ -135,6 +136,10 @@ p {
 
 .text-secondary {
   color: var(--color-text-secondary);
+}
+
+.text-center {
+  text-align: center;
 }
 
 /* --- Focus visibility (accessibility) --- */

@@ -12,14 +12,6 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/responsive.css" />
-  <style>
-    .journey { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--space-2); }
-    .journey__node { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 120px; text-align: center; }
-    .journey__node .icon { width: 52px; height: 52px; border-radius: 50%; background: var(--color-bg); box-shadow: var(--shadow-raised-sm); color: var(--color-primary-teal); display: flex; align-items: center; justify-content: center; }
-    .journey__node span { font-size: 0.85rem; font-weight: 600; }
-    .journey__arrow { color: var(--color-border); flex-shrink: 0; }
-    @media (max-width: 640px) { .journey { flex-direction: column; } .journey__arrow { transform: rotate(90deg); } }
-  </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -88,37 +80,59 @@
 
     <section class="section">
       <div class="container">
-        <h2 data-i18n="journey_title">A student's journey with Amahirwe</h2>
-        <p class="text-secondary" data-i18n="journey_subtitle">Each step moves a student closer to real opportunity.</p>
+        <h2 class="text-center" data-i18n="journey_title">A student's journey with Amahirwe</h2>
         <div class="journey">
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
-            <span data-i18n="journey_student">Student</span>
+          <svg class="journey__path" viewBox="0 0 1000 640" aria-hidden="true">
+            <path class="journey__road" d="M90,170 C172,170 172,470 254,470 C336,470 336,170 418,170 C500,170 500,470 582,470 C664,470 664,170 746,170 C828,170 828,470 910,470" />
+            <path class="journey__road-line" d="M90,170 C172,170 172,470 254,470 C336,470 336,170 418,170 C500,170 500,470 582,470 C664,470 664,170 746,170 C828,170 828,470 910,470" />
+          </svg>
+
+          <div class="journey__node journey__node--top" style="left:9%; top:26.6%; --node-color: var(--color-primary-teal);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l2.5 6.5L21 11l-6.5 2.5L12 20l-2.5-6.5L3 11l6.5-2.5z"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_student">Student</strong>
+              <span data-i18n="journey_student_desc">Creates a profile and joins Amahirwe.</span>
+            </div>
           </div>
-          <span class="journey__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
-            <span data-i18n="journey_talent">Talent discovered</span>
+
+          <div class="journey__node journey__node--bottom" style="left:25.4%; top:73.4%; --node-color: var(--color-rust);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_talent">Talent discovered</strong>
+              <span data-i18n="journey_talent_desc">Completes a talent assessment and sees their top strengths.</span>
+            </div>
           </div>
-          <span class="journey__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></span>
-            <span data-i18n="journey_mentor">Mentor connection</span>
+
+          <div class="journey__node journey__node--top" style="left:41.8%; top:26.6%; --node-color: var(--color-primary-dark);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_mentor">Mentor connection</strong>
+              <span data-i18n="journey_mentor_desc">Gets matched with a verified mentor, approved by their teacher.</span>
+            </div>
           </div>
-          <span class="journey__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a2 2 0 0 1 2 2v1a5 5 0 0 1-5 5h-1"/><path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/></svg></span>
-            <span data-i18n="journey_opportunity">Opportunity</span>
+
+          <div class="journey__node journey__node--bottom" style="left:58.2%; top:73.4%; --node-color: var(--color-primary-teal);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a2 2 0 0 1 2 2v1a5 5 0 0 1-5 5h-1"/><path d="M3 8h13v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_opportunity">Opportunity</strong>
+              <span data-i18n="journey_opportunity_desc">Discovers scholarships and internships that match their talent.</span>
+            </div>
           </div>
-          <span class="journey__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span>
-            <span data-i18n="journey_growth">Growth</span>
+
+          <div class="journey__node journey__node--top" style="left:74.6%; top:26.6%; --node-color: var(--color-rust);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_growth">Growth</strong>
+              <span data-i18n="journey_growth_desc">Builds skills and confidence with ongoing mentor support.</span>
+            </div>
           </div>
-          <span class="journey__arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          <div class="journey__node">
-            <span class="icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg></span>
-            <span data-i18n="journey_future">Future possibilities</span>
+
+          <div class="journey__node journey__node--bottom" style="left:91%; top:73.4%; --node-color: var(--color-primary-dark);">
+            <span class="journey__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/></svg></span>
+            <div class="journey__label">
+              <strong data-i18n="journey_future">Future possibilities</strong>
+              <span data-i18n="journey_future_desc">Opens doors to further education and real careers.</span>
+            </div>
           </div>
         </div>
       </div>
