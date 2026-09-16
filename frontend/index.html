@@ -69,12 +69,9 @@
   </header>
 
   <main id="main-content">
-    <!-- Hero: headline/copy/actions centered on top, illustration with
-         orbiting value badges centered below it. -->
-    <section class="section hero hero--centered container">
-      <span class="hero__blob hero__blob--1" aria-hidden="true"></span>
-      <span class="hero__blob hero__blob--2" aria-hidden="true"></span>
-
+    <!-- Hero: copy on the left, illustration + value badges on the right. -->
+    <section class="section hero">
+      <div class="container hero__grid">
       <div class="hero__copy">
         <span class="hero__eyebrow" data-i18n="brand_tagline">Discover • Connect • Grow</span>
         <h1>
@@ -91,68 +88,40 @@
       </div>
 
       <div class="hero__art">
-        <div class="orbit">
-          <span class="orbit__ring" aria-hidden="true"></span>
+        <div class="hero__art-frame">
+          <img src="assets/illustrations/characters/student.png" alt="Illustration of an Amahirwe student carrying books" />
+        </div>
 
-          <div class="orbit__portrait">
-            <img src="assets/illustrations/characters/student.png" alt="Illustration of an Amahirwe student carrying books" />
-          </div>
-
-          <div class="orbit__badge orbit__badge--1" aria-hidden="true">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-orange);">
+        <div class="hero__badges">
+          <div class="hero__badge">
+            <span class="hero__badge-icon" style="--badge-color: var(--color-orange);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>
             </span>
-            <span class="orbit__badge-label" data-i18n="badge_talent_discovery">Talent Discovery</span>
+            <span class="hero__badge-label" data-i18n="badge_talent_discovery">Talent Discovery</span>
           </div>
 
-          <div class="orbit__badge orbit__badge--2" aria-hidden="true">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-teal);">
+          <div class="hero__badge">
+            <span class="hero__badge-icon" style="--badge-color: var(--color-primary-teal);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
             </span>
-            <span class="orbit__badge-label" data-i18n="badge_mentor_matched">Mentor Matched</span>
+            <span class="hero__badge-label" data-i18n="badge_mentor_matched">Mentor Matched</span>
           </div>
 
-          <div class="orbit__badge orbit__badge--3" aria-hidden="true">
-            <span class="orbit__badge-icon" style="--badge-color: #B04E0E;">
+          <div class="hero__badge">
+            <span class="hero__badge-icon" style="--badge-color: #B04E0E;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
             </span>
-            <span class="orbit__badge-label" data-i18n="badge_real_opportunities">Real Opportunities</span>
+            <span class="hero__badge-label" data-i18n="badge_real_opportunities">Real Opportunities</span>
           </div>
 
-          <div class="orbit__badge orbit__badge--4" aria-hidden="true">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-dark);">
+          <div class="hero__badge">
+            <span class="hero__badge-icon" style="--badge-color: var(--color-primary-dark);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l22 22M16.7 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
             </span>
-            <span class="orbit__badge-label" data-i18n="badge_works_offline">Works Offline</span>
+            <span class="hero__badge-label" data-i18n="badge_works_offline">Works Offline</span>
           </div>
         </div>
-
-        <div class="hero__badges-mobile">
-          <div class="hero__badge-mobile">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-orange);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2.3h6c0-1.1.4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg>
-            </span>
-            <span class="orbit__badge-label" data-i18n="badge_talent_discovery">Talent Discovery</span>
-          </div>
-          <div class="hero__badge-mobile">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-teal);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg>
-            </span>
-            <span class="orbit__badge-label" data-i18n="badge_mentor_matched">Mentor Matched</span>
-          </div>
-          <div class="hero__badge-mobile">
-            <span class="orbit__badge-icon" style="--badge-color: #B04E0E;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>
-            </span>
-            <span class="orbit__badge-label" data-i18n="nav_opportunities">Opportunities</span>
-          </div>
-          <div class="hero__badge-mobile">
-            <span class="orbit__badge-icon" style="--badge-color: var(--color-primary-dark);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 1l22 22M16.7 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></svg>
-            </span>
-            <span class="orbit__badge-label" data-i18n="badge_works_offline">Works Offline</span>
-          </div>
-        </div>
+      </div>
       </div>
     </section>
 

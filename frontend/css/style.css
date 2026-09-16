@@ -152,9 +152,9 @@ textarea:focus-visible,
 /* --- Layout helpers --- */
 .container {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-5);
 }
 
 .section {
