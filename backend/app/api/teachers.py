@@ -123,38 +123,27 @@ def list_matches_for_my_school(
 
 def _top_results_by_student(db: Session, student_ids: List[str]) -> dict:
     """Top (rank 1) talent result for each student's latest assessment, in
-    2 queries total regardless of student count (rather than 2 per
-    student) — this used to be the slow part of the teacher overview
-    page when a school had more than a handful of students."""
+    a single round trip regardless of student count. Uses Postgres's
+    DISTINCT ON (student_id) with a matching ORDER BY to pick, per
+    student, the rank-1 result of their most recently completed
+    assessment — one query instead of "find latest assessment ids"
+    then "find rank-1 results for those ids" as two separate round
+    trips. Safe because assessments.py always creates a TalentAssessment
+    and its TalentResult rows in the same commit, so a completed
+    assessment is never missing its rank-1 result."""
     if not student_ids:
         return {}
 
-    assessments = (
-        db.query(TalentAssessment)
-        .filter(TalentAssessment.student_id.in_(student_ids))
-        .order_by(TalentAssessment.completed_at.desc())
+    rows = (
+        db.query(TalentAssessment.student_id, TalentResult)
+        .join(TalentResult, TalentResult.assessment_id == TalentAssessment.id)
+        .filter(TalentAssessment.student_id.in_(student_ids), TalentResult.rank == 1)
+        .order_by(TalentAssessment.student_id, TalentAssessment.completed_at.desc())
+        .distinct(TalentAssessment.student_id)
         .all()
     )
-    latest_assessment_id_by_student = {}
-    for assessment in assessments:
-        latest_assessment_id_by_student.setdefault(assessment.student_id, assessment.id)
 
-    assessment_ids = list(latest_assessment_id_by_student.values())
-    if not assessment_ids:
-        return {}
-
-    results = (
-        db.query(TalentResult)
-        .filter(TalentResult.assessment_id.in_(assessment_ids), TalentResult.rank == 1)
-        .all()
-    )
-    result_by_assessment_id = {result.assessment_id: result for result in results}
-
-    return {
-        student_id: result_by_assessment_id[assessment_id]
-        for student_id, assessment_id in latest_assessment_id_by_student.items()
-        if assessment_id in result_by_assessment_id
-    }
+    return {student_id: result for student_id, result in rows}
 
 
 @router.get("/me/overview", response_model=TeacherOverview)

@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initOfflineBanner();
 
   import("./offline.js").then(({ registerServiceWorker }) => registerServiceWorker());
+  import("./custom-select.js").then(({ initCustomSelects }) => initCustomSelects());
 });
 
 export { setLanguage, loadTranslations, applyTranslations };

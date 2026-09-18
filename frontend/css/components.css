@@ -27,7 +27,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 800;
   font-size: 1.15rem;
   color: var(--color-primary-dark);
@@ -145,7 +145,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.95rem;
   padding: 12px 22px;
@@ -358,6 +358,117 @@
   border-color: var(--color-error);
 }
 
+/* --- Custom dropdown (replaces native <select> for .form-select) ---
+   The real <select> stays in the DOM (js/custom-select.js hides it,
+   not this file) so it keeps working for every script that reads its
+   value or listens for "change" — this only styles the replacement
+   trigger button and options list. Always opens downward: a native
+   select's popup is OS-rendered and can flip open upward with no way
+   for CSS to prevent it, which this exists specifically to fix. */
+.custom-select {
+  position: relative;
+}
+
+.custom-select__native {
+  display: none;
+}
+
+.custom-select__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-pressed);
+  color: var(--color-text);
+  min-height: 48px;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.custom-select__value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.custom-select__chevron {
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  transition: transform var(--transition-fast);
+}
+
+.custom-select.is-open .custom-select__chevron {
+  transform: rotate(180deg);
+}
+
+.custom-select.is-open .custom-select__trigger {
+  border-color: var(--color-primary-teal);
+}
+
+.custom-select__trigger:focus-visible {
+  outline: none;
+  border-color: var(--color-primary-teal);
+  box-shadow: var(--shadow-pressed), var(--shadow-focus);
+}
+
+.custom-select.has-error .custom-select__trigger {
+  border-color: var(--color-error);
+}
+
+.custom-select.is-disabled .custom-select__trigger {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Always below the trigger, never flips up. */
+.custom-select__list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-raised);
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+}
+
+.custom-select__option {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.custom-select__option.is-active {
+  background: var(--color-bg-secondary);
+}
+
+.custom-select__option.is-selected {
+  background: var(--color-mint);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.custom-select__option.is-disabled {
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
 /* --- Answer / choice buttons (talent assessment) --- */
 .choice-btn {
   display: flex;
@@ -482,7 +593,7 @@
 }
 
 .footer__brand {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 800;
   color: var(--color-primary-dark);
 }
@@ -803,7 +914,7 @@
 
 .step-card__number {
   display: inline-block;
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 800;
   color: var(--color-primary-teal);
   font-size: 0.8rem;
@@ -874,7 +985,7 @@
   background: var(--color-bg);
   box-shadow: var(--shadow-raised-sm);
   color: var(--color-primary-teal);
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 800;
   display: flex;
   align-items: center;
@@ -1247,7 +1358,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-weight: 800;
   font-size: 1.05rem;
   color: #fff;
@@ -1502,7 +1613,7 @@
 }
 
 .stat-card__value {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 1.7rem;
   font-weight: 800;
   color: var(--color-text);
@@ -1625,7 +1736,7 @@
 }
 
 .chart-donut__value {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 1.3rem;
   font-weight: 800;
   fill: var(--color-text);

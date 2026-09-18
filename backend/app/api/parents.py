@@ -37,28 +37,33 @@ def list_my_children(
     school_ids = {s.school_id for s in students_by_id.values()}
     schools_by_id = {sc.id: sc for sc in db.query(School).filter(School.id.in_(school_ids)).all()}
 
-    assessments = (
-        db.query(TalentAssessment)
+    # "Latest assessment id per student" (DISTINCT ON) joined straight
+    # to its results is one round trip instead of "find latest
+    # assessment ids" then "find results for those ids" as two —
+    # SQLAlchemy compiles the subquery + join below into a single SQL
+    # statement. Safe because assessments.py always creates a completed
+    # assessment together with its (always ≥1) TalentResult rows in the
+    # same commit, so a student appearing in `results` below is exactly
+    # a student with a completed assessment.
+    latest_assessment_subq = (
+        db.query(TalentAssessment.id.label("assessment_id"), TalentAssessment.student_id)
         .filter(TalentAssessment.student_id.in_(student_ids))
-        .order_by(TalentAssessment.completed_at.desc())
-        .all()
+        .order_by(TalentAssessment.student_id, TalentAssessment.completed_at.desc())
+        .distinct(TalentAssessment.student_id)
+        .subquery()
     )
-    latest_assessment_by_student = {}
-    for assessment in assessments:
-        latest_assessment_by_student.setdefault(assessment.student_id, assessment)
-
-    assessment_ids = [a.id for a in latest_assessment_by_student.values()]
     results = (
-        db.query(TalentResult)
-        .filter(TalentResult.assessment_id.in_(assessment_ids))
+        db.query(latest_assessment_subq.c.student_id, latest_assessment_subq.c.assessment_id, TalentResult)
+        .join(TalentResult, TalentResult.assessment_id == latest_assessment_subq.c.assessment_id)
         .order_by(TalentResult.rank)
         .all()
-        if assessment_ids
-        else []
     )
+
+    latest_assessment_id_by_student: dict = {}
     results_by_assessment_id: dict = {}
-    for result in results:
-        results_by_assessment_id.setdefault(result.assessment_id, []).append(result)
+    for student_id, assessment_id, result in results:
+        latest_assessment_id_by_student[student_id] = assessment_id
+        results_by_assessment_id.setdefault(assessment_id, []).append(result)
 
     latest_matches = (
         db.query(MentorMatch)
@@ -76,7 +81,7 @@ def list_my_children(
         if student is None:
             continue
         school = schools_by_id.get(student.school_id)
-        latest = latest_assessment_by_student.get(student.id)
+        latest_assessment_id = latest_assessment_id_by_student.get(student.id)
         top_talents = [
             ChildTalentSummary(
                 talent_area=r.talent_area,
@@ -84,8 +89,8 @@ def list_my_children(
                 rank=r.rank,
                 explanation=explanation_for(r.talent_area),
             )
-            for r in results_by_assessment_id.get(latest.id, [])
-        ] if latest is not None else []
+            for r in results_by_assessment_id.get(latest_assessment_id, [])
+        ] if latest_assessment_id is not None else []
         match = latest_match_by_student.get(student.id)
 
         children.append(
@@ -94,7 +99,7 @@ def list_my_children(
                 full_name=student.full_name,
                 age_range=student.age_range,
                 school_name=school.name if school else "",
-                has_completed_assessment=latest is not None,
+                has_completed_assessment=latest_assessment_id is not None,
                 top_talents=top_talents,
                 mentor_match_status=match.status.value if match else None,
             )

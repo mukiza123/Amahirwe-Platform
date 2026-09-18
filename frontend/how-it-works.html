@@ -13,41 +13,58 @@
   <link rel="stylesheet" href="css/components.css" />
   <link rel="stylesheet" href="css/responsive.css" />
   <style>
-    /* Roadmap: a central path with numbered stops that alternate
-       left/right, so the sequence reads as a route rather than a list. */
+    /* Roadmap: a horizontal winding road with numbered stops
+       alternating above/below it, so the six steps read left-to-right
+       as a route rather than a long vertical list. Same technique as
+       the Impact page's journey path: the road's curve uses control
+       points level with each stop so it arrives and leaves travelling
+       horizontally (a smooth wave, no sharp corners), and the layout
+       is split into three fixed bands — top labels, the road itself,
+       bottom labels — so a marker or its card can never overlap the
+       road, regardless of viewport width. */
     .roadmap {
       position: relative;
-      max-width: 820px;
+      width: 100%;
+      max-width: 1100px;
       margin: 0 auto;
+      aspect-ratio: 1000 / 760;
     }
 
-    .roadmap::before {
-      content: "";
+    .roadmap__path {
       position: absolute;
-      left: 50%;
-      top: 8px;
-      bottom: 8px;
-      width: 3px;
-      transform: translateX(-50%);
-      background-image: linear-gradient(var(--color-mint) 60%, transparent 0%);
-      background-position: top;
-      background-size: 3px 14px;
-      background-repeat: repeat-y;
-      border-radius: 3px;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
     }
 
+    .roadmap__road {
+      fill: none;
+      stroke: var(--color-primary-dark);
+      stroke-width: 30;
+      stroke-linecap: round;
+    }
+
+    .roadmap__road-line {
+      fill: none;
+      stroke: #fff;
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 22 20;
+    }
+
+    /* A zero-size anchor pinned exactly on the road; the marker and
+       card position relative to this same point independently, so a
+       longer description can never pull the marker off the road. */
     .roadmap-step {
-      position: relative;
-      display: grid;
-      grid-template-columns: 1fr 64px 1fr;
-      align-items: center;
-      column-gap: var(--space-4);
-      margin-bottom: var(--space-4);
+      position: absolute;
     }
 
     .roadmap-step__marker {
-      grid-column: 2;
-      justify-self: center;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: translate(-50%, -50%);
       width: 56px;
       height: 56px;
       border-radius: 50%;
@@ -57,8 +74,7 @@
       align-items: center;
       justify-content: center;
       color: var(--color-primary-teal);
-      position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .roadmap-step__marker span {
@@ -67,7 +83,7 @@
       right: -6px;
       background: var(--color-primary-teal);
       color: #fff;
-      font-family: var(--font-heading);
+      font-family: var(--font-body);
       font-weight: 800;
       font-size: 0.7rem;
       width: 22px;
@@ -79,34 +95,54 @@
     }
 
     .roadmap-step__card {
-      grid-column: 1;
+      position: absolute;
+      left: 0;
+      transform: translateX(-50%);
+      width: 280px;
+      text-align: left;
     }
 
-    .roadmap-step--right .roadmap-step__card {
-      grid-column: 3;
+    .roadmap-step--top .roadmap-step__card {
+      bottom: 38px;
     }
 
-    @media (max-width: 700px) {
-      .roadmap::before {
-        left: 27px;
+    .roadmap-step--bottom .roadmap-step__card {
+      top: 38px;
+    }
+
+    @media (max-width: 900px) {
+      .roadmap {
+        position: static;
+        aspect-ratio: auto;
+        max-width: 640px;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
       }
 
-      .roadmap-step,
-      .roadmap-step--right {
-        grid-template-columns: 54px 1fr;
+      .roadmap__path {
+        display: none;
+      }
+
+      .roadmap-step {
+        position: static;
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        align-items: center;
         column-gap: var(--space-3);
       }
 
       .roadmap-step__marker {
+        position: relative;
+        transform: none;
         grid-column: 1;
-        width: 44px;
-        height: 44px;
       }
 
-      .roadmap-step__card,
-      .roadmap-step--right .roadmap-step__card {
+      .roadmap-step__card {
+        position: static;
+        transform: none;
+        width: auto;
         grid-column: 2;
-        text-align: left;
       }
     }
   </style>
@@ -194,7 +230,12 @@
     <section class="section">
       <div class="container">
         <div class="roadmap">
-          <div class="roadmap-step">
+          <svg class="roadmap__path" viewBox="0 0 1000 760" aria-hidden="true">
+            <path class="roadmap__road" d="M90,220 C172,220 172,540 254,540 C336,540 336,220 418,220 C500,220 500,540 582,540 C664,540 664,220 746,220 C828,220 828,540 910,540" />
+            <path class="roadmap__road-line" d="M90,220 C172,220 172,540 254,540 C336,540 336,220 418,220 C500,220 500,540 582,540 C664,540 664,220 746,220 C828,220 828,540 910,540" />
+          </svg>
+
+          <div class="roadmap-step roadmap-step--top" style="left:9%; top:29%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>1</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
@@ -205,7 +246,7 @@
             </div>
           </div>
 
-          <div class="roadmap-step roadmap-step--right">
+          <div class="roadmap-step roadmap-step--bottom" style="left:25.4%; top:71%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>2</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h5"/></svg>
@@ -216,7 +257,7 @@
             </div>
           </div>
 
-          <div class="roadmap-step">
+          <div class="roadmap-step roadmap-step--top" style="left:41.8%; top:29%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>3</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 12h8M8 12l3-3M8 12l3 3"/><circle cx="18" cy="12" r="3"/><circle cx="6" cy="12" r="3"/></svg>
@@ -227,7 +268,7 @@
             </div>
           </div>
 
-          <div class="roadmap-step roadmap-step--right">
+          <div class="roadmap-step roadmap-step--bottom" style="left:58.2%; top:71%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>4</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
@@ -238,7 +279,7 @@
             </div>
           </div>
 
-          <div class="roadmap-step">
+          <div class="roadmap-step roadmap-step--top" style="left:74.6%; top:29%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>5</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -249,7 +290,7 @@
             </div>
           </div>
 
-          <div class="roadmap-step roadmap-step--right" style="margin-bottom: 0;">
+          <div class="roadmap-step roadmap-step--bottom" style="left:91%; top:71%;">
             <div class="roadmap-step__marker" aria-hidden="true">
               <span>6</span>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
