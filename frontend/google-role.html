@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almost done - Amahirwe</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .auth-wrap {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-6) var(--space-3) var(--space-7);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .auth-card__header {
+      text-align: center;
+      margin-bottom: var(--space-4);
+    }
+
+    .auth-card__header h1 {
+      -webkit-text-stroke: 0.5px currentColor;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-wrap">
+    <div class="card auth-card">
+      <div class="auth-card__header">
+        <h1 data-i18n="auth_google_role_title">Almost done</h1>
+        <p class="text-secondary" data-i18n="auth_google_role_subtitle">Your Google account is connected. Tell us which of these you are to finish setting up your account.</p>
+      </div>
+
+      <form id="google-role-form" novalidate>
+        <div class="form-field">
+          <span class="form-label--caps" data-i18n="form_role">I am a</span>
+          <div class="role-grid" role="radiogroup" aria-label="Role">
+            <div class="role-option">
+              <input type="radio" name="role" id="role_student" value="student" checked />
+              <label for="role_student" data-i18n="role_student">Student</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_teacher" value="teacher" />
+              <label for="role_teacher" data-i18n="role_teacher">Teacher</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_mentor" value="mentor" />
+              <label for="role_mentor" data-i18n="role_mentor">Mentor</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_provider" value="provider" />
+              <label for="role_provider" data-i18n="role_provider">Opportunity Provider</label>
+            </div>
+            <div class="role-option">
+              <input type="radio" name="role" id="role_parent" value="parent" />
+              <label for="role_parent" data-i18n="role_parent">Parent / Guardian</label>
+            </div>
+          </div>
+        </div>
+
+        <p class="form-error" id="form-error" hidden></p>
+
+        <button type="submit" class="btn btn-primary btn-block" id="google-role-submit" data-i18n="auth_google_role_submit">Continue</button>
+      </form>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { api, ApiError } from "./js/api.js";
+    import { saveSession, dashboardUrlFor, verifyUrlFor, setFormError, clearErrors, setLoading } from "./js/auth.js";
+
+    const idToken = sessionStorage.getItem("amahirwe_google_id_token");
+    if (!idToken) {
+      // Nothing to finish signing up — send them back to start over.
+      window.location.href = "register.html";
+    }
+
+    const form = document.querySelector("#google-role-form");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearErrors(form);
+      const submitBtn = document.querySelector("#google-role-submit");
+
+      setLoading(submitBtn, true);
+      try {
+        const data = await api.post(
+          "/auth/google",
+          { id_token: idToken, role: form.role.value },
+          { auth: false }
+        );
+        sessionStorage.removeItem("amahirwe_google_id_token");
+        saveSession(data.access_token, data.user);
+        window.location.href = data.user.email_verified ? dashboardUrlFor(data.user.role) : verifyUrlFor();
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 401) {
+          setFormError(form, "That Google sign-in has expired. Please go back and try again.");
+        } else {
+          setFormError(form, err.message || "Something went wrong. Please try again.");
+        }
+      } finally {
+        setLoading(submitBtn, false);
+      }
+    });
+  </script>
+</body>
+</html>

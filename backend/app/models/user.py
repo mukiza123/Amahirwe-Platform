@@ -1,6 +1,7 @@
 import enum
 import uuid
 from datetime import datetime, timezone
+from typing import Optional
 
 from sqlalchemy import Boolean, DateTime, Enum, String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -41,6 +42,16 @@ class User(Base):
     # Other roles are considered verified as soon as they register.
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    # A self-registered account must confirm ownership of its email
+    # address with a one-time code before it can use the app (separate
+    # from is_verified above, which is an admin credential check for
+    # mentors/providers, not identity/email ownership).
+    email_verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    email_verification_code: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)
+    email_verification_code_expires_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False

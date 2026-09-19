@@ -57,6 +57,10 @@ def get_or_create_user(db, full_name, email, role, is_verified=True):
             hashed_password=hash_password(DEMO_PASSWORD),
             role=role,
             is_verified=is_verified,
+            # Demo accounts should just work for anyone running the seed
+            # script — they're not going through the real email
+            # verification flow, so they need to already be verified.
+            email_verified=True,
         )
         db.add(user)
         db.flush()

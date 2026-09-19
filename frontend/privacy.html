@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy - Amahirwe</title>
+  <meta name="description" content="Privacy Policy for the Amahirwe student-mentorship prototype." />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .legal-content { max-width: 760px; margin: 0 auto; }
+    .legal-content h2 { margin-top: var(--space-6); }
+    .legal-content h2:first-child { margin-top: 0; }
+    .legal-content p, .legal-content li { color: var(--color-text-secondary); }
+    .legal-content ul { padding-left: 1.2em; }
+    .legal-content li { margin-bottom: 8px; }
+    .legal-updated { font-size: 0.85rem; color: var(--color-text-secondary); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+
+      <nav class="navbar__links" aria-label="Main navigation">
+        <a href="index.html" data-i18n="nav_home">Home</a>
+        <a href="about.html" data-i18n="nav_about">About</a>
+        <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
+        <a href="schools.html" data-i18n="nav_schools">For Schools</a>
+        <a href="mentors.html" data-i18n="nav_mentors">For Mentors</a>
+        <a href="impact.html" data-i18n="nav_impact">Impact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="login.html" class="btn btn-secondary" data-i18n="nav_login">Log in</a>
+        <a href="register.html" class="btn btn-primary" data-i18n="nav_get_started">Get Started</a>
+        <button class="navbar__toggle" type="button" aria-expanded="false" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="navbar__mobile-panel">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
+      <a href="index.html" data-i18n="nav_home">Home</a>
+      <a href="about.html" data-i18n="nav_about">About</a>
+      <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
+      <a href="schools.html" data-i18n="nav_schools">For Schools</a>
+      <a href="mentors.html" data-i18n="nav_mentors">For Mentors</a>
+      <a href="impact.html" data-i18n="nav_impact">Impact</a>
+      <a href="login.html" data-i18n="nav_login">Log in</a>
+      <a href="register.html" data-i18n="nav_get_started">Get Started</a>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="page-hero container">
+      <h1>Privacy Policy</h1>
+      <p class="legal-updated">Last updated: September 2026 &middot; Prototype version</p>
+    </section>
+
+    <section class="section">
+      <div class="container legal-content">
+        <p>
+          Amahirwe is a university software-engineering prototype. This page explains what account data the
+          platform collects and how it's used within the demo. Because this is a prototype rather than a
+          commercial product, some practices described (such as data retention and deletion) are simplified
+          compared to what a production deployment would need.
+        </p>
+
+        <h2>1. Information we collect</h2>
+        <ul>
+          <li><strong>Account details</strong> — full name, email address, password (stored as a salted hash, never in plain text), and role (student, teacher, mentor, opportunity provider, parent/guardian or admin).</li>
+          <li><strong>Profile information</strong> — school, grade, subject area, or organisation, depending on your role.</li>
+          <li><strong>Activity data</strong> — talent assessment answers and results, mentor-match requests, and messages you send within the platform.</li>
+          <li><strong>Technical data</strong> — basic request information (such as timestamps) needed to keep the service secure and working.</li>
+        </ul>
+
+        <h2>2. Email verification</h2>
+        <p>
+          When you register, Amahirwe generates a one-time 6-digit verification code tied to your account. In
+          this prototype, the code is shown directly on the verification page instead of being sent through a
+          real email provider, since no mail service is connected yet. In a production deployment, this code
+          would instead be delivered only to the email address you registered with.
+        </p>
+
+        <h2>3. How we use your information</h2>
+        <ul>
+          <li>To create and secure your account, including verifying that you control the email address provided.</li>
+          <li>To match students with mentors and relevant opportunities.</li>
+          <li>To let teachers and administrators review and approve connections, consistent with Amahirwe's school-anchored design.</li>
+          <li>To show you your own dashboard, progress and history within the platform.</li>
+        </ul>
+
+        <h2>4. Who can see your information</h2>
+        <p>
+          Your profile is visible to the teachers, mentors, or administrators involved in your matches, as
+          appropriate for your role. Amahirwe does not sell personal data, and does not share it with third
+          parties outside of the platform's own mentorship and opportunity features.
+        </p>
+
+        <h2>5. Data retention and deletion</h2>
+        <p>
+          As a prototype, demo data (including test accounts) may be periodically reset. You can request account
+          deletion at any time through the <a href="contact.html">contact page</a>.
+        </p>
+
+        <h2>6. Children's privacy</h2>
+        <p>
+          Amahirwe is designed for use by students aged roughly 12–19 within a school-anchored program, with
+          teacher and guardian visibility built into the platform's design rather than treated as an afterthought.
+        </p>
+
+        <h2>7. Changes to this policy</h2>
+        <p>
+          This policy may be updated as the prototype evolves. Continued use of the platform after a change means
+          you accept the updated policy.
+        </p>
+
+        <h2>8. Contact</h2>
+        <p>
+          Questions about this policy can be sent through the <a href="contact.html">contact page</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div>
+        <div class="footer__brand" data-i18n="brand_name">Amahirwe</div>
+        <p class="text-secondary" data-i18n="brand_tagline">Discover • Connect • Grow</p>
+      </div>
+
+      <div class="footer__col">
+        <h4 data-i18n="footer_explore">Explore</h4>
+        <a href="about.html" data-i18n="nav_about">About</a>
+        <a href="how-it-works.html" data-i18n="nav_how_it_works">How It Works</a>
+        <a href="impact.html" data-i18n="nav_impact">Impact</a>
+        <a href="opportunities.html" data-i18n="nav_opportunities">Opportunities</a>
+      </div>
+
+      <div class="footer__col">
+        <h4 data-i18n="footer_get_involved">Get Involved</h4>
+        <a href="schools.html" data-i18n="nav_schools">For Schools</a>
+        <a href="mentors.html" data-i18n="footer_become_mentor">Become a Mentor</a>
+        <a href="contact.html" data-i18n="footer_opportunity_providers">Opportunity Providers</a>
+      </div>
+
+      <div class="footer__col">
+        <h4 data-i18n="footer_platform">Platform</h4>
+        <a href="login.html" data-i18n="nav_login">Login</a>
+        <a href="register.html" data-i18n="nav_get_started">Get Started</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+
+      <div class="footer__col">
+        <h4 data-i18n="footer_languages">Languages</h4>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer__meta">
+      <p style="margin:0 0 6px 0;" data-i18n="footer_demo_notice">This is a university software prototype. Content, opportunities and figures shown are illustrative demo data, not real results.</p>
+      <p style="margin:0;" data-i18n="footer_rights">© 2026 Amahirwe. Built for students in Rwanda.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

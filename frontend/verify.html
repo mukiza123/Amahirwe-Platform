@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify your email - Amahirwe</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .auth-wrap {
+      display: flex;
+      justify-content: center;
+      padding: var(--space-6) var(--space-3) var(--space-7);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .auth-card__header {
+      text-align: center;
+      margin-bottom: var(--space-4);
+    }
+
+    .auth-card__footer {
+      text-align: center;
+      margin-top: var(--space-3);
+      font-size: 0.9rem;
+    }
+
+    .verify-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--color-mint);
+      color: var(--color-primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--space-3);
+    }
+
+    .verify-email {
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .code-input {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      padding-left: 16px;
+    }
+
+    /* Stands in for the email a real mail service would deliver — this
+       prototype has no email-sending set up, see auth.py. Not
+       something a production build should ship. */
+    .dev-code-banner {
+      background: var(--color-mint);
+      color: var(--color-primary-dark);
+      border-radius: var(--radius-md);
+      padding: var(--space-3);
+      text-align: center;
+      margin-bottom: var(--space-4);
+      font-size: 0.85rem;
+    }
+
+    .dev-code-banner strong {
+      display: block;
+      font-size: 1.3rem;
+      letter-spacing: 0.2em;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-wrap">
+    <div class="card auth-card">
+      <div class="auth-card__header">
+        <div class="verify-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg>
+        </div>
+        <h1 data-i18n="auth_verify_title">Verify your email</h1>
+        <p class="text-secondary">
+          <span data-i18n="auth_verify_subtitle">We sent a 6-digit code to</span>
+          <span class="verify-email" id="verify-email"></span>
+        </p>
+      </div>
+
+      <div class="dev-code-banner" id="dev-code-banner" hidden>
+        <span data-i18n="auth_verify_dev_notice">This is a prototype with no email service connected yet — here's the code a real email would contain:</span>
+        <strong id="dev-code-value"></strong>
+      </div>
+
+      <form id="verify-form" novalidate>
+        <div class="form-field">
+          <label class="form-label--caps" for="code" data-i18n="auth_verify_code_label">Verification code</label>
+          <input class="form-input code-input" type="text" id="code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="000000" required />
+          <p class="form-error" id="code-error" hidden></p>
+        </div>
+
+        <p class="form-error" id="form-error" hidden></p>
+        <p class="text-secondary" id="form-success" hidden data-i18n="auth_verify_success">Verified! Redirecting…</p>
+
+        <button type="submit" class="btn btn-primary btn-block" id="verify-submit-btn" data-i18n="auth_verify_submit">Verify email</button>
+      </form>
+
+      <p class="auth-card__footer text-secondary">
+        <span data-i18n="auth_verify_no_code">Didn't get a code?</span>
+        <a href="#" id="resend-link" data-i18n="auth_verify_resend">Resend code</a>
+      </p>
+      <p class="auth-card__footer text-secondary">
+        <a href="#" data-action="logout" data-i18n="auth_verify_different_account">Use a different account</a>
+      </p>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { api, ApiError } from "./js/api.js";
+    import { getCurrentUser, saveSession, dashboardUrlFor, setFormError, setFieldError, clearErrors, setLoading } from "./js/auth.js";
+
+    const user = getCurrentUser();
+    if (!user) {
+      window.location.href = "login.html";
+    } else if (user.email_verified) {
+      window.location.href = dashboardUrlFor(user.role);
+    } else {
+      document.querySelector("#verify-email").textContent = user.email;
+    }
+
+    function showDevCode(code) {
+      if (!code) return;
+      document.querySelector("#dev-code-value").textContent = code;
+      document.querySelector("#dev-code-banner").hidden = false;
+    }
+
+    // Register just handed us the code directly (see auth.js); show it
+    // once, then forget it — a real inbox wouldn't stay readable from
+    // this page either.
+    const storedCode = sessionStorage.getItem("amahirwe_dev_verification_code");
+    if (storedCode) {
+      showDevCode(storedCode);
+      sessionStorage.removeItem("amahirwe_dev_verification_code");
+    }
+
+    const form = document.querySelector("#verify-form");
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearErrors(form);
+      document.querySelector("#form-success").hidden = true;
+      const submitBtn = document.querySelector("#verify-submit-btn");
+
+      const code = form.code.value.trim();
+      if (!/^\d{6}$/.test(code)) {
+        setFieldError(form, "code", "Enter the 6-digit code.");
+        return;
+      }
+
+      setLoading(submitBtn, true);
+      try {
+        const updatedUser = await api.post("/auth/me/verify-email", { code });
+        saveSession(localStorage.getItem("amahirwe_token"), updatedUser);
+        document.querySelector("#form-success").hidden = false;
+        window.location.href = dashboardUrlFor(updatedUser.role);
+      } catch (err) {
+        if (err instanceof ApiError && err.status === 400) {
+          setFormError(form, "That code is incorrect or has expired. Request a new one below.");
+        } else {
+          setFormError(form, err.message || "Something went wrong. Please try again.");
+        }
+      } finally {
+        setLoading(submitBtn, false);
+      }
+    });
+
+    document.querySelector("#resend-link").addEventListener("click", async (e) => {
+      e.preventDefault();
+      clearErrors(form);
+      try {
+        const data = await api.post("/auth/me/resend-verification");
+        saveSession(localStorage.getItem("amahirwe_token"), data.user);
+        showDevCode(data.dev_verification_code);
+      } catch (err) {
+        setFormError(form, err.message || "Couldn't send a new code. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>

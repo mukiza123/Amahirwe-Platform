@@ -317,6 +317,192 @@
   font-weight: 600;
 }
 
+/* --- Auth forms: icon-prefixed pill inputs, checkbox row, social
+   sign-in placeholders (login/register/verify) --- */
+.form-label--caps {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  font-weight: 800;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+
+.form-field--icon {
+  position: relative;
+}
+
+.form-field--icon .form-input {
+  border-radius: var(--radius-pill);
+  padding-left: 46px;
+}
+
+.form-field--icon.has-toggle .form-input {
+  padding-right: 46px;
+}
+
+.form-field__icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  display: flex;
+  pointer-events: none;
+}
+
+.form-field__toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 6px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  border-radius: 50%;
+}
+
+.form-field__toggle:hover {
+  color: var(--color-primary-teal);
+}
+
+.form-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.form-checkbox-row input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--color-primary-teal);
+  cursor: pointer;
+}
+
+.form-checkbox-row label {
+  cursor: pointer;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.auth-social {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Google's own rendered button (see initGoogleSignIn in auth.js) —
+   width is set to match this container from JS, since Google's button
+   is sized in pixels, not %. */
+.auth-social__google-mount {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.auth-social__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.auth-social__btn:hover {
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-raised-sm);
+}
+
+.auth-social__note {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+/* Role picker: register.html's "I am a" grid, and google-role.html's
+   post-Google-signin role picker, share this exact markup/styling. */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+@media (max-width: 480px) {
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.role-option {
+  position: relative;
+}
+
+.role-option input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.role-option label {
+  display: block;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  background: var(--color-bg);
+  box-shadow: var(--shadow-raised-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
+}
+
+.role-option input:checked + label {
+  border-color: var(--color-primary-teal);
+  box-shadow: var(--shadow-pressed);
+  color: var(--color-primary-dark);
+}
+
+.role-option input:focus-visible + label {
+  box-shadow: var(--shadow-focus);
+}
+
 .form-success {
   font-size: 0.8rem;
   color: var(--color-success);

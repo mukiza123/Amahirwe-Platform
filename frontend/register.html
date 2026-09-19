@@ -28,57 +28,18 @@
       margin-bottom: var(--space-4);
     }
 
+    /* Bellota Text only ships weight 700 on Google Fonts, so a thin
+       text-stroke fakes the extra heft the title needs beyond that. */
+    .auth-card__header h1 {
+      -webkit-text-stroke: 0.5px currentColor;
+    }
+
     .auth-card__footer {
       text-align: center;
       margin-top: var(--space-3);
       font-size: 0.9rem;
     }
 
-    .role-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-2);
-    }
-
-    @media (max-width: 480px) {
-      .role-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .role-option {
-      position: relative;
-    }
-
-    .role-option input {
-      position: absolute;
-      opacity: 0;
-      inset: 0;
-      cursor: pointer;
-    }
-
-    .role-option label {
-      display: block;
-      padding: 12px 14px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid transparent;
-      background: var(--color-bg);
-      box-shadow: var(--shadow-raised-sm);
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
-    }
-
-    .role-option input:checked + label {
-      border-color: var(--color-primary-teal);
-      box-shadow: var(--shadow-pressed);
-      color: var(--color-primary-dark);
-    }
-
-    .role-option input:focus-visible + label {
-      box-shadow: var(--shadow-focus);
-    }
   </style>
 </head>
 <body>
@@ -112,26 +73,38 @@
 
       <form id="register-form" novalidate>
         <div class="form-field">
-          <label class="form-label" for="full_name" data-i18n="form_full_name">Full name</label>
-          <input class="form-input" type="text" id="full_name" name="full_name" autocomplete="name" required />
+          <label class="form-label--caps" for="full_name" data-i18n="form_full_name">Full name</label>
+          <div class="form-field--icon">
+            <span class="form-field__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span>
+            <input class="form-input" type="text" id="full_name" name="full_name" autocomplete="name" placeholder="Enter your full name" required />
+          </div>
           <p class="form-error" id="full_name-error" hidden></p>
         </div>
 
         <div class="form-field">
-          <label class="form-label" for="email" data-i18n="form_email">Email</label>
-          <input class="form-input" type="email" id="email" name="email" autocomplete="email" required />
+          <label class="form-label--caps" for="email" data-i18n="form_email">Email</label>
+          <div class="form-field--icon">
+            <span class="form-field__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 6l10 7 10-7"/></svg></span>
+            <input class="form-input" type="email" id="email" name="email" autocomplete="email" placeholder="name@domain.com" required />
+          </div>
           <p class="form-error" id="email-error" hidden></p>
         </div>
 
         <div class="form-field">
-          <label class="form-label" for="password" data-i18n="form_password">Password</label>
-          <input class="form-input" type="password" id="password" name="password" autocomplete="new-password" minlength="8" required />
+          <label class="form-label--caps" for="password" data-i18n="form_password">Password</label>
+          <div class="form-field--icon has-toggle">
+            <span class="form-field__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></span>
+            <input class="form-input" type="password" id="password" name="password" autocomplete="new-password" minlength="8" placeholder="••••••••" required />
+            <button type="button" class="form-field__toggle" data-toggle-password="#password" aria-label="Show password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
           <p class="form-help" data-i18n="form_help_password_min">At least 8 characters.</p>
           <p class="form-error" id="password-error" hidden></p>
         </div>
 
         <div class="form-field">
-          <span class="form-label" data-i18n="form_role">I am a</span>
+          <span class="form-label--caps" data-i18n="form_role">I am a</span>
           <div class="role-grid" role="radiogroup" aria-label="Role">
             <div class="role-option">
               <input type="radio" name="role" id="role_student" value="student" checked />
@@ -156,10 +129,39 @@
           </div>
         </div>
 
+        <div class="form-checkbox-row">
+          <input type="checkbox" id="agree_terms" name="agree_terms" required />
+          <label for="agree_terms">
+            <span data-i18n="auth_agree_prefix">I agree to the</span>
+            <a href="terms.html" target="_blank" rel="noopener" data-i18n="auth_terms_of_service">Terms of Service</a>
+            <span data-i18n="auth_agree_and">and</span>
+            <a href="privacy.html" target="_blank" rel="noopener" data-i18n="auth_privacy_policy">Privacy Policy</a>.
+          </label>
+        </div>
+
         <p class="form-error" id="form-error" hidden></p>
 
         <button type="submit" class="btn btn-primary btn-block" data-i18n="form_submit_register">Create account</button>
       </form>
+
+      <div class="auth-divider" data-i18n="auth_or_continue_with">or continue with</div>
+
+      <div class="auth-social">
+        <div class="auth-social__google-mount" data-google-signin="signup_with" hidden></div>
+        <button type="button" class="auth-social__btn" data-social-auth="Google">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.46a5.52 5.52 0 01-2.4 3.63v3h3.88c2.27-2.09 3.58-5.17 3.58-8.81z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.92l-3.88-3a7.2 7.2 0 01-10.7-3.79H1.4v3.09A12 12 0 0012 24z"/><path fill="#FBBC05" d="M5.37 14.29a7.2 7.2 0 010-4.58V6.62H1.4a12 12 0 000 10.76z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.35.6 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 001.4 6.62l3.97 3.09A7.16 7.16 0 0112 4.77z"/></svg>
+          <span data-i18n="auth_continue_google">Continue with Google</span>
+        </button>
+        <button type="button" class="auth-social__btn" data-social-auth="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.5h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.5h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+          <span data-i18n="auth_continue_facebook">Continue with Facebook</span>
+        </button>
+        <button type="button" class="auth-social__btn" data-social-auth="Apple">
+          <svg width="16" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 1c.15 1.06-.29 2.09-.94 2.86-.68.79-1.79 1.39-2.83 1.31-.16-1.02.32-2.09 1-2.85C14.28 1.5 15.39.94 16.36 1zM20.6 17.15c-.5 1.15-.74 1.66-1.38 2.68-.9 1.42-2.16 3.19-3.73 3.2-1.39.02-1.75-.9-3.63-.89-1.88.01-2.28.91-3.67.89-1.57-.02-2.76-1.62-3.66-3.03-2.5-3.91-2.76-8.5-1.22-10.94.99-1.58 2.72-2.63 4.33-2.63 1.65 0 2.68.94 4.04.94 1.32 0 2.11-.94 4.04-.94 1.34 0 2.75.72 3.79 1.97-3.34 1.83-2.8 6.6.09 7.75z"/></svg>
+          <span data-i18n="auth_continue_apple">Continue with Apple</span>
+        </button>
+        <p class="auth-social__note" id="auth-social-note" hidden></p>
+      </div>
 
       <p class="auth-card__footer text-secondary">
         <span data-i18n="auth_have_account">Already have an account?</span>
@@ -168,6 +170,7 @@
     </div>
   </main>
 
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/auth.js"></script>
 </body>
