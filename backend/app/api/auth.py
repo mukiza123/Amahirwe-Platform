@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import secrets
 from datetime import datetime, timedelta, timezone
 
@@ -14,9 +16,12 @@ from app.core.security import create_access_token, hash_password, verify_passwor
 from app.models.user import User, UserRole
 from app.schemas.user import (
     EmailVerificationCode,
+    ForgotPasswordRequest,
+    ForgotPasswordResponse,
     GoogleAuth,
     GoogleAuthResult,
     PasswordChange,
+    ResetPassword,
     Token,
     UserCreate,
     UserLogin,
@@ -35,6 +40,28 @@ _google_auth_request = google_requests.Request()
 ROLES_REQUIRING_VERIFICATION = {UserRole.MENTOR, UserRole.PROVIDER}
 
 EMAIL_VERIFICATION_CODE_TTL_MINUTES = 15
+PASSWORD_RESET_CODE_TTL_MINUTES = 15
+
+# A code is invalidated after this many wrong guesses, so someone who
+# gets hold of a session (or, for password reset, just an email
+# address) can't sit and brute-force a 6-digit space.
+MAX_VERIFICATION_ATTEMPTS = 5
+MAX_PASSWORD_RESET_ATTEMPTS = 5
+
+# Minimum gap between two codes being issued, so a resend button (or a
+# script) can't be used to spam someone's inbox — or, in this
+# prototype's dev-code mode, spam the response payload itself.
+RESEND_COOLDOWN_SECONDS = 30
+
+
+def _as_utc(dt: datetime | None) -> datetime | None:
+    """Postgres (production) always returns DateTime(timezone=True)
+    columns tz-aware — but SQLite (used in tests) drops tzinfo on read,
+    so a naive value here is assumed to already be UTC, matching how it
+    was stored, rather than raising."""
+    if dt is not None and dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 def _issue_verification_code(user: User) -> str:
@@ -47,7 +74,26 @@ def _issue_verification_code(user: User) -> str:
     user.email_verification_code_expires_at = datetime.now(timezone.utc) + timedelta(
         minutes=EMAIL_VERIFICATION_CODE_TTL_MINUTES
     )
+    user.email_verification_attempts = 0
+    user.email_verification_last_sent_at = datetime.now(timezone.utc)
     return code
+
+
+def _issue_password_reset_code(user: User) -> str:
+    code = f"{secrets.randbelow(1_000_000):06d}"
+    user.password_reset_code = code
+    user.password_reset_code_expires_at = datetime.now(timezone.utc) + timedelta(
+        minutes=PASSWORD_RESET_CODE_TTL_MINUTES
+    )
+    user.password_reset_attempts = 0
+    user.password_reset_last_sent_at = datetime.now(timezone.utc)
+    return code
+
+
+def _seconds_since(dt: datetime | None) -> float:
+    if dt is None:
+        return float("inf")
+    return (datetime.now(timezone.utc) - _as_utc(dt)).total_seconds()
 
 
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
@@ -172,25 +218,28 @@ def verify_email(
     if current_user.email_verified:
         return current_user
 
+    if current_user.email_verification_attempts >= MAX_VERIFICATION_ATTEMPTS:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many wrong attempts. Request a new code and try again.",
+        )
+
     now = datetime.now(timezone.utc)
-    expires_at = current_user.email_verification_code_expires_at
-    # Postgres (production) always returns this tz-aware, since the
-    # column is DateTime(timezone=True) — but SQLite (used in tests)
-    # drops tzinfo on read, so a naive value here is assumed to already
-    # be UTC, matching how it was stored, rather than raising.
-    if expires_at is not None and expires_at.tzinfo is None:
-        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    expires_at = _as_utc(current_user.email_verification_code_expires_at)
 
     code_matches = current_user.email_verification_code is not None and secrets.compare_digest(
         current_user.email_verification_code, payload.code
     )
     not_expired = expires_at is not None and expires_at > now
     if not (code_matches and not_expired):
+        current_user.email_verification_attempts += 1
+        db.commit()
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That code is incorrect or has expired.")
 
     current_user.email_verified = True
     current_user.email_verification_code = None
     current_user.email_verification_code_expires_at = None
+    current_user.email_verification_attempts = 0
     db.commit()
     db.refresh(current_user)
     return current_user
@@ -203,6 +252,13 @@ def resend_verification(
 ):
     if current_user.email_verified:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="This account is already verified.")
+
+    wait = RESEND_COOLDOWN_SECONDS - _seconds_since(current_user.email_verification_last_sent_at)
+    if wait > 0:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Please wait {int(wait) + 1}s before requesting another code.",
+        )
 
     code = _issue_verification_code(current_user)
     db.commit()
@@ -223,3 +279,66 @@ def change_password(
 
     current_user.hashed_password = hash_password(payload.new_password)
     db.commit()
+
+
+@router.post("/forgot-password", response_model=ForgotPasswordResponse)
+def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
+    """Always returns 200 with the same shape, whether or not the email
+    has an account — otherwise this endpoint would let anyone check
+    which emails are registered, one guess at a time."""
+    user = db.query(User).filter(User.email == payload.email.lower()).first()
+    if user is None:
+        return ForgotPasswordResponse()
+
+    wait = RESEND_COOLDOWN_SECONDS - _seconds_since(user.password_reset_last_sent_at)
+    if wait > 0:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Please wait {int(wait) + 1}s before requesting another code.",
+        )
+
+    code = _issue_password_reset_code(user)
+    db.commit()
+    return ForgotPasswordResponse(dev_reset_code=code)
+
+
+@router.post("/reset-password", response_model=Token)
+def reset_password(payload: ResetPassword, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == payload.email.lower()).first()
+
+    # Same "incorrect or has expired" message whether the email doesn't
+    # exist, the code is wrong, or it expired — matching login's
+    # "incorrect email or password" pattern of not distinguishing why.
+    invalid_detail = "That code is incorrect or has expired."
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=invalid_detail)
+
+    if user.password_reset_attempts >= MAX_PASSWORD_RESET_ATTEMPTS:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many attempts. Request a new code and try again.",
+        )
+
+    now = datetime.now(timezone.utc)
+    expires_at = _as_utc(user.password_reset_code_expires_at)
+    code_matches = user.password_reset_code is not None and secrets.compare_digest(
+        user.password_reset_code, payload.code
+    )
+    not_expired = expires_at is not None and expires_at > now
+    if not (code_matches and not_expired):
+        user.password_reset_attempts += 1
+        db.commit()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=invalid_detail)
+
+    if not user.is_active:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="This account has been deactivated.")
+
+    user.hashed_password = hash_password(payload.new_password)
+    user.password_reset_code = None
+    user.password_reset_code_expires_at = None
+    user.password_reset_attempts = 0
+    db.commit()
+    db.refresh(user)
+
+    token = create_access_token(subject=user.id, extra_claims={"role": user.role.value})
+    return Token(access_token=token, user=UserRead.model_validate(user))

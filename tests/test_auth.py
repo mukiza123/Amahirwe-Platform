@@ -140,7 +140,11 @@ def test_verify_email_with_expired_code_fails(client, db_session):
     assert response.status_code == 400
 
 
-def test_resend_verification_issues_a_new_code(client):
+def test_resend_verification_issues_a_new_code(client, monkeypatch):
+    import app.api.auth as auth_module
+
+    monkeypatch.setattr(auth_module, "RESEND_COOLDOWN_SECONDS", 0)
+
     data = register(client).json()
     token = data["access_token"]
     old_code = data["dev_verification_code"]
@@ -330,3 +334,116 @@ def test_google_auth_rejects_an_invalid_token(client, monkeypatch):
 
     response = client.post("/api/auth/google", json={"id_token": "bad-token"})
     assert response.status_code == 401
+
+
+# --- Verification-code rate limiting ---
+
+
+def test_verify_email_locks_out_after_too_many_wrong_attempts(client):
+    token = register(client).json()["access_token"]
+    headers = {"Authorization": f"Bearer {token}"}
+
+    for _ in range(auth_module.MAX_VERIFICATION_ATTEMPTS):
+        response = client.post("/api/auth/me/verify-email", json={"code": "000000"}, headers=headers)
+        assert response.status_code == 400
+
+    # One more, even if by coincidence it were the right code, is refused.
+    locked = client.post("/api/auth/me/verify-email", json={"code": "111111"}, headers=headers)
+    assert locked.status_code == 429
+
+
+def test_resend_verification_is_rate_limited(client):
+    token = register(client).json()["access_token"]
+    # register() already issued one code, starting the cooldown clock.
+    response = client.post("/api/auth/me/resend-verification", headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 429
+
+
+# --- Forgot / reset password ---
+
+
+def test_forgot_password_issues_a_code_for_an_existing_account(client):
+    register(client)
+    response = client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+    assert response.status_code == 200
+    assert response.json()["dev_reset_code"] is not None
+
+
+def test_forgot_password_does_not_reveal_unknown_emails(client):
+    response = client.post("/api/auth/forgot-password", json={"email": "nobody@example.com"})
+    assert response.status_code == 200
+    assert response.json()["dev_reset_code"] is None
+
+
+def test_forgot_password_is_rate_limited(client):
+    register(client)
+    client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+    second = client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+    assert second.status_code == 429
+
+
+def test_reset_password_with_correct_code_logs_in_with_the_new_password(client):
+    register(client)
+    code = client.post("/api/auth/forgot-password", json={"email": "student@example.com"}).json()["dev_reset_code"]
+
+    response = client.post(
+        "/api/auth/reset-password",
+        json={"email": "student@example.com", "code": code, "new_password": "brandnewpass123"},
+    )
+    assert response.status_code == 200
+    assert response.json()["access_token"]
+
+    # Old password no longer works, new one does.
+    assert (
+        client.post("/api/auth/login", json={"email": "student@example.com", "password": "password123"}).status_code
+        == 401
+    )
+    assert (
+        client.post(
+            "/api/auth/login", json={"email": "student@example.com", "password": "brandnewpass123"}
+        ).status_code
+        == 200
+    )
+
+
+def test_reset_password_with_wrong_code_fails(client):
+    register(client)
+    client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+
+    response = client.post(
+        "/api/auth/reset-password",
+        json={"email": "student@example.com", "code": "000000", "new_password": "brandnewpass123"},
+    )
+    assert response.status_code == 400
+
+    # The password was not changed.
+    assert (
+        client.post("/api/auth/login", json={"email": "student@example.com", "password": "password123"}).status_code
+        == 200
+    )
+
+
+def test_reset_password_locks_out_after_too_many_wrong_attempts(client):
+    register(client)
+    client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+
+    for _ in range(auth_module.MAX_PASSWORD_RESET_ATTEMPTS):
+        response = client.post(
+            "/api/auth/reset-password",
+            json={"email": "student@example.com", "code": "000000", "new_password": "brandnewpass123"},
+        )
+        assert response.status_code == 400
+
+    locked = client.post(
+        "/api/auth/reset-password",
+        json={"email": "student@example.com", "code": "111111", "new_password": "brandnewpass123"},
+    )
+    assert locked.status_code == 429
+
+
+def test_reset_password_for_unknown_email_fails(client):
+    response = client.post(
+        "/api/auth/reset-password",
+        json={"email": "nobody@example.com", "code": "123456", "new_password": "brandnewpass123"},
+    )
+    assert response.status_code == 400

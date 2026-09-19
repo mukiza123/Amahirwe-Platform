@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import Optional
 
-from sqlalchemy import Boolean, DateTime, Enum, String
+from sqlalchemy import Boolean, DateTime, Enum, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -52,6 +52,23 @@ class User(Base):
     email_verification_code_expires_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    # Wrong guesses against the current code; the code is invalidated
+    # once this hits a limit, so a stolen/guessed-at token can't be
+    # brute-forced indefinitely (see MAX_VERIFICATION_ATTEMPTS in auth.py).
+    email_verification_attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    # Throttles /me/resend-verification so a user (or a script with a
+    # stolen session) can't spam new codes.
+    email_verification_last_sent_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    # Forgot-password: same one-time-code pattern as email verification,
+    # but tracked separately since a reset can happen on an already
+    # email_verified account and shouldn't disturb that state.
+    password_reset_code: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)
+    password_reset_code_expires_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
+    password_reset_attempts: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    password_reset_last_sent_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False

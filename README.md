@@ -10,7 +10,7 @@ This is a university final software prototype built from scratch with:
 - **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
 - **Database:** PostgreSQL
 
-> Project status: **All 10 phases complete**, plus a full dashboard redesign. Registration/login, student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard and a real parent/guardian link), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. Every role's dashboard is a real, data-focused multi-page app (sidebar navigation, stat cards, charts) built entirely from live API data, never placeholder numbers. See [Development Plan](#development-plan) below for the one remaining known gap (JS-computed dynamic content, like chart labels and notification text, is not yet translated).
+> Project status: **All 10 phases complete**, plus a full dashboard redesign and a hardened auth flow. Registration/login (with email verification, rate-limited codes, forgot-password, and optional Google sign-in), student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard and a real parent/guardian link), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. Every role's dashboard is a real, data-focused multi-page app (sidebar navigation, stat cards, charts) built entirely from live API data, never placeholder numbers. See [Development Plan](#development-plan) below for the one remaining known gap (JS-computed dynamic content, like chart labels and notification text, is not yet translated), and [`docs/performance-audit-report.md`](docs/performance-audit-report.md) for the login/dashboard performance audit.
 
 ## Live demo
 
@@ -103,6 +103,7 @@ Open `backend/.env` and set:
   ```bash
   python3 -c "import secrets; print(secrets.token_hex(32))"
   ```
+- `GOOGLE_CLIENT_ID`: optional. Leave blank to keep "Continue with Google" disabled (the button falls back to a "not available in this prototype yet" placeholder). To turn it on, follow the setup steps at the top of `frontend/js/google-auth-config.js`, then set the same Client ID here and there.
 
 Never commit `backend/.env`; it's already in `.gitignore`.
 
@@ -176,7 +177,7 @@ pytest tests/ -v
 Built in phases, per the project's development rule of not building everything at once:
 
 1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config ✅
-2. **Authentication**: registration, login, JWT, role-based access, protected pages ✅
+2. **Authentication**: registration, login, JWT, role-based access, protected pages ✅. Later hardened with: email verification (one-time code, rate-limited attempts and resend cooldown, gates dashboard access until confirmed), forgot/reset password (same one-time-code pattern, doesn't leak which emails have accounts), and optional Google sign-in (real accounts get logged in and auto-verified; brand-new emails pick a role on a one-time screen before an account is created) — see `backend/app/api/auth.py` and `frontend/js/google-auth-config.js` for the one setup step (a Google OAuth Client ID) needed to turn the last one on ✅
 3. **Student**: profile and talent assessment (`/api/students`, `/api/assessments`), with a dashboard UI to complete a profile, take the assessment, and see ranked results ✅
 4. **Offline assessment**: service worker precaching the app shell, IndexedDB queue for assessment answers taken with no connection, auto-sync (with a manual "Sync now" fallback) once back online ✅
 5. **Teacher**: dashboard to add/view students at their school and review mentor match requests ✅
@@ -189,7 +190,7 @@ Built in phases, per the project's development rule of not building everything a
 
 ## Design system
 
-Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Manrope throughout) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Bellota Text for headings, Lexend for body text) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
 
 Every dashboard page shares one shell (`.dash-shell` in `frontend/css/components.css`, wired up per-page by `initDashShell()` in `frontend/js/dashboard.js`): a fixed dark-green sidebar with the role's nav items, a light topbar with page title, language switch, notification bell, and user avatar, and a light content area for stat cards (`.stat-card`), chart panels (`.dash-panel`), and dependency-free inline-SVG charts (`frontend/js/charts.js`: a progress ring, horizontal bar rows, and a mini bar-over-time chart). On screens under 900px the sidebar collapses into a slide-in drawer behind a hamburger toggle. Every number shown, on every dashboard, comes from a real API response; there are no mocked or hardcoded statistics anywhere in the app.
 

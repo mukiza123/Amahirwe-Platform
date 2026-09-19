@@ -33,6 +33,25 @@ class EmailVerificationCode(BaseModel):
     code: str = Field(min_length=6, max_length=6)
 
 
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ForgotPasswordResponse(BaseModel):
+    # Same prototype stand-in as Token.dev_verification_code: no real
+    # mail service is wired up, so the code a real email would carry is
+    # handed back directly instead, when there's actually an account to
+    # send it to. Always 200 either way, so this response never reveals
+    # whether an email address has an account.
+    dev_reset_code: Optional[str] = None
+
+
+class ResetPassword(BaseModel):
+    email: EmailStr
+    code: str = Field(min_length=6, max_length=6)
+    new_password: str = Field(min_length=8, max_length=128)
+
+
 class GoogleAuth(BaseModel):
     # The ID token Google's Identity Services library hands back to the
     # frontend after the user picks an account; role is only needed the
