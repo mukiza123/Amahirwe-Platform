@@ -16,7 +16,7 @@ function getStoredLang() {
 
 async function loadTranslations(lang) {
   try {
-    const response = await fetch(`/frontend/locales/${lang}.json`);
+    const response = await fetch(`/locales/${lang}.json`);
     if (!response.ok) throw new Error("Failed to load locale file");
     translations = await response.json();
   } catch (err) {

@@ -159,8 +159,10 @@ python3 dev-server.py 5500
 Then open:
 
 ```
-http://127.0.0.1:5500/frontend/index.html
+http://127.0.0.1:5500/
 ```
+
+(`dev-server.py` always serves `frontend/` itself as the web root, regardless of which directory you launch it from — so a page never sits behind a `/frontend/...` prefix locally, matching exactly how it's addressed once deployed on Vercel, where `vercel.json`'s rewrite to `/frontend/$1` happens server-side and is invisible to the browser.)
 
 The frontend automatically talks to the backend at `http://127.0.0.1:8000/api` when running locally like this.
 

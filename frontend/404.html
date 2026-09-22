@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found - Amahirwe</title>
+  <meta name="robots" content="noindex" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0F6B52" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .not-found {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-3);
+      padding: var(--space-7) var(--space-3);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .not-found__illustration {
+      width: 140px;
+      height: auto;
+      margin-bottom: var(--space-2);
+    }
+
+    .not-found__code {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--color-primary-teal);
+      line-height: 1;
+    }
+
+    .not-found__actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: var(--space-2);
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content" data-i18n="skip_to_main">Skip to main content</a>
+
+  <div class="offline-banner" role="status">
+    <span aria-hidden="true">⚠</span>
+    <span data-i18n="offline_message">You're offline. Your work is saved on this device and will sync when you're back online.</span>
+  </div>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <img class="navbar__logo-mark" src="assets/icons/logo-mark.png" alt="" aria-hidden="true" />
+        <span data-i18n="brand_name">Amahirwe</span>
+      </a>
+      <div class="navbar__actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="rw" aria-pressed="true">RW</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+        </div>
+        <a href="login.html" class="btn btn-secondary" data-i18n="nav_login">Log in</a>
+        <a href="register.html" class="btn btn-primary" data-i18n="nav_get_started">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="not-found">
+      <img class="not-found__illustration" src="assets/illustrations/system/location.png" alt="" width="149" height="124" />
+      <span class="not-found__code">404</span>
+      <h1 data-i18n="not_found_title">This page doesn't exist</h1>
+      <p class="text-secondary" data-i18n="not_found_body">The link might be broken, or the page may have moved. Let's get you back to somewhere real.</p>
+      <div class="not-found__actions">
+        <a href="index.html" class="btn btn-primary" data-i18n="not_found_home">Go to homepage</a>
+        <a href="#" data-action="logged-in-home" class="btn btn-secondary" hidden data-i18n="not_found_dashboard">Go to my dashboard</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__meta">
+      <p style="margin:0 0 6px 0;" data-i18n="footer_demo_notice">This is a university software prototype. Content, opportunities and figures shown are illustrative demo data, not real results.</p>
+      <p style="margin:0;" data-i18n="footer_rights">© 2026 Amahirwe. Built for students in Rwanda.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module">
+    import { isLoggedIn, getCurrentUser, dashboardUrlFor } from "./js/auth.js";
+
+    // If we already know who's asking, offer a more useful "go back"
+    // link than the homepage — logged-in users landing here mid-session
+    // (e.g. a stale bookmark, or the redirect bug this page also guards
+    // against) most likely want their own dashboard.
+    if (isLoggedIn()) {
+      const user = getCurrentUser();
+      if (user) {
+        const link = document.querySelector('[data-action="logged-in-home"]');
+        link.href = dashboardUrlFor(user.role);
+        link.hidden = false;
+      }
+    }
+  </script>
+</body>
+</html>

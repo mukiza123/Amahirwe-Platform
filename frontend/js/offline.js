@@ -78,8 +78,11 @@ async function syncQueuedAssessments(submitFn, onEach) {
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
-  const scope = window.location.pathname.includes("/frontend/") ? "/frontend/" : "/";
-  navigator.serviceWorker.register(`${scope}service-worker.js`, { scope }).catch(() => {
+  // Root-scoped: the browser never actually sees a "/frontend/" prefix
+  // in the URL (see pathToRoot() in auth.js for the same point), so
+  // service-worker.js is always reachable at the site root in every
+  // environment this runs in.
+  navigator.serviceWorker.register("/service-worker.js", { scope: "/" }).catch(() => {
     // Offline caching is a progressive enhancement; a failed registration
     // shouldn't block the rest of the app.
   });

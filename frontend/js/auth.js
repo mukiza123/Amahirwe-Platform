@@ -43,9 +43,21 @@ function logout() {
   window.location.href = pathToRoot() + "login.html";
 }
 
-/** Path prefix back to frontend/ root, based on current page depth. */
+/** Path prefix back to frontend/ root, based on current page depth.
+ *
+ * Checks for a role-folder segment right after the leading slash (e.g.
+ * "/student/dashboard.html"), NOT "/frontend/student/...". The browser
+ * never actually sees "/frontend/" in the URL: on Vercel, vercel.json's
+ * rewrite to "/frontend/$1" happens server-side, invisible to
+ * window.location; and the local dev server (dev-server.py) is meant
+ * to be run from inside frontend/, serving it as the web root the same
+ * way. A "/frontend/" prefix check here previously never matched
+ * either environment, so pathToRoot() always returned "" — meaning
+ * every redirect issued from inside a role folder (logout,
+ * dashboardUrlFor, verifyUrlFor, ...) resolved one level too shallow
+ * and 404'd. */
 function pathToRoot() {
-  const inRoleFolder = /\/frontend\/(student|teacher|mentor|provider|admin|parent)\//.test(window.location.pathname);
+  const inRoleFolder = /^\/(student|teacher|mentor|provider|admin|parent)\//.test(window.location.pathname);
   return inRoleFolder ? "../" : "";
 }
 
