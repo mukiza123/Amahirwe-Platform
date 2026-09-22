@@ -104,6 +104,7 @@ Open `backend/.env` and set:
   python3 -c "import secrets; print(secrets.token_hex(32))"
   ```
 - `GOOGLE_CLIENT_ID`: optional. Leave blank to keep "Continue with Google" disabled (the button falls back to a "not available in this prototype yet" placeholder). To turn it on, follow the setup steps at the top of `frontend/js/google-auth-config.js`, then set the same Client ID here and there.
+- `SMTP_USERNAME` / `SMTP_PASSWORD`: optional. Leave blank to keep "prototype mode" for verification/password-reset codes (the code is returned directly in the API response and shown on screen instead of emailed). To send real emails via Gmail: turn on 2-Step Verification on the Gmail account, generate an App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (not the normal Gmail password), then set `SMTP_USERNAME` to the Gmail address and `SMTP_PASSWORD` to that generated App Password. No new dependency — sends over plain `smtplib`.
 
 Never commit `backend/.env`; it's already in `.gitignore`.
 

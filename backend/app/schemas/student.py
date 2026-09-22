@@ -15,6 +15,9 @@ class StudentUpdate(BaseModel):
     full_name: Optional[str] = Field(default=None, min_length=2, max_length=120)
     age_range: Optional[str] = Field(default=None, min_length=2, max_length=10)
     preferred_language: Optional[str] = Field(default=None, min_length=2, max_length=2)
+    bio: Optional[str] = Field(default=None, max_length=500)
+    languages: Optional[str] = Field(default=None, max_length=255)
+    hobbies: Optional[str] = Field(default=None, max_length=255)
 
 
 class StudentRead(BaseModel):
@@ -26,4 +29,7 @@ class StudentRead(BaseModel):
     full_name: str
     age_range: str
     preferred_language: str
+    bio: Optional[str] = None
+    languages: Optional[str] = None
+    hobbies: Optional[str] = None
     created_at: datetime

@@ -447,3 +447,68 @@ def test_reset_password_for_unknown_email_fails(client):
         json={"email": "nobody@example.com", "code": "123456", "new_password": "brandnewpass123"},
     )
     assert response.status_code == 400
+
+
+# --- Real email delivery (SMTP) ---
+# These monkeypatch settings.smtp_username/password directly (email_enabled
+# is computed from them) and replace send_email_safely with a fake that
+# records what it was called with, instead of opening a real SMTP connection.
+
+
+def _enable_email(monkeypatch):
+    monkeypatch.setattr(auth_module.settings, "smtp_username", "bot@example.com")
+    monkeypatch.setattr(auth_module.settings, "smtp_password", "app-password")
+
+    sent = []
+
+    def fake_send(to, subject, body):
+        sent.append({"to": to, "subject": subject, "body": body})
+        return True
+
+    monkeypatch.setattr(auth_module, "send_email_safely", fake_send)
+    return sent
+
+
+def test_register_emails_the_code_instead_of_returning_it_when_smtp_is_configured(client, monkeypatch):
+    sent = _enable_email(monkeypatch)
+
+    response = register(client)
+    data = response.json()
+    assert data["dev_verification_code"] is None
+    assert len(sent) == 1
+    assert sent[0]["to"] == "student@example.com"
+    assert sent[0]["subject"] == "Your Amahirwe verification code"
+
+
+def test_resend_verification_emails_the_code_when_smtp_is_configured(client, monkeypatch):
+    monkeypatch.setattr(auth_module, "RESEND_COOLDOWN_SECONDS", 0)
+    token = register(client).json()["access_token"]
+
+    sent = _enable_email(monkeypatch)
+    response = client.post("/api/auth/me/resend-verification", headers={"Authorization": f"Bearer {token}"})
+    assert response.json()["dev_verification_code"] is None
+    assert len(sent) == 1
+    assert sent[0]["to"] == "student@example.com"
+
+
+def test_forgot_password_emails_the_code_when_smtp_is_configured(client, monkeypatch):
+    register(client)
+    sent = _enable_email(monkeypatch)
+
+    response = client.post("/api/auth/forgot-password", json={"email": "student@example.com"})
+    assert response.json()["dev_reset_code"] is None
+    assert len(sent) == 1
+    assert sent[0]["subject"] == "Reset your Amahirwe password"
+
+
+def test_registration_still_succeeds_if_the_email_fails_to_send(client, monkeypatch):
+    monkeypatch.setattr(auth_module.settings, "smtp_username", "bot@example.com")
+    monkeypatch.setattr(auth_module.settings, "smtp_password", "app-password")
+    monkeypatch.setattr(auth_module, "send_email_safely", lambda to, subject, body: False)
+
+    # The account is still created even though the email "failed" —
+    # otherwise a transient SMTP hiccup would lose a signup that
+    # already made it into the database.
+    response = register(client)
+    assert response.status_code == 201
+    assert response.json()["dev_verification_code"] is None

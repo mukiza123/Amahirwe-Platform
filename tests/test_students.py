@@ -3,8 +3,8 @@ from app.models.school import School
 from test_auth import register
 
 
-def make_school(db_session, name="Nyagatare Secondary School"):
-    school = School(name=name, district="Nyagatare", province="Eastern")
+def make_school(db_session, name="Nyagatare Secondary School", is_approved=True):
+    school = School(name=name, district="Nyagatare", province="Eastern", is_approved=is_approved)
     db_session.add(school)
     db_session.commit()
     db_session.refresh(school)
@@ -82,6 +82,49 @@ def test_student_can_update_own_profile(client, db_session):
     response = client.patch("/api/students/me", json={"age_range": "17-19"}, headers=headers)
     assert response.status_code == 200
     assert response.json()["age_range"] == "17-19"
+
+
+def test_new_profile_has_no_bio_languages_or_hobbies_yet(client, db_session):
+    school = make_school(db_session)
+    headers = student_headers(client)
+    response = client.post(
+        "/api/students/me",
+        json={"full_name": "Aline Uwase", "school_id": school.id, "age_range": "15-16"},
+        headers=headers,
+    )
+    data = response.json()
+    assert data["bio"] is None
+    assert data["languages"] is None
+    assert data["hobbies"] is None
+
+
+def test_student_can_fill_in_bio_languages_and_hobbies(client, db_session):
+    school = make_school(db_session)
+    headers = student_headers(client)
+    client.post(
+        "/api/students/me",
+        json={"full_name": "Aline Uwase", "school_id": school.id, "age_range": "15-16"},
+        headers=headers,
+    )
+
+    response = client.patch(
+        "/api/students/me",
+        json={
+            "bio": "I care about technology and my community.",
+            "languages": "Kinyarwanda, English",
+            "hobbies": "Reading, Football",
+        },
+        headers=headers,
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["bio"] == "I care about technology and my community."
+    assert data["languages"] == "Kinyarwanda, English"
+    assert data["hobbies"] == "Reading, Football"
+
+    # Persisted, not just echoed back.
+    read_back = client.get("/api/students/me", headers=headers).json()
+    assert read_back["languages"] == "Kinyarwanda, English"
 
 
 def test_another_student_cannot_view_someone_elses_profile(client, db_session):

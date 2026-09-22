@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import secrets
 from datetime import datetime, timedelta, timezone
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from google.auth.transport import requests as google_requests
@@ -12,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_current_user
 from app.core.config import settings
 from app.core.database import get_db
+from app.core.email import send_email_safely
 from app.core.security import create_access_token, hash_password, verify_password
 from app.models.user import User, UserRole
 from app.schemas.user import (
@@ -96,6 +98,39 @@ def _seconds_since(dt: datetime | None) -> float:
     return (datetime.now(timezone.utc) - _as_utc(dt)).total_seconds()
 
 
+def _deliver_verification_code(email: str, code: str) -> Optional[str]:
+    """Sends the code by real email when SMTP is configured (see
+    settings.email_enabled); otherwise falls back to handing it back in
+    the API response for the frontend to display directly (prototype
+    mode — see verify.html). Returns the dev code to put in the
+    response, or None once a real email has actually been sent, so the
+    code never rides along in the JSON payload once it's no longer
+    the only way to receive it."""
+    if not settings.email_enabled:
+        return code
+    send_email_safely(
+        email,
+        "Your Amahirwe verification code",
+        f"Your verification code is: {code}\n\n"
+        f"This code expires in {EMAIL_VERIFICATION_CODE_TTL_MINUTES} minutes.\n\n"
+        "If you didn't request this, you can ignore this email.",
+    )
+    return None
+
+
+def _deliver_reset_code(email: str, code: str) -> Optional[str]:
+    if not settings.email_enabled:
+        return code
+    send_email_safely(
+        email,
+        "Reset your Amahirwe password",
+        f"Your password reset code is: {code}\n\n"
+        f"This code expires in {PASSWORD_RESET_CODE_TTL_MINUTES} minutes.\n\n"
+        "If you didn't request this, you can ignore this email.",
+    )
+    return None
+
+
 @router.post("/register", response_model=Token, status_code=status.HTTP_201_CREATED)
 def register(payload: UserCreate, db: Session = Depends(get_db)):
     role = UserRole(payload.role)
@@ -116,9 +151,10 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
         db.rollback()
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="An account with this email already exists.")
     db.refresh(user)
+    dev_code = _deliver_verification_code(user.email, code)
 
     token = create_access_token(subject=user.id, extra_claims={"role": user.role.value})
-    return Token(access_token=token, user=UserRead.model_validate(user), dev_verification_code=code)
+    return Token(access_token=token, user=UserRead.model_validate(user), dev_verification_code=dev_code)
 
 
 @router.post("/login", response_model=Token)
@@ -263,9 +299,10 @@ def resend_verification(
     code = _issue_verification_code(current_user)
     db.commit()
     db.refresh(current_user)
+    dev_code = _deliver_verification_code(current_user.email, code)
 
     token = create_access_token(subject=current_user.id, extra_claims={"role": current_user.role.value})
-    return Token(access_token=token, user=UserRead.model_validate(current_user), dev_verification_code=code)
+    return Token(access_token=token, user=UserRead.model_validate(current_user), dev_verification_code=dev_code)
 
 
 @router.post("/me/password", status_code=status.HTTP_204_NO_CONTENT)
@@ -299,7 +336,8 @@ def forgot_password(payload: ForgotPasswordRequest, db: Session = Depends(get_db
 
     code = _issue_password_reset_code(user)
     db.commit()
-    return ForgotPasswordResponse(dev_reset_code=code)
+    dev_code = _deliver_reset_code(user.email, code)
+    return ForgotPasswordResponse(dev_reset_code=dev_code)
 
 
 @router.post("/reset-password", response_model=Token)

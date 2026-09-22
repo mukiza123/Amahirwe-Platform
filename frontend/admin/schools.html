@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Users - Amahirwe</title>
+  <title>Schools - Amahirwe</title>
   <link rel="manifest" href="../manifest.json" />
   <meta name="theme-color" content="#0F6B52" />
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32.png" />
@@ -25,8 +25,8 @@
     </a>
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
-      <a href="users.html" class="dash-sidebar__link is-active" data-page="users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_users">Users</span></a>
-      <a href="schools.html" class="dash-sidebar__link" data-page="schools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg><span data-i18n="nav_schools_admin">Schools</span></a>
+      <a href="users.html" class="dash-sidebar__link" data-page="users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.4 3-5.2 6.5-5.2s6.5 1.8 6.5 5.2"/><circle cx="17.5" cy="8.5" r="2.6"/><path d="M14.8 15.2c2.9.3 5.2 2 5.2 4.8"/></svg><span data-i18n="nav_users">Users</span></a>
+      <a href="schools.html" class="dash-sidebar__link is-active" data-page="schools"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/></svg><span data-i18n="nav_schools_admin">Schools</span></a>
       <a href="audit-log.html" class="dash-sidebar__link" data-page="audit-log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="nav_audit_log">Audit Log</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
@@ -40,7 +40,7 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1 data-i18n="nav_users">Users</h1>
+          <h1 data-i18n="nav_schools_admin">Schools</h1>
           <p class="text-secondary" data-i18n="dash_admin_subtitle">Administrator dashboard</p>
         </div>
       </div>
@@ -66,23 +66,17 @@
         </div>
         <div id="dashboard-content" hidden>
           <div class="page-head">
-            <h1 data-i18n="nav_users">Users</h1>
-            <p>Manage platform accounts, verification and access.</p>
+            <h1 data-i18n="nav_schools_admin">Schools</h1>
+            <p data-i18n="dash_schools_admin_subtitle">Review schools that students and teachers have added themselves. Approved schools appear in everyone's school picker.</p>
           </div>
           <div class="filter-bar">
-            <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
-            <select id="role-filter" class="form-select">
-              <option value="" data-i18n="dash_all_roles">All roles</option>
-              <option value="student" data-i18n="role_student">Student</option>
-              <option value="teacher" data-i18n="role_teacher">Teacher</option>
-              <option value="mentor" data-i18n="role_mentor">Mentor</option>
-              <option value="provider" data-i18n="role_provider">Provider</option>
-              <option value="parent" data-i18n="role_parent">Parent</option>
-              <option value="admin" data-i18n="role_admin">Admin</option>
-            </select>
+            <label class="form-label" style="margin:0;">
+              <input type="checkbox" id="pending-only-filter" checked />
+              <span data-i18n="dash_pending_only">Pending review only</span>
+            </label>
           </div>
           <div class="page-card">
-            <div id="users-list"></div>
+            <div id="schools-list"></div>
           </div>
         </div>
       </main>
@@ -97,84 +91,91 @@
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
-    let currentAdminId = null;
 
-    function initials(fullName) {
-      return fullName
-        .split(" ")
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((part) => part[0].toUpperCase())
-        .join("");
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
     }
 
-    async function renderUsers() {
-      const role = document.querySelector("#role-filter").value;
-      const query = role ? `?role=${role}` : "";
-      const users = await api.get(`/admin/users${query}`);
-      const list = document.querySelector("#users-list");
+    async function renderSchools() {
+      const pendingOnly = document.querySelector("#pending-only-filter").checked;
+      const query = pendingOnly ? "?pending_only=true" : "";
+      const schools = await api.get(`/admin/schools${query}`);
+      const list = document.querySelector("#schools-list");
 
-      list.innerHTML = users
-        .map((u) => {
-          const needsVerification = ["mentor", "provider"].includes(u.role);
-          const verifyBtn =
-            needsVerification && !u.is_verified
-              ? `<button type="button" class="btn btn-secondary btn-sm" data-action="verify" data-id="${u.id}">Verify</button>`
-              : "";
-          const toggleBtn =
-            u.id === currentAdminId
-              ? ""
-              : u.is_active
-              ? `<button type="button" class="btn btn-danger btn-sm" data-action="deactivate" data-id="${u.id}">Deactivate</button>`
-              : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">Reactivate</button>`;
+      if (schools.length === 0) {
+        list.innerHTML = `<div class="dash-placeholder">
+          <p class="text-secondary" data-i18n="dash_no_pending_schools">Nothing to review right now.</p>
+        </div>`;
+        return;
+      }
 
-          return `<div class="user-row">
-            <span class="home-avatar">${initials(u.full_name)}</span>
+      list.innerHTML = schools
+        .map((s) => {
+          const statusBadge = s.is_approved
+            ? `<span class="badge badge-success" data-i18n="dash_status_approved">Approved</span>`
+            : `<span class="badge badge-neutral" data-i18n="dash_status_pending">Pending</span>`;
+          const actions = s.is_approved
+            ? ""
+            : `<button type="button" class="btn btn-secondary btn-sm" data-action="approve" data-id="${s.id}" data-i18n="dash_approve">Approve</button>
+               <button type="button" class="btn btn-danger btn-sm" data-action="reject" data-id="${s.id}" data-i18n="dash_reject">Reject</button>`;
+
+          return `<div class="user-row" data-school-row="${s.id}">
             <div class="user-row__meta">
-              <strong>${u.full_name}</strong>
-              <span class="text-secondary">${u.email}</span>
+              <strong>${escapeHtml(s.name)}</strong>
+              <span class="text-secondary">${escapeHtml(s.district)}, ${escapeHtml(s.province)}</span>
             </div>
             <div class="user-row__actions">
-              <span class="badge badge-mint">${u.role}</span>
-              ${needsVerification ? `<span class="badge ${u.is_verified ? "badge-success" : "badge-neutral"}">${u.is_verified ? "Verified" : "Unverified"}</span>` : ""}
-              <span class="badge ${u.is_active ? "badge-success" : "badge-error"}">${u.is_active ? "Active" : "Deactivated"}</span>
-              ${verifyBtn}${toggleBtn}
+              ${statusBadge}
+              ${actions}
             </div>
+            <p class="form-error" data-row-error hidden style="grid-column:1 / -1;"></p>
           </div>`;
         })
         .join("");
 
-      list.querySelectorAll("[data-action='verify']").forEach((btn) => {
+      list.querySelectorAll("[data-action='approve']").forEach((btn) => {
         btn.addEventListener("click", async () => {
-          await api.patch(`/admin/users/${btn.dataset.id}/verify`);
-          await renderUsers();
+          await api.patch(`/admin/schools/${btn.dataset.id}/approve`);
+          await renderSchools();
         });
       });
-      list.querySelectorAll("[data-action='deactivate']").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          await api.patch(`/admin/users/${btn.dataset.id}/deactivate`);
-          await renderUsers();
-        });
-      });
-      list.querySelectorAll("[data-action='activate']").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-          await api.patch(`/admin/users/${btn.dataset.id}/activate`);
-          await renderUsers();
+
+      // Rejecting deletes the school outright, so the button becomes an
+      // inline "are you sure?" on first click instead of acting right
+      // away — this codebase avoids native confirm()/alert() dialogs
+      // elsewhere, so the confirmation stays inline like everything else.
+      list.querySelectorAll("[data-action='reject']").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const row = btn.closest("[data-school-row]");
+          if (btn.dataset.confirming) {
+            api
+              .delete(`/admin/schools/${btn.dataset.id}`)
+              .then(renderSchools)
+              .catch((err) => {
+                const errorEl = row.querySelector("[data-row-error]");
+                errorEl.textContent = err.message || "Couldn't reject that school.";
+                errorEl.hidden = false;
+              });
+            return;
+          }
+          btn.dataset.confirming = "true";
+          btn.textContent = "Confirm reject?";
         });
       });
     }
 
-    document.querySelector("#role-filter").addEventListener("change", renderUsers);
+    document.querySelector("#pending-only-filter").addEventListener("change", renderSchools);
 
     requireRole("admin").then(async (user) => {
       if (!user) return;
-      currentAdminId = user.id;
-      initDashShell(user, "users");
-      await renderUsers();
+      initDashShell(user, "schools");
+      await renderSchools();
       showContent(loadingEl, contentEl);
     }).catch((err) => {
-      console.error("Failed to load users:", err);
-      showError(loadingEl, "Couldn't load users. Please check your connection and refresh the page.");
+      console.error("Failed to load schools:", err);
+      showError(loadingEl, "Couldn't load schools. Please check your connection and refresh the page.");
     });
   </script>
 </body>

@@ -29,6 +29,14 @@ class Student(Base):
     age_range: Mapped[str] = mapped_column(String(10), nullable=False)  # e.g. "12-14", "15-16", "17-19"
     preferred_language: Mapped[str] = mapped_column(String(2), default="rw", nullable=False)
 
+    # Self-described profile content, filled in by the student on their
+    # own profile page (not asked at initial sign-up, hence nullable) —
+    # distinct from preferred_language above, which is the UI language,
+    # not "languages I speak".
+    bio: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
+    languages: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    hobbies: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False
     )

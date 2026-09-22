@@ -317,6 +317,24 @@
   font-weight: 600;
 }
 
+/* A text-styled trigger for revealing a secondary form panel inline
+   (e.g. "Can't find your school? Add it"), not a full button. */
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 6px;
+  color: var(--color-primary-teal);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: var(--color-primary-dark);
+}
+
 /* --- Auth forms: icon-prefixed pill inputs, checkbox row, social
    sign-in placeholders (login/register/verify) --- */
 .form-label--caps {

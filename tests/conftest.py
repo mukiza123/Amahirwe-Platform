@@ -17,6 +17,20 @@ os.environ.setdefault("JWT_SECRET_KEY", "test-secret-key")
 
 from app.core.database import Base, get_db  # noqa: E402
 from app.main import app  # noqa: E402
+import app.api.schools as schools_module  # noqa: E402
+
+
+@pytest.fixture(autouse=True)
+def reset_schools_cache():
+    """The schools endpoint caches its result in a process-wide global
+    (deliberately — see schools.py), but each test gets a fresh,
+    isolated in-memory database via db_session below. Without this, a
+    school list cached while test A's database was active would leak
+    into test B, which has a completely different database underneath
+    it by the time it runs GET /schools."""
+    schools_module._schools_cache = None
+    yield
+    schools_module._schools_cache = None
 
 
 @pytest.fixture()

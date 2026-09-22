@@ -18,6 +18,18 @@ class AdminUserRead(BaseModel):
     created_at: datetime
 
 
+class AdminSchoolRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    name: str
+    district: str
+    province: str
+    is_approved: bool
+    requested_by_user_id: Optional[str]
+    created_at: datetime
+
+
 class AuditLogRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

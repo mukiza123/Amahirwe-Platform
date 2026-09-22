@@ -89,6 +89,26 @@
                 <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
                 <select class="form-select" id="school_id" name="school_id" required></select>
                 <p class="form-error" id="school_id-error" hidden></p>
+                <button type="button" class="link-btn" id="add-school-toggle" data-i18n="dash_cant_find_school">Can't find your school? Add it</button>
+                <div id="add-school-panel" hidden style="margin-top:var(--space-2)">
+                  <div class="form-field">
+                    <label class="form-label" for="new_school_name" data-i18n="dash_school_name">School name</label>
+                    <input class="form-input" type="text" id="new_school_name" placeholder="e.g. Kirehe Secondary School" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="new_school_district" data-i18n="dash_district">District</label>
+                    <input class="form-input" type="text" id="new_school_district" placeholder="e.g. Kirehe" />
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="new_school_province" data-i18n="dash_province">Province</label>
+                    <input class="form-input" type="text" id="new_school_province" placeholder="e.g. Eastern" />
+                  </div>
+                  <p class="form-error" id="add-school-error" hidden></p>
+                  <div style="display:flex;gap:var(--space-2)">
+                    <button type="button" class="btn btn-secondary btn-sm" id="add-school-submit" data-i18n="dash_add_school_submit">Add school</button>
+                    <button type="button" class="btn btn-sm" id="add-school-cancel" data-i18n="dash_cancel">Cancel</button>
+                  </div>
+                </div>
               </div>
               <p class="form-error" id="form-error" hidden></p>
               <button type="submit" class="btn btn-primary btn-block" data-i18n="dash_save">Save</button>
@@ -143,9 +163,65 @@
         .join("");
     }
 
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     async function loadSchoolsInto(select) {
       const schools = await api.get("/schools");
-      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
+      select.innerHTML = schools
+        .map((s) => `<option value="${s.id}">${escapeHtml(s.name)} (${escapeHtml(s.district)})</option>`)
+        .join("");
+    }
+
+    /** "Can't find your school? Add it" — same self-service +
+     * admin-approval flow as the student profile page (see
+     * frontend/student/profile.html and backend/app/api/schools.py). */
+    function initAddSchoolWidget() {
+      const toggle = document.querySelector("#add-school-toggle");
+      const panel = document.querySelector("#add-school-panel");
+      const select = document.querySelector("#school_id");
+      const errorEl = document.querySelector("#add-school-error");
+
+      toggle.addEventListener("click", () => {
+        panel.hidden = !panel.hidden;
+        errorEl.hidden = true;
+      });
+
+      document.querySelector("#add-school-cancel").addEventListener("click", () => {
+        panel.hidden = true;
+      });
+
+      document.querySelector("#add-school-submit").addEventListener("click", async () => {
+        const name = document.querySelector("#new_school_name").value.trim();
+        const district = document.querySelector("#new_school_district").value.trim();
+        const province = document.querySelector("#new_school_province").value.trim();
+        errorEl.hidden = true;
+
+        if (!name || !district || !province) {
+          errorEl.textContent = "Please fill in the school name, district, and province.";
+          errorEl.hidden = false;
+          return;
+        }
+
+        try {
+          const school = await api.post("/schools", { name, district, province });
+          const option = document.createElement("option");
+          option.value = school.id;
+          option.textContent = `${school.name} (${school.district}) — pending admin approval`;
+          select.appendChild(option);
+          select.value = school.id;
+          panel.hidden = true;
+          document.querySelector("#new_school_name").value = "";
+          document.querySelector("#new_school_district").value = "";
+          document.querySelector("#new_school_province").value = "";
+        } catch (err) {
+          errorEl.textContent = err.message || "Couldn't add that school. Please try again.";
+          errorEl.hidden = false;
+        }
+      });
     }
 
     async function renderStudents() {
@@ -269,6 +345,8 @@
       document.querySelector("#main-area").hidden = false;
       await renderStudents();
     }
+
+    initAddSchoolWidget();
 
     requireRole("teacher").then(async (user) => {
       if (!user) return;

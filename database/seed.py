@@ -41,7 +41,7 @@ DEMO_PASSWORD = "password123"
 def get_or_create_school(db, name, district, province):
     school = db.query(School).filter(School.name == name).first()
     if school is None:
-        school = School(name=name, district=district, province=province)
+        school = School(name=name, district=district, province=province, is_approved=True)
         db.add(school)
         db.flush()
         print(f"  + school: {name}")

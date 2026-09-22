@@ -83,17 +83,11 @@
                   </div>
                   <button type="submit" form="profile-form" class="btn btn-primary btn-sm" id="submit-btn">Save profile</button>
                 </div>
-                <div class="chip-row" id="interest-chips" style="margin-top:var(--space-3)">
-                  <span class="chip">Science</span>
-                  <span class="chip">Technology</span>
-                  <span class="chip">Design</span>
-                  <span class="chip">Leadership</span>
-                </div>
               </section>
               <div class="profile-grid">
                 <section class="page-card profile-block">
                   <h3>About Me</h3>
-                  <p id="about-text">I am a curious and motivated student who cares about technology, innovation and creating solutions for my community.</p>
+                  <p id="about-text" class="text-secondary">Add a short bio about yourself below.</p>
                 </section>
                 <section class="page-card profile-block">
                   <h3>Education</h3>
@@ -117,6 +111,26 @@
                     <label class="form-label" for="school_id" data-i18n="dash_school">School</label>
                     <select class="form-select" id="school_id" name="school_id" required></select>
                     <p class="form-error" id="school_id-error" hidden></p>
+                    <button type="button" class="link-btn" id="add-school-toggle" data-i18n="dash_cant_find_school">Can't find your school? Add it</button>
+                    <div id="add-school-panel" hidden style="margin-top:var(--space-2)">
+                      <div class="form-field">
+                        <label class="form-label" for="new_school_name" data-i18n="dash_school_name">School name</label>
+                        <input class="form-input" type="text" id="new_school_name" placeholder="e.g. Kirehe Secondary School" />
+                      </div>
+                      <div class="form-field">
+                        <label class="form-label" for="new_school_district" data-i18n="dash_district">District</label>
+                        <input class="form-input" type="text" id="new_school_district" placeholder="e.g. Kirehe" />
+                      </div>
+                      <div class="form-field">
+                        <label class="form-label" for="new_school_province" data-i18n="dash_province">Province</label>
+                        <input class="form-input" type="text" id="new_school_province" placeholder="e.g. Eastern" />
+                      </div>
+                      <p class="form-error" id="add-school-error" hidden></p>
+                      <div style="display:flex;gap:var(--space-2)">
+                        <button type="button" class="btn btn-secondary btn-sm" id="add-school-submit" data-i18n="dash_add_school_submit">Add school</button>
+                        <button type="button" class="btn btn-sm" id="add-school-cancel" data-i18n="dash_cancel">Cancel</button>
+                      </div>
+                    </div>
                   </div>
                   <div class="form-field">
                     <label class="form-label" for="age_range" data-i18n="dash_age_range">Age range</label>
@@ -125,6 +139,23 @@
                       <option value="15-16">15-16</option>
                       <option value="17-19">17-19</option>
                     </select>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="bio">About me</label>
+                    <textarea class="form-textarea" id="bio" name="bio" maxlength="500" placeholder="A short bio about yourself..."></textarea>
+                    <p class="form-error" id="bio-error" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="languages">Languages I speak</label>
+                    <input class="form-input" type="text" id="languages" name="languages" maxlength="255" placeholder="e.g. Kinyarwanda, English" />
+                    <p class="form-help">Separate with commas.</p>
+                    <p class="form-error" id="languages-error" hidden></p>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label" for="hobbies">Hobbies &amp; activities</label>
+                    <input class="form-input" type="text" id="hobbies" name="hobbies" maxlength="255" placeholder="e.g. Reading, Football" />
+                    <p class="form-help">Separate with commas.</p>
+                    <p class="form-error" id="hobbies-error" hidden></p>
                   </div>
                   <p class="form-error" id="form-error" hidden></p>
                   <p class="form-success" id="form-success" hidden data-i18n="dash_profile_saved">Profile saved.</p>
@@ -140,19 +171,14 @@
               </section>
               <section class="page-card profile-block" style="margin-bottom:var(--space-3)">
                 <h3>My Languages</h3>
-                <div class="chip-row">
-                  <span class="chip">Kinyarwanda</span>
-                  <span class="chip">English</span>
-                  <span class="chip">French</span>
+                <div class="chip-row" id="language-chips">
+                  <span class="chip chip--muted">Add the languages you speak</span>
                 </div>
               </section>
               <section class="page-card profile-block">
                 <h3>Hobbies &amp; Activities</h3>
-                <div class="chip-row">
-                  <span class="chip">Reading</span>
-                  <span class="chip">Coding</span>
-                  <span class="chip">Football</span>
-                  <span class="chip">Community Service</span>
+                <div class="chip-row" id="hobby-chips">
+                  <span class="chip chip--muted">Add your hobbies and activities</span>
                 </div>
               </section>
             </aside>
@@ -171,11 +197,94 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
     let hasProfile = false;
+    let currentUser = null;
+
+    /** Renders a comma-separated, student-entered string (bio/languages/
+     * hobbies) as chips. Builds elements via textContent rather than
+     * innerHTML, since — unlike the fixed-enum talent-area labels
+     * elsewhere on this page — this is free text a student typed in,
+     * and could contain markup that shouldn't be executed. */
+    function renderChips(containerSelector, csv, emptyText) {
+      const container = document.querySelector(containerSelector);
+      const values = (csv || "").split(",").map((v) => v.trim()).filter(Boolean);
+      container.innerHTML = "";
+      if (!values.length) {
+        const empty = document.createElement("span");
+        empty.className = "chip chip--muted";
+        empty.textContent = emptyText;
+        container.appendChild(empty);
+        return;
+      }
+      values.forEach((value) => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = value;
+        container.appendChild(chip);
+      });
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
 
     async function loadSchoolsInto(select, selectedId) {
       const schools = await api.get("/schools");
-      select.innerHTML = schools.map((s) => `<option value="${s.id}">${s.name} (${s.district})</option>`).join("");
+      select.innerHTML = schools
+        .map((s) => `<option value="${s.id}">${escapeHtml(s.name)} (${escapeHtml(s.district)})</option>`)
+        .join("");
       if (selectedId) select.value = selectedId;
+    }
+
+    /** "Can't find your school? Add it" — submits a new School row
+     * (unapproved until an admin reviews it, see backend/app/api/
+     * schools.py) and immediately adds it as a selectable option, so
+     * the student isn't blocked from finishing their profile while
+     * waiting on that review. */
+    function initAddSchoolWidget() {
+      const toggle = document.querySelector("#add-school-toggle");
+      const panel = document.querySelector("#add-school-panel");
+      const select = document.querySelector("#school_id");
+      const errorEl = document.querySelector("#add-school-error");
+
+      toggle.addEventListener("click", () => {
+        panel.hidden = !panel.hidden;
+        errorEl.hidden = true;
+      });
+
+      document.querySelector("#add-school-cancel").addEventListener("click", () => {
+        panel.hidden = true;
+      });
+
+      document.querySelector("#add-school-submit").addEventListener("click", async () => {
+        const name = document.querySelector("#new_school_name").value.trim();
+        const district = document.querySelector("#new_school_district").value.trim();
+        const province = document.querySelector("#new_school_province").value.trim();
+        errorEl.hidden = true;
+
+        if (!name || !district || !province) {
+          errorEl.textContent = "Please fill in the school name, district, and province.";
+          errorEl.hidden = false;
+          return;
+        }
+
+        try {
+          const school = await api.post("/schools", { name, district, province });
+          const option = document.createElement("option");
+          option.value = school.id;
+          option.textContent = `${school.name} (${school.district}) — pending admin approval`;
+          select.appendChild(option);
+          select.value = school.id;
+          panel.hidden = true;
+          document.querySelector("#new_school_name").value = "";
+          document.querySelector("#new_school_district").value = "";
+          document.querySelector("#new_school_province").value = "";
+        } catch (err) {
+          errorEl.textContent = err.message || "Couldn't add that school. Please try again.";
+          errorEl.hidden = false;
+        }
+      });
     }
 
     async function render(currentUser) {
@@ -191,6 +300,14 @@
       await loadSchoolsInto(document.querySelector("#school_id"), student?.school_id);
       form.full_name.value = student ? student.full_name : currentUser.full_name;
       if (student) form.age_range.value = student.age_range;
+      form.bio.value = student?.bio || "";
+      form.languages.value = student?.languages || "";
+      form.hobbies.value = student?.hobbies || "";
+
+      document.querySelector("#about-text").textContent =
+        student?.bio || "Add a short bio about yourself below.";
+      renderChips("#language-chips", student?.languages, "Add the languages you speak");
+      renderChips("#hobby-chips", student?.hobbies, "Add your hobbies and activities");
       document.querySelector("#submit-btn").textContent = hasProfile ? "Edit Profile" : "Save profile";
       const initials = (student?.full_name || currentUser.full_name)
         .split(" ").filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
@@ -226,6 +343,9 @@
       const payload = {
         full_name: form.full_name.value.trim(),
         age_range: form.age_range.value,
+        bio: form.bio.value.trim(),
+        languages: form.languages.value.trim(),
+        hobbies: form.hobbies.value.trim(),
       };
 
       try {
@@ -237,14 +357,18 @@
         }
         successEl.hidden = false;
         document.querySelector("#submit-btn").textContent = "Update profile";
+        await render(currentUser);
       } catch (err) {
         errorEl.textContent = err.message || "Something went wrong.";
         errorEl.hidden = false;
       }
     });
 
+    initAddSchoolWidget();
+
     requireRole("student").then(async (user) => {
       if (!user) return;
+      currentUser = user;
       initDashShell(user, "profile");
       await render(user);
       showContent(loadingEl, contentEl);

@@ -6,14 +6,17 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import require_roles
+from app.api.schools import invalidate_schools_cache
 from app.core.database import get_db
 from app.models.audit import AuditLog, Notification
 from app.models.mentor import Mentor
 from app.models.opportunity import Opportunity
+from app.models.school import School
 from app.models.student import Student
+from app.models.teacher import TeacherProfile
 from app.models.talent import TalentResult
 from app.models.user import User, UserRole
-from app.schemas.admin import AdminUserRead, AuditLogRead
+from app.schemas.admin import AdminSchoolRead, AdminUserRead, AuditLogRead
 from app.schemas.stats import AdminOverview, DailyCount
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
@@ -86,6 +89,87 @@ def activate_user(
     db.commit()
     db.refresh(user)
     return user
+
+
+@router.get("/schools", response_model=List[AdminSchoolRead])
+def list_schools_for_review(
+    pending_only: bool = False,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(UserRole.ADMIN)),
+):
+    query = db.query(School)
+    if pending_only:
+        query = query.filter(School.is_approved.is_(False))
+    return query.order_by(School.created_at.desc()).all()
+
+
+@router.patch("/schools/{school_id}/approve", response_model=AdminSchoolRead)
+def approve_school(
+    school_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(UserRole.ADMIN)),
+):
+    """Makes a self-submitted school visible in the public /schools
+    list everyone else's profile forms use (see POST /schools)."""
+
+    school = db.get(School, school_id)
+    if school is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="School not found.")
+
+    school.is_approved = True
+    db.add(
+        AuditLog(actor_user_id=current_user.id, action="school_approved", target_type="school", target_id=school.id)
+    )
+    if school.requested_by_user_id:
+        db.add(
+            Notification(
+                user_id=school.requested_by_user_id,
+                message=f'"{school.name}" has been approved and added to the school directory.',
+            )
+        )
+    db.commit()
+    db.refresh(school)
+    invalidate_schools_cache()
+    return school
+
+
+@router.delete("/schools/{school_id}", status_code=status.HTTP_204_NO_CONTENT)
+def reject_school(
+    school_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_roles(UserRole.ADMIN)),
+):
+    """Removes a school submission an admin doesn't want added (a
+    duplicate, a typo, spam). Refuses if a student or teacher profile
+    is already attached to it, rather than orphaning their profile —
+    reassign those first if this school really needs to go."""
+
+    school = db.get(School, school_id)
+    if school is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="School not found.")
+
+    in_use = (
+        db.query(Student).filter(Student.school_id == school.id).first() is not None
+        or db.query(TeacherProfile).filter(TeacherProfile.school_id == school.id).first() is not None
+    )
+    if in_use:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This school already has students or teachers attached and can't be removed.",
+        )
+
+    requested_by = school.requested_by_user_id
+    school_name = school.name
+    db.delete(school)
+    db.add(AuditLog(actor_user_id=current_user.id, action="school_rejected", target_type="school", target_id=school_id))
+    if requested_by:
+        db.add(
+            Notification(
+                user_id=requested_by,
+                message=f'"{school_name}" wasn\'t approved. Please pick an existing school or check the details and try again.',
+            )
+        )
+    db.commit()
 
 
 @router.get("/overview", response_model=AdminOverview)
