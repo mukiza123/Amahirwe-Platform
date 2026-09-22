@@ -18,4 +18,4 @@
  *   6. Set the same value as GOOGLE_CLIENT_ID in backend/.env — the
  *      backend independently verifies every token against it.
  */
-export const GOOGLE_CLIENT_ID = "";
+export const GOOGLE_CLIENT_ID = "514591731261-oc7kb2i54ogujvmoi7e2hlh2opuac0mc.apps.googleusercontent.com";
