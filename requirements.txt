@@ -1,3 +1,21 @@
 # Used by Vercel's @vercel/python builder to install dependencies for
-# api/index.py. Kept in sync with backend/requirements.txt.
--r backend/requirements.txt
+# api/index.py. This has to be the actual package list, not a `-r
+# backend/requirements.txt` include — Vercel's requirements.txt parser
+# (distinct from pip itself) doesn't support that directive and fails
+# the build with "could not parse requirements.txt" if it's used.
+# Keep this in sync with backend/requirements.txt by hand.
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+sqlalchemy==2.0.35
+alembic==1.13.2
+psycopg2-binary==2.9.9
+pydantic==2.9.2
+pydantic-settings==2.5.2
+python-dotenv==1.0.1
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+python-jose[cryptography]==3.3.0
+python-multipart==0.0.9
+email-validator==2.2.0
+google-auth==2.35.0
+requests==2.32.5

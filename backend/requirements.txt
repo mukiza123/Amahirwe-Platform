@@ -1,3 +1,7 @@
+# Local dev/test dependencies. The root-level requirements.txt (used by
+# Vercel to build the deployed function) mirrors everything here except
+# pytest/httpx, which the running app never imports — keep both in sync
+# by hand when this list changes.
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
 sqlalchemy==2.0.35
