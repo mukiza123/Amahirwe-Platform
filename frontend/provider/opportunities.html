@@ -80,7 +80,7 @@
 
           <div class="page-head">
             <h1 data-i18n="nav_my_opportunities">My Opportunities</h1>
-            <p>Post new opportunities and manage the ones you've already shared with students.</p>
+            <p data-i18n="dash_my_opportunities_subtitle">Post new opportunities and manage the ones you've already shared with students.</p>
           </div>
 
           <div class="opp-layout">
@@ -127,6 +127,7 @@
     import { requireRole } from "../js/auth.js";
     import { showContent, showError, initDashShell, TALENT_AREAS, talentAreaLabel } from "../js/dashboard.js";
     import { listMyOpportunities, createOpportunity, updateOpportunity, deleteOpportunity, renderOpportunityCard } from "../js/opportunities.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -145,7 +146,7 @@
       if (opportunities.length === 0) {
         list.innerHTML = `<div class="page-card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
-          <p class="text-secondary" data-i18n="dash_no_opportunities">You haven't posted anything yet.</p>
+          <p class="text-secondary">${t("dash_no_opportunities", "You haven't posted anything yet.")}</p>
         </div>`;
         return;
       }
@@ -185,9 +186,13 @@
         form.reset();
         await renderOpportunities();
       } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.textContent = err.message || t("dash_generic_error", "Something went wrong.");
         errorEl.hidden = false;
       }
+    });
+
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) renderOpportunities();
     });
 
     requireRole("provider").then(async (user) => {
@@ -199,7 +204,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load opportunities:", err);
-      showError(loadingEl, "Couldn't load your opportunities. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_provider_opportunities_load_error", "Couldn't load your opportunities. Please check your connection and refresh the page."));
     });
   </script>
 </body>

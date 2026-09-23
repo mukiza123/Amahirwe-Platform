@@ -43,7 +43,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_mentees">My Mentees</h1>
-          <p class="text-secondary">Track your matched students and their progress.</p>
+          <p class="text-secondary" data-i18n="dash_mentees_subtitle">Track your matched students and their progress.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -73,7 +73,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_my_mentees">My Mentees</h1>
-            <p>Track your matched students and their progress.</p>
+            <p data-i18n="dash_mentees_subtitle">Track your matched students and their progress.</p>
           </div>
           <div id="matches-list"></div>
         </div>
@@ -86,6 +86,7 @@
     import { requireRole } from "../js/auth.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
     import { listMyMatches, renderMatchCard } from "../js/matching.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -96,12 +97,16 @@
       if (matches.length === 0) {
         list.innerHTML = `<div class="card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
-          <p class="text-secondary" data-i18n="dash_no_match_requests">No match requests yet.</p>
+          <p class="text-secondary">${t("dash_no_match_requests", "No match requests yet.")}</p>
         </div>`;
         return;
       }
       list.innerHTML = matches.map((m) => renderMatchCard(m, "mentor")).join("");
     }
+
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
@@ -110,7 +115,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load mentees:", err);
-      showError(loadingEl, "Couldn't load your mentees. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_mentees_load_error", "Couldn't load your mentees. Please check your connection and refresh the page."));
     });
   </script>
 </body>

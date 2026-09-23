@@ -42,7 +42,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_children">My Children</h1>
-          <p class="text-secondary">Follow your children's assessments, talents and mentor matches.</p>
+          <p class="text-secondary" data-i18n="dash_children_subtitle">Follow your children's assessments, talents and mentor matches.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -72,7 +72,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_my_children">My Children</h1>
-            <p>Follow your children's assessments, talents and mentor matches.</p>
+            <p data-i18n="dash_children_subtitle">Follow your children's assessments, talents and mentor matches.</p>
           </div>
           <div id="children-list"></div>
         </div>
@@ -85,11 +85,22 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
-    const MATCH_STATUS_LABELS = { pending: "Mentor request pending", approved: "Matched with a mentor", rejected: "Mentor request not approved" };
+    function matchStatusLabel(status) {
+      const fallbacks = { pending: "Mentor request pending", approved: "Matched with a mentor", rejected: "Mentor request not approved" };
+      const keys = { pending: "dash_match_status_pending", approved: "dash_match_status_approved", rejected: "dash_match_status_rejected" };
+      return t(keys[status], fallbacks[status]);
+    }
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
 
     function initials(fullName) {
       return fullName
@@ -107,31 +118,31 @@
       if (children.length === 0) {
         list.innerHTML = `<div class="page-card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
-          <h3 data-i18n="dash_no_children_title">No children linked yet</h3>
-          <p class="text-secondary" data-i18n="dash_no_children_body">Ask your child's teacher to link your account so you can follow their progress.</p>
+          <h3>${t("dash_no_children_title", "No children linked yet")}</h3>
+          <p class="text-secondary">${t("dash_no_children_body", "Ask your child's teacher to link your account so you can follow their progress.")}</p>
         </div>`;
         return;
       }
 
       list.innerHTML = `<div class="page-card">
-        <h2 class="page-card__title">Linked Children</h2>
+        <h2 class="page-card__title">${t("dash_linked_children", "Linked Children")}</h2>
         ${children
           .map((c) => {
             const talents = c.top_talents.length
               ? `<div class="chip-row" style="margin-top:8px">${c.top_talents
-                  .map((t) => `<span class="chip">${talentAreaIcon(t.talent_area)} ${talentAreaLabel(t.talent_area)} &middot; #${t.rank}</span>`)
+                  .map((ta) => `<span class="chip">${talentAreaIcon(ta.talent_area)} ${talentAreaLabel(ta.talent_area)} &middot; #${ta.rank}</span>`)
                   .join("")}</div>`
-              : `<p class="text-secondary" style="margin:6px 0 0;font-size:0.82rem">Hasn't completed the talent assessment yet.</p>`;
+              : `<p class="text-secondary" style="margin:6px 0 0;font-size:0.82rem">${t("dash_no_assessment_yet", "Hasn't completed the talent assessment yet.")}</p>`;
 
             const matchBadge = c.mentor_match_status
-              ? `<span class="badge ${c.mentor_match_status === "approved" ? "badge-success" : "badge-mint"}">${MATCH_STATUS_LABELS[c.mentor_match_status]}</span>`
+              ? `<span class="badge ${c.mentor_match_status === "approved" ? "badge-success" : "badge-mint"}">${matchStatusLabel(c.mentor_match_status)}</span>`
               : "";
 
             return `<div class="student-row">
               <span class="home-avatar">${initials(c.full_name)}</span>
               <div>
-                <p class="assess-item__title">${c.full_name}</p>
-                <p class="assess-item__meta">${c.school_name} &middot; ${c.age_range}</p>
+                <p class="assess-item__title">${escapeHtml(c.full_name)}</p>
+                <p class="assess-item__meta">${escapeHtml(c.school_name)} &middot; ${escapeHtml(c.age_range)}</p>
                 ${talents}
               </div>
               <div class="student-row__actions">${matchBadge}</div>
@@ -141,6 +152,10 @@
       </div>`;
     }
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
+
     requireRole("parent").then(async (user) => {
       if (!user) return;
       initDashShell(user, "children");
@@ -148,7 +163,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load children:", err);
-      showError(loadingEl, "Couldn't load your children. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_children_load_error", "Couldn't load your children. Please check your connection and refresh the page."));
     });
   </script>
 </body>

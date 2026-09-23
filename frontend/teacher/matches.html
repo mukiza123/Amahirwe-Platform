@@ -43,7 +43,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_mentor_requests">Mentor Requests</h1>
-          <p class="text-secondary">Review and respond to mentor match requests from your students.</p>
+          <p class="text-secondary" data-i18n="dash_mentor_requests_subtitle">Review and respond to mentor match requests from your students.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -73,7 +73,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_mentor_requests">Mentor Requests</h1>
-            <p>Review and respond to mentor match requests from your students.</p>
+            <p data-i18n="dash_mentor_requests_subtitle">Review and respond to mentor match requests from your students.</p>
           </div>
           <div class="filter-bar">
             <label class="form-label" for="status-filter" style="margin:0;" data-i18n="dash_filter_by_status">Filter by status</label>
@@ -95,6 +95,7 @@
     import { requireRole } from "../js/auth.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
     import { listSchoolMatches, approveMatch, rejectMatch, renderMatchCard } from "../js/matching.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -106,7 +107,7 @@
       if (matches.length === 0) {
         list.innerHTML = `<div class="card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
-          <p class="text-secondary" data-i18n="dash_no_pending_requests">No requests match this filter.</p>
+          <p class="text-secondary">${t("dash_no_requests_match_filter", "No requests match this filter.")}</p>
         </div>`;
         return;
       }
@@ -130,6 +131,10 @@
 
     document.querySelector("#status-filter").addEventListener("change", render);
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
+
     requireRole("teacher").then(async (user) => {
       if (!user) return;
       initDashShell(user, "matches");
@@ -137,7 +142,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load mentor requests:", err);
-      showError(loadingEl, "Couldn't load mentor requests. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_matches_load_error", "Couldn't load mentor requests. Please check your connection and refresh the page."));
     });
   </script>
 </body>

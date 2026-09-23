@@ -43,8 +43,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1>Opportunities</h1>
-          <p class="text-secondary">Scholarships, internships, and programs that match your path.</p>
+          <h1 data-i18n="nav_opportunities">Opportunities</h1>
+          <p class="text-secondary" data-i18n="dash_opportunities_page_subtitle">Scholarships, internships, and programs that match your path.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -73,8 +73,8 @@
         </div>
         <div id="dashboard-content" hidden>
           <div class="page-head">
-            <h1>Opportunities</h1>
-            <p>Find scholarships, internships and programs recommended for you.</p>
+            <h1 data-i18n="nav_opportunities">Opportunities</h1>
+            <p data-i18n="dash_opportunities_page_body">Find scholarships, internships and programs recommended for you.</p>
           </div>
           <div class="filter-bar">
             <label class="form-label" for="area-filter" style="margin:0;" data-i18n="dash_filter_by_talent">Filter by talent area</label>
@@ -93,15 +93,15 @@
             <div class="opp-grid" id="opportunity-list"></div>
             <aside>
               <section class="page-card" style="margin-bottom:var(--space-3)">
-                <h2 class="page-card__title">Upcoming Deadlines</h2>
+                <h2 class="page-card__title" data-i18n="dash_upcoming_deadlines_title">Upcoming Deadlines</h2>
                 <div id="deadline-list">
-                  <p class="text-secondary">Deadlines will appear here as opportunities are posted.</p>
+                  <p class="text-secondary" data-i18n="dash_deadlines_placeholder">Deadlines will appear here as opportunities are posted.</p>
                 </div>
               </section>
               <section class="page-card page-card--mint">
-                <h3 style="margin:0 0 6px">Need help?</h3>
-                <p style="margin:0 0 12px;font-size:0.85rem">Talk to your teacher or mentor before you apply.</p>
-                <a class="btn btn-primary btn-sm" href="mentors.html">Contact Mentor</a>
+                <h3 style="margin:0 0 6px" data-i18n="dash_need_help_title">Need help?</h3>
+                <p style="margin:0 0 12px;font-size:0.85rem" data-i18n="dash_need_help_body">Talk to your teacher or mentor before you apply.</p>
+                <a class="btn btn-primary btn-sm" href="mentors.html" data-i18n="dash_contact_mentor">Contact Mentor</a>
               </section>
             </aside>
           </div>
@@ -115,9 +115,16 @@
     import { requireRole } from "../js/auth.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
     import { listOpportunities, renderPublicOpportunityCard } from "../js/opportunities.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str == null ? "" : String(str);
+      return div.innerHTML;
+    }
 
     function renderDeadlines(opportunities) {
       const container = document.querySelector("#deadline-list");
@@ -130,17 +137,23 @@
         .slice(0, 4);
 
       if (upcoming.length === 0) {
-        container.innerHTML = `<p class="text-secondary">No upcoming deadlines right now.</p>`;
+        container.innerHTML = `<p class="text-secondary">${t("dash_no_upcoming_deadlines", "No upcoming deadlines right now.")}</p>`;
         return;
       }
       container.innerHTML = upcoming
-        .map(
-          (o) => `
+        .map((o) => {
+          const dueText =
+            o.daysLeft === 0
+              ? t("dash_due_today", "Due today")
+              : o.daysLeft === 1
+              ? t("dash_in_one_day", "In 1 day")
+              : t("dash_in_n_days", "In {n} days").replace("{n}", o.daysLeft);
+          return `
           <div class="deadline-row">
-            <span>${o.title}</span>
-            <span class="text-secondary">${o.daysLeft === 0 ? "Due today" : `In ${o.daysLeft} day${o.daysLeft === 1 ? "" : "s"}`}</span>
-          </div>`
-        )
+            <span>${escapeHtml(o.title)}</span>
+            <span class="text-secondary">${dueText}</span>
+          </div>`;
+        })
         .join("");
     }
 
@@ -150,7 +163,7 @@
       if (opportunities.length === 0) {
         list.innerHTML = `<div class="card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/opportunities.png" alt="" />
-          <p class="text-secondary" data-i18n="dash_no_opportunities_found">No opportunities match right now. Check back soon.</p>
+          <p class="text-secondary">${t("dash_no_opportunities_found", "No opportunities match right now. Check back soon.")}</p>
         </div>`;
         renderDeadlines([]);
         return;
@@ -161,6 +174,10 @@
 
     document.querySelector("#area-filter").addEventListener("change", render);
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
+
     requireRole("student").then(async (user) => {
       if (!user) return;
       initDashShell(user, "opportunities");
@@ -168,7 +185,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load opportunities:", err);
-      showError(loadingEl, "Couldn't load opportunities. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_opportunities_load_error", "Couldn't load opportunities. Please check your connection and refresh the page."));
     });
   </script>
 </body>

@@ -88,6 +88,7 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -106,7 +107,7 @@
 
       if (schools.length === 0) {
         list.innerHTML = `<div class="dash-placeholder">
-          <p class="text-secondary" data-i18n="dash_no_pending_schools">Nothing to review right now.</p>
+          <p class="text-secondary">${t("dash_no_pending_schools", "Nothing to review right now.")}</p>
         </div>`;
         return;
       }
@@ -114,12 +115,12 @@
       list.innerHTML = schools
         .map((s) => {
           const statusBadge = s.is_approved
-            ? `<span class="badge badge-success" data-i18n="dash_status_approved">Approved</span>`
-            : `<span class="badge badge-neutral" data-i18n="dash_status_pending">Pending</span>`;
+            ? `<span class="badge badge-success">${t("dash_status_approved", "Approved")}</span>`
+            : `<span class="badge badge-neutral">${t("dash_status_pending", "Pending")}</span>`;
           const actions = s.is_approved
             ? ""
-            : `<button type="button" class="btn btn-secondary btn-sm" data-action="approve" data-id="${s.id}" data-i18n="dash_approve">Approve</button>
-               <button type="button" class="btn btn-danger btn-sm" data-action="reject" data-id="${s.id}" data-i18n="dash_reject">Reject</button>`;
+            : `<button type="button" class="btn btn-secondary btn-sm" data-action="approve" data-id="${s.id}">${t("dash_approve", "Approve")}</button>
+               <button type="button" class="btn btn-danger btn-sm" data-action="reject" data-id="${s.id}">${t("dash_reject", "Reject")}</button>`;
 
           return `<div class="user-row" data-school-row="${s.id}">
             <div class="user-row__meta">
@@ -155,18 +156,22 @@
               .then(renderSchools)
               .catch((err) => {
                 const errorEl = row.querySelector("[data-row-error]");
-                errorEl.textContent = err.message || "Couldn't reject that school.";
+                errorEl.textContent = err.message || t("dash_reject_school_error", "Couldn't reject that school.");
                 errorEl.hidden = false;
               });
             return;
           }
           btn.dataset.confirming = "true";
-          btn.textContent = "Confirm reject?";
+          btn.textContent = t("dash_confirm_reject", "Confirm reject?");
         });
       });
     }
 
     document.querySelector("#pending-only-filter").addEventListener("change", renderSchools);
+
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) renderSchools();
+    });
 
     requireRole("admin").then(async (user) => {
       if (!user) return;
@@ -175,7 +180,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load schools:", err);
-      showError(loadingEl, "Couldn't load schools. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_schools_load_error", "Couldn't load schools. Please check your connection and refresh the page."));
     });
   </script>
 </body>

@@ -52,7 +52,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_profile">My Profile</h1>
-          <p class="text-secondary">Your bio, district, and mentoring expertise.</p>
+          <p class="text-secondary" data-i18n="dash_mentor_profile_subtitle">Your bio, district, and mentoring expertise.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -86,8 +86,8 @@
                 <div class="profile-hero">
                   <span class="profile-photo" id="profile-photo">MN</span>
                   <div style="flex:1">
-                    <h2 id="profile-display-name">Your profile</h2>
-                    <p id="profile-display-meta">Complete your mentor profile to get started.</p>
+                    <h2 id="profile-display-name" data-i18n="dash_profile_default_name">Your profile</h2>
+                    <p id="profile-display-meta" data-i18n="dash_mentor_complete_cta">Complete your mentor profile to get started.</p>
                   </div>
                   <button type="submit" form="profile-form" class="btn btn-primary btn-sm" id="profile-submit-btn" data-i18n="dash_save_profile">Save profile</button>
                 </div>
@@ -95,14 +95,14 @@
               <div class="profile-grid">
                 <section class="page-card profile-block">
                   <h3 data-i18n="dash_bio">Short bio (optional)</h3>
-                  <p id="bio-display">You haven't added a bio yet.</p>
+                  <p id="bio-display" data-i18n="dash_no_bio_yet">You haven't added a bio yet.</p>
                 </section>
                 <section class="page-card profile-block">
                   <h3 data-i18n="dash_district">District</h3>
                   <div class="timeline-item">
                     <div>
-                      <strong id="district-display">Not set</strong>
-                      <p>Verification status: <span id="verify-status-text">—</span></p>
+                      <strong id="district-display" data-i18n="dash_not_set">Not set</strong>
+                      <p><span data-i18n="dash_verification_status_prefix">Verification status:</span> <span id="verify-status-text">—</span></p>
                     </div>
                   </div>
                 </section>
@@ -134,7 +134,7 @@
               <section class="page-card profile-block">
                 <h3 data-i18n="dash_expertise_areas">Areas you can mentor in</h3>
                 <div class="chip-row" id="aside-expertise-chips">
-                  <span class="chip chip--muted">Complete your profile</span>
+                  <span class="chip chip--muted" data-i18n="dash_complete_profile_chip">Complete your profile</span>
                 </div>
               </section>
             </aside>
@@ -149,6 +149,7 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell, talentAreaLabel, TALENT_AREAS } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -175,7 +176,7 @@
 
       const expertise_areas = Array.from(form.querySelectorAll("input[name='expertise_areas']:checked")).map((el) => el.value);
       if (expertise_areas.length === 0) {
-        errorEl.textContent = "Choose at least one area you can mentor in.";
+        errorEl.textContent = t("dash_choose_one_area_error", "Choose at least one area you can mentor in.");
         errorEl.hidden = false;
         return;
       }
@@ -190,7 +191,7 @@
         }
         await render(authedUser);
       } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.textContent = err.message || t("dash_generic_error", "Something went wrong.");
         errorEl.hidden = false;
       }
     });
@@ -212,30 +213,38 @@
       const asideChips = document.querySelector("#aside-expertise-chips");
 
       if (currentMentor) {
-        document.querySelector("#profile-heading").textContent = "Your mentor profile";
+        document.querySelector("#profile-heading").textContent = t("dash_your_mentor_profile_title", "Your mentor profile");
         document.querySelector("#district").value = currentMentor.district;
         document.querySelector("#bio").value = currentMentor.bio || "";
-        document.querySelector("#profile-submit-btn").textContent = "Update profile";
+        document.querySelector("#profile-submit-btn").textContent = t("dash_update_profile", "Update profile");
         document.querySelector("#verification-banner").hidden = currentMentor.is_verified;
 
-        document.querySelector("#profile-display-meta").textContent =
-          `${currentMentor.district} · ${currentMentor.is_verified ? "Verified mentor" : "Pending verification"}`;
-        document.querySelector("#bio-display").textContent = currentMentor.bio || "You haven't added a bio yet.";
+        const verifiedLabel = currentMentor.is_verified
+          ? t("dash_verified_mentor", "Verified mentor")
+          : t("dash_pending_verification_short", "Pending verification");
+        document.querySelector("#profile-display-meta").textContent = `${currentMentor.district} · ${verifiedLabel}`;
+        document.querySelector("#bio-display").textContent = currentMentor.bio || t("dash_no_bio_yet", "You haven't added a bio yet.");
         document.querySelector("#district-display").textContent = currentMentor.district;
-        document.querySelector("#verify-status-text").textContent = currentMentor.is_verified ? "Verified" : "Pending verification";
+        document.querySelector("#verify-status-text").textContent = currentMentor.is_verified
+          ? t("dash_verified", "Verified")
+          : t("dash_pending_verification_short", "Pending verification");
 
         if (currentMentor.expertise_areas && currentMentor.expertise_areas.length) {
           asideChips.innerHTML = currentMentor.expertise_areas
             .map((area) => `<span class="chip">${talentAreaLabel(area)}</span>`)
             .join("");
         } else {
-          asideChips.innerHTML = `<span class="chip chip--muted">No areas selected yet</span>`;
+          asideChips.innerHTML = `<span class="chip chip--muted">${t("dash_no_areas_selected", "No areas selected yet")}</span>`;
         }
       } else {
         document.querySelector("#verification-banner").hidden = true;
-        document.querySelector("#profile-display-meta").textContent = "Complete your mentor profile to get started.";
+        document.querySelector("#profile-display-meta").textContent = t("dash_mentor_complete_cta", "Complete your mentor profile to get started.");
       }
     }
+
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (authedUser && !contentEl.hidden) render(authedUser);
+    });
 
     requireRole("mentor").then(async (user) => {
       if (!user) return;
@@ -245,7 +254,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load profile:", err);
-      showError(loadingEl, "Couldn't load your profile. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_mentor_profile_load_error", "Couldn't load your profile. Please check your connection and refresh the page."));
     });
   </script>
 </body>

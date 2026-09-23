@@ -67,7 +67,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_users">Users</h1>
-            <p>Manage platform accounts, verification and access.</p>
+            <p data-i18n="dash_users_subtitle">Manage platform accounts, verification and access.</p>
           </div>
           <div class="filter-bar">
             <label class="form-label" for="role-filter" style="margin:0;" data-i18n="dash_filter_by_role">Filter by role</label>
@@ -93,11 +93,18 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, roleLabel } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
     let currentAdminId = null;
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
 
     function initials(fullName) {
       return fullName
@@ -119,25 +126,25 @@
           const needsVerification = ["mentor", "provider"].includes(u.role);
           const verifyBtn =
             needsVerification && !u.is_verified
-              ? `<button type="button" class="btn btn-secondary btn-sm" data-action="verify" data-id="${u.id}">Verify</button>`
+              ? `<button type="button" class="btn btn-secondary btn-sm" data-action="verify" data-id="${u.id}">${t("dash_verify", "Verify")}</button>`
               : "";
           const toggleBtn =
             u.id === currentAdminId
               ? ""
               : u.is_active
-              ? `<button type="button" class="btn btn-danger btn-sm" data-action="deactivate" data-id="${u.id}">Deactivate</button>`
-              : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">Reactivate</button>`;
+              ? `<button type="button" class="btn btn-danger btn-sm" data-action="deactivate" data-id="${u.id}">${t("dash_deactivate", "Deactivate")}</button>`
+              : `<button type="button" class="btn btn-secondary btn-sm" data-action="activate" data-id="${u.id}">${t("dash_reactivate", "Reactivate")}</button>`;
 
           return `<div class="user-row">
             <span class="home-avatar">${initials(u.full_name)}</span>
             <div class="user-row__meta">
-              <strong>${u.full_name}</strong>
-              <span class="text-secondary">${u.email}</span>
+              <strong>${escapeHtml(u.full_name)}</strong>
+              <span class="text-secondary">${escapeHtml(u.email)}</span>
             </div>
             <div class="user-row__actions">
-              <span class="badge badge-mint">${u.role}</span>
-              ${needsVerification ? `<span class="badge ${u.is_verified ? "badge-success" : "badge-neutral"}">${u.is_verified ? "Verified" : "Unverified"}</span>` : ""}
-              <span class="badge ${u.is_active ? "badge-success" : "badge-error"}">${u.is_active ? "Active" : "Deactivated"}</span>
+              <span class="badge badge-mint">${roleLabel(u.role)}</span>
+              ${needsVerification ? `<span class="badge ${u.is_verified ? "badge-success" : "badge-neutral"}">${u.is_verified ? t("dash_verified", "Verified") : t("dash_unverified", "Unverified")}</span>` : ""}
+              <span class="badge ${u.is_active ? "badge-success" : "badge-error"}">${u.is_active ? t("dash_active", "Active") : t("dash_deactivated", "Deactivated")}</span>
               ${verifyBtn}${toggleBtn}
             </div>
           </div>`;
@@ -166,6 +173,10 @@
 
     document.querySelector("#role-filter").addEventListener("change", renderUsers);
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) renderUsers();
+    });
+
     requireRole("admin").then(async (user) => {
       if (!user) return;
       currentAdminId = user.id;
@@ -174,7 +185,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load users:", err);
-      showError(loadingEl, "Couldn't load users. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_users_load_error", "Couldn't load users. Please check your connection and refresh the page."));
     });
   </script>
 </body>

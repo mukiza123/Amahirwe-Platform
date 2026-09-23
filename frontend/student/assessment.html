@@ -55,8 +55,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1>Assessments</h1>
-          <p class="text-secondary">Discover your strengths, and grow with purpose.</p>
+          <h1 data-i18n="dash_assessment_page_title">Assessments</h1>
+          <p class="text-secondary" data-i18n="dash_assessment_page_subtitle">Discover your strengths, and grow with purpose.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -99,72 +99,31 @@
 
           <section id="assessment-intro-section" hidden>
             <div class="page-head">
-              <h1>Assessments</h1>
-              <p>Discover your strengths, and grow with purpose.</p>
-            </div>
-            <div class="page-tabs" role="tablist">
-              <button type="button" class="page-tab is-active">All Assessments</button>
-              <button type="button" class="page-tab">Completed</button>
-              <button type="button" class="page-tab">In Progress</button>
+              <h1 data-i18n="dash_assessment_page_title">Assessments</h1>
+              <p data-i18n="dash_assessment_page_subtitle">Discover your strengths, and grow with purpose.</p>
             </div>
             <div class="page-split page-split--assess">
-              <div class="page-card">
-                <article class="assess-item">
-                  <span class="assess-item__icon">🧩</span>
-                  <div>
-                    <p class="assess-item__title">Problem Solving</p>
-                    <p class="assess-item__meta">Measure how you approach challenges</p>
-                  </div>
-                  <button type="button" class="btn btn-primary btn-sm" id="start-assessment-btn">Start</button>
-                </article>
-                <article class="assess-item">
-                  <span class="assess-item__icon">💬</span>
-                  <div>
-                    <p class="assess-item__title">Communication</p>
-                    <p class="assess-item__meta">See how clearly you express ideas</p>
-                  </div>
-                  <span class="assess-item__status">Locked</span>
-                </article>
-                <article class="assess-item">
-                  <span class="assess-item__icon">🎨</span>
-                  <div>
-                    <p class="assess-item__title">Creativity</p>
-                    <p class="assess-item__meta">Explore your creative thinking style</p>
-                  </div>
-                  <span class="assess-item__status">Locked</span>
-                </article>
-                <article class="assess-item">
-                  <span class="assess-item__icon">🛠️</span>
-                  <div>
-                    <p class="assess-item__title">Technical Skills</p>
-                    <p class="assess-item__meta">Assess your digital and technical skills</p>
-                  </div>
-                  <span class="assess-item__status">Locked</span>
-                </article>
-                <article class="assess-item">
-                  <span class="assess-item__icon">👥</span>
-                  <div>
-                    <p class="assess-item__title">Leadership</p>
-                    <p class="assess-item__meta">Understand your leadership potential</p>
-                  </div>
-                  <span class="assess-item__status">Locked</span>
-                </article>
+              <div class="page-card dash-placeholder">
+                <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
+                <h3 data-i18n="dash_discover_talent">Discover your talent</h3>
+                <p class="text-secondary" data-i18n="dash_discover_talent_body">Answer a few questions and we'll show you your top strengths.</p>
+                <button type="button" class="btn btn-primary" id="start-assessment-btn" data-i18n="dash_start_assessment">Start assessment</button>
               </div>
               <aside>
                 <div class="page-card" style="margin-bottom:var(--space-3)">
-                  <h2 class="page-card__title">Your Assessment Summary</h2>
+                  <h2 class="page-card__title" data-i18n="dash_assessment_summary_title">Your Assessment Summary</h2>
                   <div class="ring-wrap">
                     <svg viewBox="0 0 120 120" aria-hidden="true">
                       <circle cx="60" cy="60" r="46" fill="none" stroke="#E8EEF2" stroke-width="12"/>
-                      <circle cx="60" cy="60" r="46" fill="none" stroke="#1A9B8A" stroke-width="12" stroke-linecap="round" stroke-dasharray="72 217" transform="rotate(-90 60 60)"/>
+                      <circle cx="60" cy="60" r="46" fill="none" stroke="#1A9B8A" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 289" transform="rotate(-90 60 60)"/>
                       <text x="60" y="66" text-anchor="middle" font-size="18" font-weight="800" fill="#0F6B52">0%</text>
                     </svg>
-                    <p class="ring-caption">Start your first assessment to unlock your strengths profile.</p>
+                    <p class="ring-caption" data-i18n="dash_assessment_summary_caption">Start your first assessment to unlock your strengths profile.</p>
                   </div>
                 </div>
                 <div class="page-card page-card--mint">
-                  <h3 style="margin:0 0 6px">Keep going!</h3>
-                  <p style="margin:0 0 12px;font-size:0.85rem">Every completed assessment opens new opportunities.</p>
+                  <h3 style="margin:0 0 6px" data-i18n="dash_keep_going">Keep going!</h3>
+                  <p style="margin:0 0 12px;font-size:0.85rem" data-i18n="dash_keep_going_body">Every completed assessment opens new opportunities.</p>
                 </div>
               </aside>
             </div>
@@ -188,15 +147,15 @@
 
           <section id="results-section" hidden>
             <div class="page-head">
-              <h1>Your top strengths</h1>
-              <p>Based on your latest talent assessment.</p>
+              <h1 data-i18n="dash_top_strengths_title">Your top strengths</h1>
+              <p data-i18n="dash_top_strengths_subtitle">Based on your latest talent assessment.</p>
             </div>
             <div class="page-split page-split--assess">
               <div class="page-card" id="results-card"></div>
               <aside>
                 <div class="page-card" style="margin-bottom:var(--space-3)">
-                  <h2 class="page-card__title">Assessment complete</h2>
-                  <p class="text-secondary">Use these results to find mentors and opportunities that fit you.</p>
+                  <h2 class="page-card__title" data-i18n="dash_assessment_complete_title">Assessment complete</h2>
+                  <p class="text-secondary" data-i18n="dash_assessment_complete_body">Use these results to find mentors and opportunities that fit you.</p>
                 </div>
                 <button type="button" class="btn btn-secondary" id="retake-assessment-btn" data-i18n="dash_retake_assessment">Retake assessment</button>
               </aside>
@@ -214,6 +173,7 @@
     import { showContent, showError, initDashShell, talentAreaIcon, talentAreaLabel } from "../js/dashboard.js";
     import { loadQuestions, submitAssessment } from "../js/assessment.js";
     import { listQueuedAssessments, syncQueuedAssessments } from "../js/offline.js";
+    import { t } from "../js/main.js";
 
     let questions = [];
     let currentQuestionIndex = 0;
@@ -270,12 +230,14 @@
 
     function renderQuestion() {
       const q = questions[currentQuestionIndex];
-      document.querySelector("#question-progress-label").textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      document.querySelector("#question-progress-label").textContent = t("dash_question_progress", "Question {n} of {total}")
+        .replace("{n}", currentQuestionIndex + 1)
+        .replace("{total}", questions.length);
       document.querySelector("#progress-fill").style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
       document.querySelector("#question-text").textContent = q.text;
       document.querySelector("#prev-question-btn").disabled = currentQuestionIndex === 0;
       document.querySelector("#next-question-btn").textContent =
-        currentQuestionIndex === questions.length - 1 ? "Submit" : "Next";
+        currentQuestionIndex === questions.length - 1 ? t("dash_submit", "Submit") : t("dash_next", "Next");
 
       const list = document.querySelector("#choice-list");
       list.innerHTML = q.choices
@@ -307,7 +269,7 @@
       errorEl.hidden = true;
 
       if (!answers[q.id]) {
-        errorEl.textContent = "Please choose an answer before continuing.";
+        errorEl.textContent = t("dash_choose_answer_error", "Please choose an answer before continuing.");
         errorEl.hidden = false;
         return;
       }
@@ -330,9 +292,11 @@
           section("#assessment-intro-section").hidden = false;
           const note = section("#assessment-intro-section").querySelector(".page-card--mint");
           if (note) {
-            note.querySelector("h3").textContent = "Saved on this device";
-            note.querySelector("p").textContent =
-              "You're offline. Your answers will be sent automatically once you're back online.";
+            note.querySelector("h3").textContent = t("dash_offline_saved_title", "Saved on this device");
+            note.querySelector("p").textContent = t(
+              "dash_offline_saved_body",
+              "You're offline. Your answers will be sent automatically once you're back online."
+            );
           }
           const startBtn = document.querySelector("#start-assessment-btn");
           if (startBtn) startBtn.hidden = true;
@@ -341,7 +305,7 @@
           await render();
         }
       } catch (err) {
-        errorEl.textContent = err.message || "Couldn't submit your assessment. Please try again.";
+        errorEl.textContent = err.message || t("dash_submit_assessment_error", "Couldn't submit your assessment. Please try again.");
         errorEl.hidden = false;
       }
     });
@@ -385,6 +349,10 @@
       section("#results-section").hidden = false;
     }
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden && section("#assessment-section").hidden) render();
+    });
+
     requireRole("student").then(async (user) => {
       if (!user) return;
       initDashShell(user, "assessment");
@@ -396,7 +364,7 @@
       }
     }).catch((err) => {
       console.error("Failed to load assessment:", err);
-      showError(loadingEl, "Couldn't load the assessment. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_assessment_load_error", "Couldn't load the assessment. Please check your connection and refresh the page."));
     });
   </script>
 </body>

@@ -101,6 +101,7 @@
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
     let notifications = [];
+    let currentSelectedId = null;
 
     function messageTitle(message) {
       return message.length > 42 ? `${message.slice(0, 42)}…` : message;
@@ -159,15 +160,21 @@
         item.addEventListener("click", () => {
           list.querySelectorAll(".inbox-item").forEach((el) => el.classList.remove("is-active"));
           item.classList.add("is-active");
+          currentSelectedId = item.dataset.id;
           const notification = notifications.find((n) => n.id === item.dataset.id);
           renderThread(notification);
         });
       });
 
       const toSelect = (selectedId && notifications.find((n) => n.id === selectedId)) || notifications[0];
+      currentSelectedId = toSelect.id;
       list.querySelector(`[data-id="${toSelect.id}"]`)?.classList.add("is-active");
       renderThread(toSelect);
     }
+
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render(currentSelectedId);
+    });
 
     requireRole("student").then(async (user) => {
       if (!user) return;

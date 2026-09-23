@@ -47,7 +47,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_my_students">My Students</h1>
-          <p class="text-secondary">The students at your school and their registered guardians.</p>
+          <p class="text-secondary" data-i18n="dash_my_students_subtitle">The students at your school and their registered guardians.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -78,7 +78,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_my_students">My Students</h1>
-            <p>The students at your school and their registered guardians.</p>
+            <p data-i18n="dash_my_students_subtitle">The students at your school and their registered guardians.</p>
           </div>
 
           <!-- School setup -->
@@ -149,6 +149,7 @@
     import { requireRole } from "../js/auth.js";
     import { api, ApiError } from "../js/api.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -201,7 +202,7 @@
         errorEl.hidden = true;
 
         if (!name || !district || !province) {
-          errorEl.textContent = "Please fill in the school name, district, and province.";
+          errorEl.textContent = t("dash_fill_school_fields_error", "Please fill in the school name, district, and province.");
           errorEl.hidden = false;
           return;
         }
@@ -210,7 +211,7 @@
           const school = await api.post("/schools", { name, district, province });
           const option = document.createElement("option");
           option.value = school.id;
-          option.textContent = `${school.name} (${school.district}) — pending admin approval`;
+          option.textContent = `${school.name} (${school.district}) ${t("dash_pending_admin_approval_suffix", "— pending admin approval")}`;
           select.appendChild(option);
           select.value = school.id;
           panel.hidden = true;
@@ -218,7 +219,7 @@
           document.querySelector("#new_school_district").value = "";
           document.querySelector("#new_school_province").value = "";
         } catch (err) {
-          errorEl.textContent = err.message || "Couldn't add that school. Please try again.";
+          errorEl.textContent = err.message || t("dash_add_school_generic_error", "Couldn't add that school. Please try again.");
           errorEl.hidden = false;
         }
       });
@@ -230,7 +231,7 @@
       if (students.length === 0) {
         list.innerHTML = `<div class="dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/characters/student.png" alt="" />
-          <p class="text-secondary" data-i18n="dash_no_students">No students added yet.</p>
+          <p class="text-secondary">${t("dash_no_students", "No students added yet.")}</p>
         </div>`;
         return;
       }
@@ -239,20 +240,20 @@
           (s) => `<div class="student-row" data-id="${s.id}">
             <span class="home-avatar">${initials(s.full_name)}</span>
             <div>
-              <strong>${s.full_name}</strong> <span class="text-secondary">(${s.age_range})</span>
+              <strong>${escapeHtml(s.full_name)}</strong> <span class="text-secondary">(${s.age_range})</span>
               <div class="guardian-status text-secondary" style="font-size:0.85rem;" id="guardian-status-${s.id}"></div>
             </div>
             <div class="student-row__actions">
-              <span class="badge ${s.user_id ? "badge-success" : "badge-neutral"}">${s.user_id ? "Registered" : "Not registered yet"}</span>
-              <button type="button" class="btn btn-secondary btn-sm" data-action="link-guardian" data-id="${s.id}" data-name="${s.full_name}" data-i18n="dash_link_guardian">Link guardian</button>
+              <span class="badge ${s.user_id ? "badge-success" : "badge-neutral"}">${s.user_id ? t("dash_registered", "Registered") : t("dash_not_registered_yet", "Not registered yet")}</span>
+              <button type="button" class="btn btn-secondary btn-sm" data-action="link-guardian" data-id="${s.id}" data-name="${escapeHtml(s.full_name)}">${t("dash_link_guardian", "Link guardian")}</button>
             </div>
             <form class="guardian-form" data-form-for="${s.id}" hidden novalidate style="grid-column:1 / -1;">
               <div class="form-field" style="margin-bottom:var(--space-2);">
-                <label class="form-label" data-i18n="dash_guardian_email">Parent/guardian email</label>
+                <label class="form-label">${t("dash_guardian_email", "Parent/guardian email")}</label>
                 <input class="form-input" type="email" required placeholder="parent@example.com" />
               </div>
               <p class="form-error" hidden></p>
-              <button type="submit" class="btn btn-primary btn-sm" data-i18n="dash_link">Link</button>
+              <button type="submit" class="btn btn-primary btn-sm">${t("dash_link", "Link")}</button>
             </form>
           </div>`
         )
@@ -279,11 +280,11 @@
             errorEl.hidden = false;
             errorEl.classList.remove("form-error");
             errorEl.classList.add("form-success");
-            errorEl.textContent = "Guardian linked.";
+            errorEl.textContent = t("dash_guardian_linked", "Guardian linked.");
             errorEl.hidden = false;
             setTimeout(() => { errorEl.hidden = true; errorEl.classList.add("form-error"); errorEl.classList.remove("form-success"); }, 3000);
           } catch (err) {
-            errorEl.textContent = err instanceof ApiError ? err.message : "Something went wrong.";
+            errorEl.textContent = err instanceof ApiError ? err.message : t("dash_generic_error", "Something went wrong.");
             errorEl.hidden = false;
           }
         });
@@ -298,7 +299,7 @@
         await api.post("/teachers/me", { school_id: event.target.school_id.value });
         await render();
       } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.textContent = err.message || t("dash_generic_error", "Something went wrong.");
         errorEl.hidden = false;
       }
     });
@@ -321,7 +322,7 @@
         form.hidden = true;
         await renderStudents();
       } catch (err) {
-        errorEl.textContent = err.message || "Something went wrong.";
+        errorEl.textContent = err.message || t("dash_generic_error", "Something went wrong.");
         errorEl.hidden = false;
       }
     });
@@ -348,6 +349,10 @@
 
     initAddSchoolWidget();
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!document.querySelector("#main-area").hidden) renderStudents();
+    });
+
     requireRole("teacher").then(async (user) => {
       if (!user) return;
       initDashShell(user, "students");
@@ -355,7 +360,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load students:", err);
-      showError(loadingEl, "Couldn't load your students. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_students_load_error", "Couldn't load your students. Please check your connection and refresh the page."));
     });
   </script>
 </body>

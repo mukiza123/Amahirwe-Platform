@@ -67,7 +67,7 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_audit_log">Audit Log</h1>
-            <p>Track security-relevant actions taken across the platform.</p>
+            <p data-i18n="dash_audit_subtitle">Track security-relevant actions taken across the platform.</p>
           </div>
           <div class="page-card">
             <div id="audit-log"></div>
@@ -82,15 +82,22 @@
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
     import { showContent, showError, initDashShell, formatDate } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
 
     async function render() {
       const entries = await api.get("/admin/audit-log");
       const container = document.querySelector("#audit-log");
       if (entries.length === 0) {
-        container.innerHTML = `<div class="dash-placeholder"><p data-i18n="dash_no_audit_entries">No actions recorded yet.</p></div>`;
+        container.innerHTML = `<div class="dash-placeholder"><p>${t("dash_no_audit_entries", "No actions recorded yet.")}</p></div>`;
         return;
       }
       container.innerHTML = `
@@ -98,19 +105,19 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th data-i18n="dash_audit_action">Action</th>
-              <th data-i18n="dash_audit_target">Target</th>
-              <th data-i18n="dash_audit_detail">Detail</th>
-              <th data-i18n="dash_audit_date">Date</th>
+              <th>${t("dash_audit_action", "Action")}</th>
+              <th>${t("dash_audit_target", "Target")}</th>
+              <th>${t("dash_audit_detail", "Detail")}</th>
+              <th>${t("dash_audit_date", "Date")}</th>
             </tr>
           </thead>
           <tbody>
             ${entries
               .map(
                 (e) => `<tr>
-              <td>${e.action.replace(/_/g, " ")}</td>
-              <td>${e.target_type}</td>
-              <td>${e.detail || ""}</td>
+              <td>${escapeHtml(e.action.replace(/_/g, " "))}</td>
+              <td>${escapeHtml(e.target_type)}</td>
+              <td>${escapeHtml(e.detail || "")}</td>
               <td>${formatDate(e.created_at)}</td>
             </tr>`
               )
@@ -120,6 +127,10 @@
         </div>`;
     }
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
+
     requireRole("admin").then(async (user) => {
       if (!user) return;
       initDashShell(user, "audit-log");
@@ -127,7 +138,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load audit log:", err);
-      showError(loadingEl, "Couldn't load the audit log. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_audit_log_load_error", "Couldn't load the audit log. Please check your connection and refresh the page."));
     });
   </script>
 </body>

@@ -44,7 +44,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_mentors_dash">Mentors</h1>
-          <p class="text-secondary">Connect with a verified mentor in your top talent area.</p>
+          <p class="text-secondary" data-i18n="dash_mentors_page_subtitle">Connect with a verified mentor in your top talent area.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -83,6 +83,7 @@
     import { requireRole } from "../js/auth.js";
     import { showContent, showError, initDashShell } from "../js/dashboard.js";
     import { findAMentor, listMyMatches, renderMatchCard } from "../js/matching.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -95,9 +96,9 @@
       } catch (err) {
         content.innerHTML = `<div class="card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/supporting/talent-discovery.png" alt="" />
-          <h3 data-i18n="dash_need_assessment_title">Complete your assessment first</h3>
-          <p class="text-secondary" data-i18n="dash_need_assessment_body">We match you to a mentor based on your top talent area.</p>
-          <a class="btn btn-primary" href="assessment.html" data-i18n="nav_assessment">Assessment</a>
+          <h3>${t("dash_need_assessment_title", "Complete your assessment first")}</h3>
+          <p class="text-secondary">${t("dash_need_assessment_body", "We match you to a mentor based on your top talent area.")}</p>
+          <a class="btn btn-primary" href="assessment.html">${t("nav_assessment", "Assessment")}</a>
         </div>`;
         return;
       }
@@ -105,9 +106,9 @@
       if (matches.length === 0) {
         content.innerHTML = `<div class="card dash-placeholder">
           <img class="dash-placeholder__illustration" src="../assets/illustrations/objects/handshake.png" alt="" />
-          <h3 data-i18n="dash_find_mentor_title">Ready to connect with a mentor?</h3>
-          <p class="text-secondary" data-i18n="dash_find_mentor_body">We'll match you with a verified mentor in your top talent area.</p>
-          <button type="button" class="btn btn-primary" id="find-mentor-btn" data-i18n="dash_find_mentor">Find a mentor</button>
+          <h3>${t("dash_find_mentor_title", "Ready to connect with a mentor?")}</h3>
+          <p class="text-secondary">${t("dash_find_mentor_body", "We'll match you with a verified mentor in your top talent area.")}</p>
+          <button type="button" class="btn btn-primary" id="find-mentor-btn">${t("dash_find_mentor", "Find a mentor")}</button>
         </div>`;
         document.querySelector("#find-mentor-btn").addEventListener("click", async (e) => {
           e.target.disabled = true;
@@ -123,6 +124,10 @@
       }
     }
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!contentEl.hidden) render();
+    });
+
     requireRole("student").then(async (user) => {
       if (!user) return;
       initDashShell(user, "mentors");
@@ -130,7 +135,7 @@
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load mentors:", err);
-      showError(loadingEl, "Couldn't load your mentor match. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_mentors_load_error", "Couldn't load your mentor match. Please check your connection and refresh the page."));
     });
   </script>
 </body>
