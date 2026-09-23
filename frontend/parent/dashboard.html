@@ -30,12 +30,11 @@
     <nav class="dash-sidebar__nav">
       <a href="dashboard.html" class="dash-sidebar__link is-active" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="children.html" class="dash-sidebar__link" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
-      <a href="children.html" class="dash-sidebar__link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5h16v14"/><path d="M8 9h8M8 13h5"/></svg><span>Progress &amp; Reports</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span data-i18n="nav_messages">Messages</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
-    <p class="dash-sidebar__tagline">Together for a<br>brighter future.</p>
+    <p class="dash-sidebar__tagline"><span data-i18n="dash_tagline_parent_1">Together for a</span><br><span data-i18n="dash_tagline_parent_2">brighter future.</span></p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -46,8 +45,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1>Hello, Mr. <span data-dash-first-name>Niyomugabo</span></h1>
-          <p class="text-secondary">Here's how your child is progressing.</p>
+          <h1><span data-i18n="dash_hello_mr">Hello, Mr.</span> <span data-dash-first-name>Niyomugabo</span></h1>
+          <p class="text-secondary" data-i18n="dash_child_progress_subtitle">Here's how your child is progressing.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -88,19 +87,19 @@
             </section>
 
             <section class="home-card" style="margin-bottom:var(--space-3)">
-              <h2 class="home-card__title">Skills Overview<span id="skills-overview-name"></span></h2>
+              <h2 class="home-card__title"><span data-i18n="dash_skills_overview_title">Skills Overview</span><span id="skills-overview-name"></span></h2>
               <div id="skills-overview-body"></div>
             </section>
 
             <div class="home-layout home-layout--2">
               <section class="home-card">
-                <h2 class="home-card__title">Upcoming Opportunities</h2>
+                <h2 class="home-card__title" data-i18n="dash_upcoming_opportunities_title">Upcoming Opportunities</h2>
                 <div id="upcoming-opportunities-list" class="home-list"></div>
               </section>
               <section class="home-cta">
-                <h3>Want to support your child's journey?</h3>
-                <p>Stay involved with mentoring, resources and upcoming opportunities.</p>
-                <a class="home-btn home-btn--primary" href="opportunities.html">View Opportunities</a>
+                <h3 data-i18n="dash_parent_cta_title">Want to support your child's journey?</h3>
+                <p data-i18n="dash_parent_cta_body">Stay involved with mentoring, resources and upcoming opportunities.</p>
+                <a class="home-btn home-btn--primary" href="opportunities.html" data-i18n="dash_view_opportunities">View Opportunities</a>
               </section>
             </div>
           </div>
@@ -116,9 +115,16 @@
     import { showContent, showError, initDashShell, talentAreaLabel, talentAreaIcon, formatDate } from "../js/dashboard.js";
     import { barRow } from "../js/charts.js";
     import { listOpportunities } from "../js/opportunities.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str == null ? "" : String(str);
+      return div.innerHTML;
+    }
 
     function initials(fullName) {
       return fullName
@@ -139,14 +145,14 @@
           const topTalent = child.top_talents && child.top_talents.length > 0 ? child.top_talents[0] : null;
           const strengthHtml =
             child.has_completed_assessment && topTalent
-              ? `<strong>${Math.round((topTalent.score / 12) * 100)}%</strong><span>Top strength: ${talentAreaLabel(topTalent.talent_area)}</span>`
-              : `<strong>&mdash;</strong><span>Assessment not completed yet</span>`;
+              ? `<strong>${Math.round((topTalent.score / 12) * 100)}%</strong><span>${t("dash_top_strength_prefix", "Top strength: {area}").replace("{area}", talentAreaLabel(topTalent.talent_area))}</span>`
+              : `<strong>&mdash;</strong><span>${t("dash_assessment_not_completed", "Assessment not completed yet")}</span>`;
           return `
             <div class="home-child">
               <span class="home-avatar home-avatar--lg">${initials(child.full_name)}</span>
               <div>
-                <p class="home-row__title">${child.full_name}</p>
-                <p class="home-row__meta">Age ${child.age_range}</p>
+                <p class="home-row__title">${escapeHtml(child.full_name)}</p>
+                <p class="home-row__meta">${t("dash_age_x", "Age {range}").replace("{range}", child.age_range)}</p>
               </div>
               <div class="home-child__score">${strengthHtml}</div>
             </div>`;
@@ -154,7 +160,7 @@
         .join("");
       const moreLink =
         children.length > CHILD_SUMMARY_CAP
-          ? `<a class="home-card__link" href="children.html">+${children.length - CHILD_SUMMARY_CAP} more &rarr;</a>`
+          ? `<a class="home-card__link" href="children.html">${t("dash_more_link", "+{n} more").replace("{n}", children.length - CHILD_SUMMARY_CAP)} &rarr;</a>`
           : "";
       list.innerHTML = rows + moreLink;
     }
@@ -164,7 +170,7 @@
       const body = document.querySelector("#skills-overview-body");
       nameEl.textContent = ` — ${child.full_name}`;
       if (!child.has_completed_assessment || !child.top_talents || child.top_talents.length === 0) {
-        body.innerHTML = `<p class="text-secondary">No assessment results yet.</p>`;
+        body.innerHTML = `<p class="text-secondary">${t("dash_no_assessment_results", "No assessment results yet.")}</p>`;
         return;
       }
       body.innerHTML = child.top_talents
@@ -181,7 +187,7 @@
         .slice(0, 3);
 
       if (upcoming.length === 0) {
-        container.innerHTML = `<p class="text-secondary">No upcoming opportunities right now. <a href="opportunities.html">Browse all opportunities</a>.</p>`;
+        container.innerHTML = `<p class="text-secondary">${t("dash_no_upcoming_opportunities", "No upcoming opportunities right now.")} <a href="opportunities.html">${t("dash_browse_all_opportunities", "Browse all opportunities")}</a>.</p>`;
         return;
       }
       container.innerHTML = upcoming
@@ -192,8 +198,8 @@
           return `
             <div class="home-row">
               <div class="home-row__body">
-                <p class="home-row__title">${o.title}</p>
-                <p class="home-row__meta">Apply by ${formatDate(o.deadline)}</p>
+                <p class="home-row__title">${escapeHtml(o.title)}</p>
+                <p class="home-row__meta">${t("dash_apply_by", "Apply by {date}").replace("{date}", formatDate(o.deadline))}</p>
               </div>
               ${pill}
             </div>`;
@@ -218,6 +224,12 @@
       renderOpportunities(opportunities);
     }
 
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!document.querySelector("#stats-area").hidden) {
+        render().catch((err) => console.error("Failed to load children summary:", err));
+      }
+    });
+
     requireRole("parent").then(async (user) => {
       if (!user) return;
       initDashShell(user, "home");
@@ -228,7 +240,7 @@
       render().catch((err) => console.error("Failed to load children summary:", err));
     }).catch((err) => {
       console.error("Dashboard failed to load:", err);
-      showError(loadingEl, "Couldn't load your dashboard. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_load_error", "Couldn't load your dashboard. Please check your connection and refresh the page."));
     });
   </script>
 </body>

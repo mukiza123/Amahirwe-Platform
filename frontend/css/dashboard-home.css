@@ -354,23 +354,6 @@
   gap: var(--space-3);
 }
 
-.skill-radar {
-  width: 100%;
-  max-width: 220px;
-  margin: 0 auto;
-  display: block;
-}
-
-.skill-radar__legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  justify-content: center;
-  margin-top: var(--space-2);
-  font-size: 0.72rem;
-  color: var(--color-text-secondary);
-}
-
 .home-donut {
   display: flex;
   align-items: center;

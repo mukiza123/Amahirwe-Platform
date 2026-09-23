@@ -25,6 +25,18 @@ async function loadTranslations(lang) {
   }
 }
 
+/** Looks up a translation by key, for JS-rendered content that has no
+ * DOM element for applyTranslations() to update directly (dashboard
+ * stats, chart labels, list rows built from an API response, etc).
+ * Falls back to `fallback` (or the key itself) if the key is missing,
+ * or if this runs before loadTranslations() has resolved — callers
+ * that build content dynamically should also listen for
+ * "amahirwe:translationsapplied" and re-render, so a translation that
+ * arrives after an early render still ends up correct. */
+function t(key, fallback) {
+  return translations[key] || fallback || key;
+}
+
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -98,4 +110,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   import("./custom-select.js").then(({ initCustomSelects }) => initCustomSelects());
 });
 
-export { setLanguage, loadTranslations, applyTranslations };
+export { setLanguage, loadTranslations, applyTranslations, t, getStoredLang };

@@ -27,10 +27,10 @@
       <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="children.html" class="dash-sidebar__link" data-page="children"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-9.5-9A5 5 0 0112 5a5 5 0 019.5 6c-2.5 4.6-9.5 9-9.5 9z"/></svg><span data-i18n="nav_my_children">My Children</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span data-i18n="nav_messages">Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link is-active" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
-    <p class="dash-sidebar__tagline">Together for a<br>brighter future.</p>
+    <p class="dash-sidebar__tagline"><span data-i18n="dash_tagline_parent_1">Together for a</span><br><span data-i18n="dash_tagline_parent_2">brighter future.</span></p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -42,7 +42,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_settings">Settings</h1>
-          <p class="text-secondary">Manage your account and preferences.</p>
+          <p class="text-secondary" data-i18n="dash_settings_subtitle">Manage your account and preferences.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -72,11 +72,11 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_settings">Settings</h1>
-            <p>Manage your account and preferences.</p>
+            <p data-i18n="dash_settings_subtitle">Manage your account and preferences.</p>
           </div>
           <div class="settings-layout">
             <nav class="settings-nav" data-settings-nav aria-label="Settings sections">
-              <button type="button" class="is-active" data-settings-target="account">Account</button>
+              <button type="button" class="is-active" data-settings-target="account" data-i18n="dash_account_nav">Account</button>
               <button type="button" data-settings-target="password" data-i18n="dash_change_password">Change password</button>
               <button type="button" data-settings-target="preferences" data-i18n="dash_language">Language</button>
             </nav>
@@ -131,7 +131,8 @@
   <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
-    import { showContent, showError, initDashShell, initSettingsNav, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, initSettingsNav, formatDate, roleLabel } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -142,12 +143,12 @@
       initSettingsNav();
       document.querySelector("#info-name").textContent = user.full_name;
       document.querySelector("#info-email").textContent = user.email;
-      document.querySelector("#info-role").textContent = "Parent";
+      document.querySelector("#info-role").textContent = roleLabel("parent");
       document.querySelector("#info-created").textContent = formatDate(user.created_at);
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load settings:", err);
-      showError(loadingEl, "Couldn't load your account. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_account_load_error", "Couldn't load your account. Please check your connection and refresh the page."));
     });
   </script>
 </body>

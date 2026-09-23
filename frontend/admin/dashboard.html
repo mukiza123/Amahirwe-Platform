@@ -30,7 +30,7 @@
       <a href="audit-log.html" class="dash-sidebar__link" data-page="audit-log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="nav_audit_log">Audit Log</span></a>
       <a href="settings.html" class="dash-sidebar__link" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
-    <p class="dash-sidebar__tagline">Equitable access.<br>Greater opportunities.</p>
+    <p class="dash-sidebar__tagline"><span data-i18n="dash_tagline_admin_1">Equitable access.</span><br><span data-i18n="dash_tagline_admin_2">Greater opportunities.</span></p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -41,8 +41,8 @@
         <a href="../index.html" class="dash-topbar__brand"><img src="../assets/icons/logo-mark.png" alt="Amahirwe" /></a>
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
-          <h1>Good morning, Admin</h1>
-          <p class="text-secondary">Platform overview and key insights.</p>
+          <h1 data-i18n="dash_good_morning_admin">Good morning, Admin</h1>
+          <p class="text-secondary" data-i18n="dash_platform_overview_subtitle">Platform overview and key insights.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -75,37 +75,37 @@
 
           <div class="home-kpis home-kpis--4">
             <article class="home-kpi home-kpi--mint">
-              <span class="home-kpi__label">Total Users</span>
+              <span class="home-kpi__label" data-i18n="dash_total_users">Total Users</span>
               <span class="home-kpi__value" id="kpi-total-users">&mdash;</span>
             </article>
             <article class="home-kpi">
-              <span class="home-kpi__label">Active Students</span>
+              <span class="home-kpi__label" data-i18n="dash_active_students">Active Students</span>
               <span class="home-kpi__value" id="kpi-active-students">&mdash;</span>
             </article>
             <article class="home-kpi">
-              <span class="home-kpi__label">Mentors</span>
+              <span class="home-kpi__label" data-i18n="dash_mentors_kpi">Mentors</span>
               <span class="home-kpi__value" id="kpi-active-mentors">&mdash;</span>
             </article>
             <article class="home-kpi">
-              <span class="home-kpi__label">Opportunities</span>
+              <span class="home-kpi__label" data-i18n="nav_opportunities">Opportunities</span>
               <span class="home-kpi__value" id="kpi-active-opportunities">&mdash;</span>
             </article>
           </div>
 
           <div class="home-layout home-layout--2">
             <section class="home-card">
-              <h2 class="home-card__title">Signups (last 14 days)</h2>
+              <h2 class="home-card__title" data-i18n="dash_signups_last_14">Signups (last 14 days)</h2>
               <div id="signups-chart" aria-label="Signups over the last 14 days"></div>
             </section>
             <section class="home-card">
-              <h2 class="home-card__title">Recent Signups</h2>
+              <h2 class="home-card__title" data-i18n="dash_recent_signups">Recent Signups</h2>
               <div class="home-list" id="recent-signups-list"></div>
             </section>
           </div>
 
           <div class="home-layout">
             <section class="home-card">
-              <h2 class="home-card__title">Talent Area Distribution</h2>
+              <h2 class="home-card__title" data-i18n="dash_talent_distribution">Talent Area Distribution</h2>
               <div id="talent-area-distribution"></div>
             </section>
           </div>
@@ -118,8 +118,9 @@
   <script type="module">
     import { requireRole } from "../js/auth.js";
     import { api } from "../js/api.js";
-    import { showContent, showError, initDashShell, talentAreaLabel, talentAreaIcon, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, talentAreaLabel, talentAreaIcon, formatDate, roleLabel } from "../js/dashboard.js";
     import { barRow, miniBarChart } from "../js/charts.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -133,15 +134,6 @@
         .join("");
     }
 
-    const ROLE_LABELS = {
-      student: "Student",
-      teacher: "Teacher",
-      mentor: "Mentor",
-      provider: "Provider",
-      admin: "Administrator",
-      parent: "Parent",
-    };
-
     async function render() {
       try {
         const [overview, users] = await Promise.all([
@@ -151,8 +143,10 @@
 
         if (overview.pending_verification_count > 0) {
           document.querySelector("#pending-banner").hidden = false;
-          document.querySelector("#pending-text").textContent =
-            `${overview.pending_verification_count} mentor/provider account(s) awaiting verification.`;
+          document.querySelector("#pending-text").textContent = t(
+            "dash_pending_verification_banner",
+            "{count} mentor/provider account(s) awaiting verification."
+          ).replace("{count}", overview.pending_verification_count);
         }
 
         document.querySelector("#kpi-total-users").textContent = overview.total_users;
@@ -170,7 +164,7 @@
               <span class="home-avatar">${initials(u.full_name)}</span>
               <div class="home-row__body">
                 <p class="home-row__title">${u.full_name}</p>
-                <p class="home-row__meta">${ROLE_LABELS[u.role] || u.role} &middot; ${formatDate(u.created_at)}</p>
+                <p class="home-row__meta">${roleLabel(u.role)} &middot; ${formatDate(u.created_at)}</p>
               </div>
             </div>`
           )
@@ -185,6 +179,13 @@
         /* designed dashboard remains visible */
       }
     }
+
+    // Re-render the JS-built content (KPI numbers keep their value, but
+    // role labels and list rows need to re-translate) when the
+    // language changes.
+    window.addEventListener("amahirwe:translationsapplied", () => {
+      if (!document.querySelector("#dashboard-content").hidden) render();
+    });
 
     requireRole("admin").then(async (user) => {
       if (!user) return;

@@ -67,11 +67,11 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_settings">Settings</h1>
-            <p>Manage your account and preferences.</p>
+            <p data-i18n="dash_settings_subtitle">Manage your account and preferences.</p>
           </div>
           <div class="settings-layout">
             <nav class="settings-nav" data-settings-nav aria-label="Settings sections">
-              <button type="button" class="is-active" data-settings-target="account">Account</button>
+              <button type="button" class="is-active" data-settings-target="account" data-i18n="dash_account_nav">Account</button>
               <button type="button" data-settings-target="password" data-i18n="dash_change_password">Change password</button>
               <button type="button" data-settings-target="preferences" data-i18n="dash_language">Language</button>
             </nav>
@@ -126,7 +126,8 @@
   <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
-    import { showContent, showError, initDashShell, initSettingsNav, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, initSettingsNav, formatDate, roleLabel } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -137,12 +138,12 @@
       initSettingsNav();
       document.querySelector("#info-name").textContent = user.full_name;
       document.querySelector("#info-email").textContent = user.email;
-      document.querySelector("#info-role").textContent = "Administrator";
+      document.querySelector("#info-role").textContent = roleLabel("admin");
       document.querySelector("#info-created").textContent = formatDate(user.created_at);
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load settings:", err);
-      showError(loadingEl, "Couldn't load your account. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_account_load_error", "Couldn't load your account. Please check your connection and refresh the page."));
     });
   </script>
 </body>

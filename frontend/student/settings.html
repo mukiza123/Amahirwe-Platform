@@ -27,12 +27,12 @@
       <a href="dashboard.html" class="dash-sidebar__link" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span data-i18n="nav_home">Home</span></a>
       <a href="profile.html" class="dash-sidebar__link" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="nav_my_profile">My Profile</span></a>
       <a href="assessment.html" class="dash-sidebar__link" data-page="assessment"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="16" rx="2"/><path d="M9 4V3a1 1 0 011-1h4a1 1 0 011 1v1"/><path d="M9 11l2 2 4-4"/></svg><span data-i18n="nav_assessment">Assessment</span></a>
-      <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors">Mentors</span></a>
+      <a href="mentors.html" class="dash-sidebar__link" data-page="mentors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-3 3 2 3-3 3 3 4-4 3 3"/><path d="M6 11l4 5 2-2"/><path d="M14 14l2 2 4-4"/></svg><span data-i18n="nav_mentors_dash">Mentors</span></a>
       <a href="opportunities.html" class="dash-sidebar__link" data-page="opportunities"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/><path d="M3 12h18"/></svg><span data-i18n="nav_opportunities">Opportunities</span></a>
-      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span>Messages</span></a>
+      <a href="notifications.html" class="dash-sidebar__link" data-page="notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H8l-4 4V5a2 2 0 012-2h13a2 2 0 012 2z"/></svg><span data-i18n="nav_messages">Messages</span></a>
       <a href="settings.html" class="dash-sidebar__link is-active" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2"/><line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_settings">Settings</span></a>
     </nav>
-    <p class="dash-sidebar__tagline">Your talent matters.<br>Your future is possible.</p>
+    <p class="dash-sidebar__tagline"><span data-i18n="dash_tagline_student_1">Your talent matters.</span><br><span data-i18n="dash_tagline_student_2">Your future is possible.</span></p>
     <div class="dash-sidebar__footer">
       <button type="button" class="dash-sidebar__link" data-action="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span data-i18n="dash_logout">Log out</span></button>
     </div>
@@ -44,7 +44,7 @@
         <button type="button" class="dash-sidebar-toggle" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
         <div class="dash-topbar__title">
           <h1 data-i18n="nav_settings">Settings</h1>
-          <p class="text-secondary">Manage your account and preferences.</p>
+          <p class="text-secondary" data-i18n="dash_settings_subtitle">Manage your account and preferences.</p>
         </div>
       </div>
       <div class="dash-topbar__actions">
@@ -74,11 +74,11 @@
         <div id="dashboard-content" hidden>
           <div class="page-head">
             <h1 data-i18n="nav_settings">Settings</h1>
-            <p>Manage your account and preferences.</p>
+            <p data-i18n="dash_settings_subtitle">Manage your account and preferences.</p>
           </div>
           <div class="settings-layout">
             <nav class="settings-nav" data-settings-nav aria-label="Settings sections">
-              <button type="button" class="is-active" data-settings-target="account">Account</button>
+              <button type="button" class="is-active" data-settings-target="account" data-i18n="dash_account_nav">Account</button>
               <button type="button" data-settings-target="password" data-i18n="dash_change_password">Change password</button>
               <button type="button" data-settings-target="preferences" data-i18n="dash_language">Language</button>
             </nav>
@@ -133,7 +133,8 @@
   <script type="module" src="../js/main.js"></script>
   <script type="module">
     import { requireRole } from "../js/auth.js";
-    import { showContent, showError, initDashShell, initSettingsNav, formatDate } from "../js/dashboard.js";
+    import { showContent, showError, initDashShell, initSettingsNav, formatDate, roleLabel } from "../js/dashboard.js";
+    import { t } from "../js/main.js";
 
     const loadingEl = document.querySelector("#state-loading");
     const contentEl = document.querySelector("#dashboard-content");
@@ -144,12 +145,12 @@
       initSettingsNav();
       document.querySelector("#info-name").textContent = user.full_name;
       document.querySelector("#info-email").textContent = user.email;
-      document.querySelector("#info-role").textContent = "Student";
+      document.querySelector("#info-role").textContent = roleLabel("student");
       document.querySelector("#info-created").textContent = formatDate(user.created_at);
       showContent(loadingEl, contentEl);
     }).catch((err) => {
       console.error("Failed to load settings:", err);
-      showError(loadingEl, "Couldn't load your account. Please check your connection and refresh the page.");
+      showError(loadingEl, t("dash_account_load_error", "Couldn't load your account. Please check your connection and refresh the page."));
     });
   </script>
 </body>

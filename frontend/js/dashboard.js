@@ -4,17 +4,12 @@
  */
 
 import { api } from "./api.js";
+import { t } from "./main.js";
 
-const TALENT_AREA_LABELS = {
-  technology: "Technology",
-  leadership: "Leadership",
-  creativity: "Creativity",
-  sport: "Sport",
-  art: "Art",
-  public_speaking: "Public Speaking",
-  agriculture: "Agriculture",
-};
-
+// Labels come from the shared locale files (talent_<area> keys already
+// exist there, e.g. for the assessment results page) via t(), so a
+// language switch updates these the same way as everything else,
+// instead of this module carrying its own English-only copy.
 const TALENT_AREA_ICONS = {
   technology: "💻",
   leadership: "🧭",
@@ -25,8 +20,13 @@ const TALENT_AREA_ICONS = {
   agriculture: "🌾",
 };
 
+// Just the identifiers, for pages that need to render one row/option
+// per talent area (e.g. a mentor's expertise picker) — get the
+// (translated) display text for each via talentAreaLabel().
+const TALENT_AREAS = Object.keys(TALENT_AREA_ICONS);
+
 function talentAreaLabel(area) {
-  return TALENT_AREA_LABELS[area] || area;
+  return t(`talent_${area}`, area);
 }
 
 function talentAreaIcon(area) {
@@ -96,14 +96,9 @@ function initials(fullName) {
     .join("");
 }
 
-const ROLE_LABELS = {
-  student: "Student",
-  teacher: "Teacher",
-  mentor: "Mentor",
-  provider: "Provider",
-  admin: "Administrator",
-  parent: "Parent",
-};
+function roleLabel(role) {
+  return t(`role_${role}`, role);
+}
 
 /** Wires up the parts every dashboard page's sidebar shell shares: user
  * avatar/name/role in the topbar, active nav highlighting, the mobile
@@ -115,7 +110,7 @@ function initDashShell(user, pageKey) {
   const roleEl = document.querySelector("#dash-user-role");
   const avatarEl = document.querySelector("#dash-user-avatar");
   if (nameEl) nameEl.textContent = user.full_name;
-  if (roleEl) roleEl.textContent = ROLE_LABELS[user.role] || user.role;
+  if (roleEl) roleEl.textContent = roleLabel(user.role);
   if (avatarEl) avatarEl.textContent = initials(user.full_name);
 
   const firstName = user.full_name.split(" ").filter(Boolean)[0] || user.full_name;
@@ -202,11 +197,12 @@ export {
   talentAreaIcon,
   formatDate,
   greetingWord,
+  roleLabel,
   showContent,
   showError,
   loadNotifications,
   initDashShell,
   initSettingsNav,
   initInbox,
-  TALENT_AREA_LABELS,
+  TALENT_AREAS,
 };
