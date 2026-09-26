@@ -54,7 +54,7 @@ One codebase, six user roles:
 
 ## Live Demo
 
-- **App:** _add the Vercel URL here_
+- **App:**[Link to App](https://amahirwe-platform-4wy6.vercel.app/)
 - **SRS:** [Lisette_Mukiza_Assignment2_07302026.pdf](Lisette_Mukiza_Assignment2_07302026.pdf)
 
 ## Demo Accounts
