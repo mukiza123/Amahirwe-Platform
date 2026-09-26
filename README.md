@@ -1,209 +1,192 @@
-# Amahirwe
+<div align="center">
 
-**Discover • Connect • Grow**
+<img src="frontend/assets/icons/logo-full.png" alt="Amahirwe logo" width="220">
 
-Amahirwe is a digital platform that helps students in rural public schools in Rwanda discover their talents and connect with mentors, teachers and opportunities.
+# Amahirwe Platform
 
-This is a university final software prototype built from scratch with:
+**Discover. Connect. Grow.**
 
-- **Frontend:** HTML5, CSS3, vanilla JavaScript (no frameworks)
-- **Backend:** Python, FastAPI, Pydantic, SQLAlchemy, Alembic
-- **Database:** PostgreSQL
+A web platform that helps students in rural public schools in Rwanda discover their talents and connect with mentors, teachers and real opportunities, even with weak or no internet.
 
-> Project status: **All 10 phases complete**, plus a full dashboard redesign and a hardened auth flow. Registration/login (with email verification, rate-limited codes, forgot-password, and optional Google sign-in), student profile and talent assessment (with offline support), teacher tools, mentor matching (with a no-contact-before-approval safeguard and a real parent/guardian link), opportunities, admin user management, multilingual support (Kinyarwanda/English/French), and a mobile/accessibility/illustration polish pass are all working end to end, backend and frontend. Every role's dashboard is a real, data-focused multi-page app (sidebar navigation, stat cards, charts) built entirely from live API data, never placeholder numbers. See [Development Plan](#development-plan) below for the one remaining known gap (JS-computed dynamic content, like chart labels and notification text, is not yet translated), and [`docs/performance-audit-report.md`](docs/performance-audit-report.md) for the login/dashboard performance audit.
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-frontend-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-styling-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-vanilla-F7DF1E?logo=javascript&logoColor=black)
+![Vercel](https://img.shields.io/badge/Vercel-deployment-000000?logo=vercel&logoColor=white)
+![License](https://img.shields.io/badge/license-Educational-0F6B52)
 
-## Live demo
+[Live Demo](#live-demo) · [SRS Document](Lisette_Mukiza_Assignment2_07302026.pdf) · [Demo Accounts](#demo-accounts) · [Setup Guide](#getting-started)
 
-- App URL: _to be added once deployed to Vercel_
-- SRS document: `Lisette_Mukiza_Assignment2_07302026.pdf` (in this repo)
+</div>
 
-## Demo accounts
+---
 
-Run `database/seed.py` (see setup steps below) to create these. Password for all of them: `password123`.
+## Overview
 
-| Role | Email | What's seeded for them |
+**The problem:** talented students in rural Rwandan schools go unnoticed. Mentors and opportunities are concentrated in Kigali, internet is weak and data is expensive, and most platforms are English-first.
+
+**The solution:** Amahirwe gives students an offline talent assessment, matches them with verified mentors, and shows them scholarships and competitions, with a teacher approving every match. The platform works in Kinyarwanda, English and French.
+
+One codebase, six user roles:
+
+| Role | Route | What they can do |
 |---|---|---|
-| Student | `student@amahirwe.demo` | Profile at Nyagatare Secondary School, a completed talent assessment, and a pending mentor match awaiting the teacher's review |
-| Teacher | `teacher@amahirwe.demo` | Profile at the same school, so they see the student above, can add students, link guardians, and approve/reject the pending match |
-| Mentor | `mentor@amahirwe.demo` | Verified profile with technology/leadership expertise, matched to the student above |
-| Opportunity provider | `provider@amahirwe.demo` | Verified account with one posted opportunity |
-| Administrator | `admin@amahirwe.demo` | Can list/verify/deactivate users and view the audit log |
-| Parent / guardian | `parent@amahirwe.demo` | Linked by the teacher above as the student's guardian, so their dashboard shows that student's real progress |
+| Student | `/student/` | Build a profile, take the talent assessment (works offline), see mentor matches and opportunities |
+| Teacher | `/teacher/` | Add and track students, approve or decline mentor matches |
+| Parent | `/parent/` | Follow their child's progress (once linked by a teacher) |
+| Mentor | `/mentor/` | View approved mentees and their talent areas |
+| Opportunity provider | `/provider/` | Post scholarships, competitions and internships |
+| Administrator | `/admin/` | Verify mentors and providers, manage users, view the audit log |
 
-All six roles (student, teacher, parent, mentor, provider, admin) have real, working multi-page dashboards wired to the API: a sidebar with Home plus each role's own sections (profile, assessment, students, mentees, children, opportunities, users, audit log, notifications, settings), stat cards and charts built from live data, and no placeholder numbers anywhere.
+## Key Features
 
-## Project structure
+| Feature | SRS reference |
+|---|---|
+| Offline talent assessment with automatic sync | FR-1.1 to FR-1.3, FR-5.1, FR-5.2 |
+| Mentor matching by talent area and language | FR-2.1 |
+| Teacher approval before any mentor contact | FR-2.2, FR-3.2 |
+| Match notifications and audit log | FR-2.3, NFR-5 |
+| Teacher dashboard with student progress | FR-3.1 |
+| Opportunities feed filtered by talent area | FR-4.1, FR-4.2 |
+| Kinyarwanda, English and French | FR-6.1 |
 
-```
-Amahirwe-Platform/
-├── backend/                 FastAPI application
-│   ├── app/
-│   │   ├── main.py          App entry point, CORS, health check
-│   │   ├── core/            Settings, DB session/engine
-│   │   ├── models/          SQLAlchemy models (added per phase)
-│   │   ├── schemas/         Pydantic request/response schemas
-│   │   ├── api/             API routers
-│   │   └── services/        Business logic (e.g. matching algorithm)
-│   ├── alembic/              Database migrations
-│   ├── requirements.txt
-│   └── .env.example
-├── frontend/                 Static HTML/CSS/JS site
-│   ├── index.html, login.html, register.html
-│   ├── student/ teacher/ parent/ mentor/ provider/ admin/
-│   │       Each is a multi-page dashboard: dashboard.html (Home) plus
-│   │       role-specific pages, sharing one sidebar/topbar shell defined
-│   │       in css/components.css and js/dashboard.js's initDashShell()
-│   ├── css/                  style.css, components.css, responsive.css
-│   ├── js/                   api.js, auth.js, main.js, dashboard.js,
-│   │                          charts.js, matching.js, opportunities.js, ...
-│   ├── locales/               en.json, rw.json, fr.json
-│   └── assets/                illustrations, icons, images
-├── database/seed.py          Demo data seed script
-├── tests/                    Backend tests (pytest)
-├── api/index.py              Vercel entry point (re-exports the FastAPI app)
-└── vercel.json                Deployment configuration
-```
+## Live Demo
 
-## Prerequisites
+- **App:** _add the Vercel URL here_
+- **SRS:** [Lisette_Mukiza_Assignment2_07302026.pdf](Lisette_Mukiza_Assignment2_07302026.pdf)
+
+## Demo Accounts
+
+Created by the seed script (step 5 below). Password for all accounts: `password123`
+
+| Role | Email |
+|---|---|
+| Student | `student@amahirwe.demo` |
+| Teacher | `teacher@amahirwe.demo` |
+| Parent | `parent@amahirwe.demo` |
+| Mentor | `mentor@amahirwe.demo` |
+| Provider | `provider@amahirwe.demo` |
+| Admin | `admin@amahirwe.demo` |
+
+The student already has a completed assessment and a pending mentor match, so you can log in as the teacher and approve it straight away.
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML5, CSS3, vanilla JavaScript, service worker + IndexedDB for offline use |
+| Backend | Python, FastAPI, Pydantic, SQLAlchemy, Alembic |
+| Database | PostgreSQL (free hosted instance on Neon) |
+| Auth | JWT with role-based access, email verification codes |
+| Deployment | Vercel |
+
+## Getting Started
+
+### Prerequisites
 
 - Python 3.9 or newer
-- A PostgreSQL database. This project uses a free hosted instance from [Neon](https://neon.tech), so no local PostgreSQL install is required.
+- A free [Neon](https://neon.tech) PostgreSQL database (no local install needed)
 - A modern web browser
-- A simple static file server for the frontend (instructions below use Python's built-in one, so nothing extra to install)
-
-## Setup: Running the Project Locally
-
-Follow these steps in order.
 
 ### 1. Clone the repository
 
 ```bash
-git clone <this-repo-url>
+git clone https://github.com/lisette-lachiever/Amahirwe-Platform.git
 cd Amahirwe-Platform
 ```
 
-### 2. Create a free PostgreSQL database (Neon)
+### 2. Set up environment variables
 
-1. Go to [neon.tech](https://neon.tech) and sign up for a free account.
-2. Create a new project (any name, e.g. `amahirwe`).
-3. On the project dashboard, copy the **connection string** shown (it looks like `postgresql://user:password@ep-xxxx.region.aws.neon.tech/neondb?sslmode=require`).
-4. Keep this connection string; you'll paste it into `.env` in the next step.
-
-### 3. Configure backend environment variables
+Create a project on [neon.tech](https://neon.tech) and copy its connection string. Then:
 
 ```bash
 cd backend
 cp .env.example .env
 ```
 
-Open `backend/.env` and set:
+Open `backend/.env` and fill in these two values:
 
-- `DATABASE_URL`: paste the Neon connection string from step 2.
-- `JWT_SECRET_KEY`: generate one with:
-  ```bash
-  python3 -c "import secrets; print(secrets.token_hex(32))"
-  ```
-- `GOOGLE_CLIENT_ID`: optional. Leave blank to keep "Continue with Google" disabled (the button falls back to a "not available in this prototype yet" placeholder). To turn it on, follow the setup steps at the top of `frontend/js/google-auth-config.js`, then set the same Client ID here and there.
-- `SMTP_USERNAME` / `SMTP_PASSWORD`: optional. Leave blank to keep "prototype mode" for verification/password-reset codes (the code is returned directly in the API response and shown on screen instead of emailed). To send real emails via Gmail: turn on 2-Step Verification on the Gmail account, generate an App Password at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) (not the normal Gmail password), then set `SMTP_USERNAME` to the Gmail address and `SMTP_PASSWORD` to that generated App Password. No new dependency — sends over plain `smtplib`.
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | Your Neon connection string |
+| `JWT_SECRET_KEY` | Any random string, e.g. from `python3 -c "import secrets; print(secrets.token_hex(32))"` |
 
-Never commit `backend/.env`; it's already in `.gitignore`.
+Everything else can stay as it is. Leave the Google and email settings blank: verification codes will simply be shown on screen.
 
-### 4. Create a virtual environment and install backend dependencies
+### 3. Install dependencies
 
 ```bash
-# from backend/
+# inside backend/
 python3 -m venv venv
-source venv/bin/activate          # on Windows: venv\Scripts\activate
+source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 5. Run database migrations
+### 4. Create the database tables
 
 ```bash
-# from backend/, with venv activated
 alembic upgrade head
 ```
 
-### 6. Load demo data (optional)
+### 5. Load the demo accounts
 
 ```bash
-# from backend/, with venv activated
 python ../database/seed.py
 ```
 
-Creates the [demo accounts](#demo-accounts) above, plus one completed talent assessment for the demo student. Safe to re-run; it skips anything that already exists.
-
-### 7. Start the backend API
+### 6. Start the backend
 
 ```bash
-# from backend/, with venv activated
 uvicorn app.main:app --reload --port 8000
 ```
 
-The API is now running at `http://127.0.0.1:8000`. Confirm it works by opening:
+Check it works: open http://127.0.0.1:8000/api/health (API docs at http://127.0.0.1:8000/docs).
 
-- `http://127.0.0.1:8000/api/health` → should return `{"status":"ok","service":"Amahirwe API"}`
-- `http://127.0.0.1:8000/docs` → interactive API documentation
-
-### 8. Start the frontend (in a second terminal)
-
-The frontend is plain HTML/CSS/JS, so it just needs to be served as static files (opening the HTML files directly with `file://` will break the API calls and JS modules).
+### 7. Start the frontend (new terminal)
 
 ```bash
-# from the project root, in a new terminal
+# from the project root
 python3 dev-server.py 5500
 ```
 
-(`dev-server.py` is a thin wrapper around Python's built-in file server that also sends `Cache-Control: no-store` on every response — plain `python3 -m http.server` sends no caching headers at all, which lets browsers guess and keep serving stale CSS/JS after an edit. Use `python3 -m http.server 5500` instead only if you specifically want default caching behavior.)
+Open **http://127.0.0.1:5500** and log in with a [demo account](#demo-accounts).
 
-Then open:
-
-```
-http://127.0.0.1:5500/
-```
-
-(`dev-server.py` always serves `frontend/` itself as the web root, regardless of which directory you launch it from — so a page never sits behind a `/frontend/...` prefix locally, matching exactly how it's addressed once deployed on Vercel, where `vercel.json`'s rewrite to `/frontend/$1` happens server-side and is invisible to the browser.)
-
-The frontend automatically talks to the backend at `http://127.0.0.1:8000/api` when running locally like this.
-
-### 9. Run backend tests (optional)
+### Run the tests (optional)
 
 ```bash
-cd backend
-source venv/bin/activate
-cd ..
+# from the project root, with the venv activated
 pytest tests/ -v
 ```
 
-## Development plan
+## Project Structure
 
-Built in phases, per the project's development rule of not building everything at once:
+```
+Amahirwe-Platform/
+├── backend/app/        FastAPI app: api/ routes, models/, schemas/, services/ (matching logic)
+├── backend/alembic/    Database migrations
+├── frontend/           HTML/CSS/JS site, one folder per role (student/, teacher/, ...)
+├── frontend/locales/   Translations: en.json, rw.json, fr.json
+├── database/seed.py    Demo data
+├── tests/              Backend tests (pytest)
+├── api/index.py        Vercel entry point
+└── vercel.json         Deployment config
+```
 
-1. **Foundation**: folder structure, FastAPI, PostgreSQL/SQLAlchemy/Alembic wiring, design system, base pages, Vercel config ✅
-2. **Authentication**: registration, login, JWT, role-based access, protected pages ✅. Later hardened with: email verification (one-time code, rate-limited attempts and resend cooldown, gates dashboard access until confirmed), forgot/reset password (same one-time-code pattern, doesn't leak which emails have accounts), and optional Google sign-in (real accounts get logged in and auto-verified; brand-new emails pick a role on a one-time screen before an account is created) — see `backend/app/api/auth.py` and `frontend/js/google-auth-config.js` for the one setup step (a Google OAuth Client ID) needed to turn the last one on ✅
-3. **Student**: profile and talent assessment (`/api/students`, `/api/assessments`), with a dashboard UI to complete a profile, take the assessment, and see ranked results ✅
-4. **Offline assessment**: service worker precaching the app shell, IndexedDB queue for assessment answers taken with no connection, auto-sync (with a manual "Sync now" fallback) once back online ✅
-5. **Teacher**: dashboard to add/view students at their school and review mentor match requests ✅
-6. **Mentor matching**: rule-based matching (top talent area → verified mentor with matching expertise), teacher/admin approval workflow, audit log, in-app notifications. Mentor and student contact details are only exposed after approval, with no unsupervised contact before that ✅
-7. **Opportunities**: provider dashboard to post/edit/deactivate/delete opportunities; public listing endpoint ✅
-8. **Admin**: list/filter users, verify mentors and providers, activate/deactivate accounts, audit log viewer ✅
-9. **Multilingual**: Kinyarwanda, English, French. Done for the marketing site, login/register, and the static chrome (headings, labels, buttons, forms) of every dashboard. JS-rendered dynamic content on dashboards (match cards, notifications, admin table rows, form validation messages) is still English-only; translating those would mean threading the translation dictionary through every render function, which is a larger follow-up, not a quick addition ✅ (dashboard chrome) / ⏳ (dynamic content)
-10. **Polish**: mobile QA (390/768/1024px sweep across every dashboard, no overflow, verified visually), accessibility (skip-to-content link and `role="status"` loading state on every dashboard, matching the marketing site's existing focus-visible and semantic-landmark conventions), loading/empty/error states (every dashboard shows a loading spinner, a real error message on failure, and an illustrated empty state rather than nothing), and illustrations (the provided character/object/system artwork is now used in the student assessment intro, the offline sync banner, and the teacher/mentor/provider empty states, instead of generic icons) ✅
-11. **Dashboard redesign**: every role's dashboard rebuilt as a real multi-page app (sidebar navigation, stat cards, charts, recent activity) instead of one long scrolling page. Includes a new backend feature this required honestly: a parent/guardian can only see a student's data once a teacher explicitly links them (`student_guardians` table, `POST /api/teachers/students/{id}/guardians`, `GET /api/parents/me/children`), with no self-service linking, since that would let any adult claim to be a child's parent ✅
+## Safety and Security
 
-## Design system
+- Passwords are hashed; access is controlled by JWT and user role on the backend.
+- Students are minors, so mentors never get contact details until a teacher or admin approves the match.
+- Mentors and providers must be verified by an admin before they appear anywhere.
+- Every match decision is recorded in the audit log.
 
-Amahirwe uses a **controlled neumorphism** design language: soft shadows and raised/pressed states on cards, buttons and inputs, kept subtle and used only where it aids usability, not on every element. Brand colours (primary dark green `#0F6B52`, teal `#1A9B8A`, mint, warm yellow/orange accents), typography (Bellota Text for headings, Lexend for body text) and spacing/radius scales are defined as CSS custom properties in `frontend/css/style.css`.
+## Known Limitations
 
-Every dashboard page shares one shell (`.dash-shell` in `frontend/css/components.css`, wired up per-page by `initDashShell()` in `frontend/js/dashboard.js`): a fixed dark-green sidebar with the role's nav items, a light topbar with page title, language switch, notification bell, and user avatar, and a light content area for stat cards (`.stat-card`), chart panels (`.dash-panel`), and dependency-free inline-SVG charts (`frontend/js/charts.js`: a progress ring, horizontal bar rows, and a mini bar-over-time chart). On screens under 900px the sidebar collapses into a slide-in drawer behind a hamburger toggle. Every number shown, on every dashboard, comes from a real API response; there are no mocked or hardcoded statistics anywhere in the app.
+- Text generated by JavaScript on dashboards (for example chart labels and notification messages) is still English only. Page headings, menus, buttons and forms are fully translated.
 
-## Security notes
+## Author
 
-- Passwords are hashed (never stored in plaintext).
-- Authentication uses JWT; the backend enforces role-based authorization, and the frontend never decides access on its own.
-- Because Amahirwe's primary users are minors, there is no direct/unsupervised messaging between students and mentors. A teacher or administrator must approve a mentor match before any contact information is shared.
-- Mentors and opportunity providers must be verified by an administrator before they can appear in matches or publish opportunities.
+**Lisette Mukiza** · African Leadership College (ALCHE) · Introduction to Software Engineering, Final Project, 2026
 
-## License
-
-Educational prototype built for a university capstone project. Not for production use.
+Educational prototype, not intended for production use.
